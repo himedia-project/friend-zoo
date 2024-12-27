@@ -1,0 +1,81 @@
+server:
+  port: 8080
+
+spring:
+  profiles:
+    active: local # ?? ??? ???? ??
+
+  output:
+    ansi:
+      enabled: always # ANSI ?? ?? Junit test? console? ?? ??
+
+  jpa:
+    hibernate:
+      ddl-auto: update # ??? ?? ? ???? ??
+    properties:
+      hibernate:
+        format_sql: true # SQL ???
+        highlight_sql: true # ????? SQL ??
+        use_sql_comments: true # ?? JPQL SQL ?? ??
+
+---
+
+spring:
+  config:
+    activate:
+      on-profile: test
+
+  h2:
+    console:
+      enabled: true  # H2 Console? ???? ?? (H2 Console? H2 Database? UI? ????? ??)
+      path: /h2-console  # H2 Console? Path
+
+  datasource:
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:./db_dev;MODE=MySQL
+    username: sa
+    password:
+
+---
+
+spring:
+  config:
+    activate:
+      on-profile: local
+
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/test?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
+    username: root
+    password: 1234
+
+logging:
+  level:
+    org.hibernate.SQL: debug # Hibernate? SQL? ??
+    org.hibernate.orm.jdbc.bind: trace # Hibernate? SQL ???? ??
+    org.springframework.transaction.interceptor: trace # Hibernate? SQL ???? ??
+
+---
+spring:
+  config:
+    activate:
+      on-profile: prod
+
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://db:3306/test?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
+    username: root
+    password: 1234
+    hikari:
+      max-lifetime: 600000 # ??? ?? ?? ??
+      idle-timeout: 300000 # ??? ?? ?? ??
+      connection-timeout: 30000 # ??? ????
+
+app:
+  aws:
+    ec2:
+      instance-front-url: http://43.203.42.37
+
+logging:
+  level:
+    org.hibernate.SQL: error # Hibernate? SQL? ??
