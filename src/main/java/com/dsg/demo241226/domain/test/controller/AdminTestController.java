@@ -26,7 +26,7 @@ public class AdminTestController {
 
     // list 조회
     @GetMapping("/list")
-    public ResponseEntity<Page<TestResDTO>> list(
+    public ResponseEntity<Page<TestResDTO>> list( // list
             @PageableDefault(sort = "id", direction = Sort.Direction.DESC, size = 10)
             Pageable pageable,
             @RequestParam(required = false) String keyword // &keyword=검색어
@@ -37,7 +37,7 @@ public class AdminTestController {
     }
 
     // page querydsl 로 조회
-    @GetMapping("/list/page")
+    @GetMapping("/list/page") // list/page
     public ResponseEntity<PageResponseDTO<TestResDTO>> listPage(
             PageRequestDTO requestDTO
     )
