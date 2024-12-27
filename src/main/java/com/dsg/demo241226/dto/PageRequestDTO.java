@@ -21,4 +21,6 @@ public class PageRequestDTO {
   private String sort;
 
   private String searchTerm;
+
+  private String best;
 }

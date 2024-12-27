@@ -24,7 +24,7 @@ public class TestController {
     @GetMapping("/list/page")
     public ResponseEntity<PageResponseDTO<TestResDTO>> listPage(
             PageRequestDTO requestDTO
-    )
+    ) //
     {
         log.info("listPage...............requestDTO: " + requestDTO);
         PageResponseDTO<TestResDTO> list = testService.getPage(requestDTO);

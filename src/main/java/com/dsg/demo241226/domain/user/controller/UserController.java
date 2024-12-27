@@ -15,8 +15,6 @@ public class UserController {
 
     @GetMapping("/api/user")
     public UserDto user(@RequestParam String email) {
-        UserDto userDto = userService.findUser(email);
-
-        return userDto;
+        return userService.findUser(email);
     }
 }
