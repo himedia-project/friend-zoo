@@ -3,20 +3,20 @@ server:
 
 spring:
   profiles:
-    active: local # ?? ??? ???? ??
+    active: local # 로컬 프로파일 활성화
 
   output:
     ansi:
-      enabled: always # ANSI ?? ?? Junit test? console? ?? ??
+      enabled: always # ANSI 콘솔 색상 활성화 (JUnit 테스트 포함)
 
   jpa:
     hibernate:
-      ddl-auto: update # ??? ?? ? ???? ??
+      ddl-auto: update # 테이블 생성 및 업데이트 전략 (create, create-drop, update, validate, none)
     properties:
       hibernate:
-        format_sql: true # SQL ???
-        highlight_sql: true # ????? SQL ??
-        use_sql_comments: true # ?? JPQL SQL ?? ??
+        format_sql: true # SQL 포맷팅
+        highlight_sql: true # SQL 하이라이트 출력
+        use_sql_comments: true # JPQL SQL 주석 사용
 
 ---
 
@@ -27,8 +27,8 @@ spring:
 
   h2:
     console:
-      enabled: true  # H2 Console? ???? ?? (H2 Console? H2 Database? UI? ????? ??)
-      path: /h2-console  # H2 Console? Path
+      enabled: true  # H2 콘솔 활성화
+      path: /h2-console  # H2 콘솔 경로 설정
 
   datasource:
     driver-class-name: org.h2.Driver
@@ -51,11 +51,12 @@ spring:
 
 logging:
   level:
-    org.hibernate.SQL: debug # Hibernate? SQL? ??
-    org.hibernate.orm.jdbc.bind: trace # Hibernate? SQL ???? ??
-    org.springframework.transaction.interceptor: trace # Hibernate? SQL ???? ??
+    org.hibernate.SQL: debug # Hibernate SQL 로그 레벨
+    org.hibernate.orm.jdbc.bind: trace # Hibernate SQL 바인딩 로그 레벨
+    org.springframework.transaction.interceptor: trace # Spring 트랜잭션 인터셉터 로그 레벨
 
 ---
+
 spring:
   config:
     activate:
@@ -67,9 +68,9 @@ spring:
     username: root
     password: 1234
     hikari:
-      max-lifetime: 600000 # ??? ?? ?? ??
-      idle-timeout: 300000 # ??? ?? ?? ??
-      connection-timeout: 30000 # ??? ????
+      max-lifetime: 600000  # 최대 수명 (밀리초)
+      idle-timeout: 300000 # 유휴 시간 (밀리초)
+      connection-timeout: 30000 # 연결 시간 초과 (밀리초)
 
 app:
   aws:
@@ -78,4 +79,4 @@ app:
 
 logging:
   level:
-    org.hibernate.SQL: error # Hibernate? SQL? ??
+    org.hibernate.SQL: error # Hibernate SQL 로그 레벨
