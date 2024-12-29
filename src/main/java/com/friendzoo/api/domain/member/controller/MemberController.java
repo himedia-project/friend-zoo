@@ -75,6 +75,19 @@ public class MemberController {
         return ResponseEntity.ok(loginResponseDTO);
     }
 
+
+    // 로그아웃
+    @PostMapping("/logout")
+    public ResponseEntity<String> logout(HttpServletResponse response) {
+        log.info("logout");
+        // accessToken은 react 내 redux 상태 지워서 없앰
+        // 쿠키 삭제
+        CookieUtil.removeTokenCookie(response, "refreshToken");
+
+        return ResponseEntity.ok("logout success!");
+    }
+
+    // TEST용
     @GetMapping("/api/user")
     public MemberTestDTO user(@RequestParam String email) {
         return memberService.findUser(email);

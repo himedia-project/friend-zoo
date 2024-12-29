@@ -39,7 +39,7 @@ public class JWTCheckFilter extends OncePerRequestFilter {
         }
         // /api/member/로 시작하는 요청은 필터를 타지 않도록 설정
         if (path.startsWith("/api/member/login") || path.startsWith("/api/member/join")
-                || path.startsWith("/api/member/refresh")
+                || path.startsWith("/api/member/refresh") || path.startsWith("/api/member/logout")
                 || path.startsWith("/api/member/kakao") || path.startsWith("/api/member/google")
                 || path.startsWith("/api/member/naver") || path.startsWith("/api/member/github")
                 || path.startsWith("/api/member/facebook")
@@ -76,13 +76,13 @@ public class JWTCheckFilter extends OncePerRequestFilter {
         log.info("request.getServletPath(): {}", request.getServletPath());
         log.info("..................................................");
 
-//        String autHeaderStr = request.getHeader("Authorization");
+        String autHeaderStr = request.getHeader("Authorization");
 
         try {
             // Bearer accessToken 형태로 전달되므로 Bearer 제거
-//            String accessToken = autHeaderStr.substring(7);// Bearer 제거
+            String accessToken = autHeaderStr.substring(7);// Bearer 제거
             // 쿠키로 가져와
-            String accessToken = CookieUtil.getTokenFromCookie(request, "accessToken");
+//            String accessToken = CookieUtil.getTokenFromCookie(request, "accessToken");
             log.info("JWTCheckFilter accessToken: {}", accessToken);
 
             Map<String, Object> claims = jwtUtil.validateToken(accessToken);
