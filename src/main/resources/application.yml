@@ -19,6 +19,13 @@ spring:
         use_sql_comments: true # JPQL SQL 주석 사용
 #        default_batch_fetch_size: 100 # 기본 배치 크기 설정
 
+app:
+  props:
+    jwt:
+      secret-key: 1234567890123456789012345678901234567890
+      access-token-expiration-period: 15   # 15분
+      refresh-token-expiration-period: 1440  # 24시간 60 * 24 = 1440분
+
 ---
 
 spring:

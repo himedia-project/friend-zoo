@@ -1,5 +1,6 @@
 package com.friendzoo.domain.member.entity;
 
+import com.friendzoo.domain.member.enums.MemberRole;
 import com.friendzoo.domain.test.entity.Test;
 import com.friendzoo.entity.BaseEntity;
 import jakarta.persistence.*;
@@ -37,8 +38,17 @@ public class Member extends BaseEntity {
         this.delFlag = delFlag;
     }
 
+
+    @ElementCollection(fetch = FetchType.LAZY)
+    @CollectionTable(name = "member_role_list", joinColumns = @JoinColumn(name = "email"))
+    @Column(name = "member_role_list") // 해당 memberRoleList 를 저장할 컬럼명을 지정
+    @Builder.Default
+    private List<MemberRole> memberRoleList = new ArrayList<>();
+
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "member", cascade = CascadeType.ALL)
     @Builder.Default // fetchjoin
     private List<Test> testList = new ArrayList<>();
+
+
 
 }

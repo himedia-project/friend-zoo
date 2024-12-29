@@ -13,7 +13,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
-public class MemberDTO {
+public class MemberTestDTO {
 
     private String email;
     private String name;

@@ -1,9 +1,11 @@
 package com.friendzoo.domain.member.service;
 
-import com.friendzoo.domain.member.dto.MemberDTO;
+
+import com.friendzoo.domain.member.dto.MemberTestDTO;
 import com.friendzoo.domain.member.entity.Member;
 import com.friendzoo.domain.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,9 +18,9 @@ public class MemberServiceImpl implements MemberService {
 
     @Transactional(readOnly = true)
     @Override
-    public MemberDTO findUser(String email) {
+    public MemberTestDTO findUser(String email) {
         Member member = memberRepository.findByEmail(email)
-                .orElseThrow(() -> new IllegalArgumentException("해당 사용자를 찾을 수 없습니다."));
+                .orElseThrow(() -> new UsernameNotFoundException("해당 사용자를 찾을 수 없습니다."));
         return this.entityToDto(member);
     }
 }
