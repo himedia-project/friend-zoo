@@ -2,6 +2,7 @@ package com.friendzoo.exception.advice;
 
 
 import com.friendzoo.exception.CustomJWTException;
+import com.friendzoo.exception.OutOfStockException;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -117,6 +118,14 @@ public class CustomControllerAdvice {
         String msg = e.getMessage();
 
         return ResponseEntity.ok().body(Map.of("error", msg));
+    }
+
+    @ExceptionHandler(OutOfStockException.class)
+    protected ResponseEntity<?> handleOutOfStockException(OutOfStockException e) {
+
+        String msg = e.getMessage();
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("error", msg));
     }
 
 }

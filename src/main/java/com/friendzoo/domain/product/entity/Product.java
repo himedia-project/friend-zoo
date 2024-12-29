@@ -3,17 +3,15 @@ package com.friendzoo.domain.product.entity;
 import com.friendzoo.domain.product.enums.ProductBest;
 import com.friendzoo.domain.product.enums.ProductMdPick;
 import com.friendzoo.entity.BaseEntity;
+import com.friendzoo.exception.OutOfStockException;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.ColumnDefault;
-
-import java.time.Instant;
 
 @SuperBuilder
 @Getter
@@ -54,13 +52,27 @@ public class Product extends BaseEntity {
     @Column(name = "stock_number", nullable = false)
     private Integer stockNumber;
 
-    @NotNull
-    @Column(name = "best", nullable = false)
-    private ProductBest best = ProductBest.N;
+    @Enumerated(EnumType.STRING)
+    @ColumnDefault("'N'")
+    private ProductBest best;
 
-    @NotNull
-    @Column(name = "md_pick", nullable = false)
-    private ProductMdPick mdPick = ProductMdPick.N;
+    @Enumerated(EnumType.STRING)
+    @ColumnDefault("'N'")
+    private ProductMdPick mdPick;
 
+
+    // 재고수량 감소
+    public void removeStock(int stockNumber) {
+        int restStock = this.stockNumber - stockNumber;
+        if(restStock < 0) {
+            throw new OutOfStockException("상품의 재고가 부족합니다. (현재 재고 수량: " + this.stockNumber + ")");
+        }
+        this.stockNumber = restStock;
+    }
+
+    // 재고수량 증가
+    public void addStock(int stockNumber) {
+        this.stockNumber += stockNumber;
+    }
 
 }
