@@ -27,8 +27,6 @@ public class Member extends BaseEntity {
 
     private String phone;
 
-    private String role;
-
     private boolean delFlag;
 
     public void changeDel(boolean delFlag) {

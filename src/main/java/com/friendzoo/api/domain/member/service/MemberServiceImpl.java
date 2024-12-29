@@ -85,7 +85,7 @@ public class MemberServiceImpl implements MemberService {
      * @param email 이메일
      * @return 회원
      */
-    private Member getMember(String email) {
+    public Member getMember(String email) {
         return memberRepository.findByEmail(email)
                 .orElseThrow(() -> new UsernameNotFoundException("해당 사용자를 찾을 수 없습니다."));
     }

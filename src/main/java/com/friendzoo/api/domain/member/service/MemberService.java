@@ -12,6 +12,8 @@ public interface MemberService {
 
     MemberTestDTO findUser(String email);
 
+    Member getMember(String email);
+
     void join(JoinRequestDTO request);
 
     Map<String, Object> login(String email, String password);
