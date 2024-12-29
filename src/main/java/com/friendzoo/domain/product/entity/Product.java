@@ -55,14 +55,12 @@ public class Product extends BaseEntity {
     private Integer stockNumber;
 
     @NotNull
-    @ColumnDefault("'N'")
     @Column(name = "best", nullable = false)
-    private ProductBest best;
+    private ProductBest best = ProductBest.N;
 
     @NotNull
-    @ColumnDefault("'N'")
     @Column(name = "md_pick", nullable = false)
-    private ProductMdPick mdPick;
+    private ProductMdPick mdPick = ProductMdPick.N;
 
 
 }
