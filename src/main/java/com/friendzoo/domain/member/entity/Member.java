@@ -47,5 +47,7 @@ public class Member extends BaseEntity {
     private List<Test> testList = new ArrayList<>();
 
 
-
+    public void addRole(MemberRole memberRole) {
+        memberRoleList.add(memberRole);
+    }
 }
