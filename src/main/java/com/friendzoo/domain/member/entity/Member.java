@@ -1,4 +1,4 @@
-package com.friendzoo.domain.user.entity;
+package com.friendzoo.domain.member.entity;
 
 import com.friendzoo.domain.test.entity.Test;
 import com.friendzoo.entity.BaseEntity;
@@ -15,18 +15,19 @@ import java.util.List;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-@Table(name = "user_tbl")
-public class User extends BaseEntity {
+@Table(name = "member")
+public class Member extends BaseEntity {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
     private String email;
     private String name;
 
     private String password;
 
     private String phone;
-
-    private String address;
 
     private String role;
 
@@ -36,7 +37,7 @@ public class User extends BaseEntity {
         this.delFlag = delFlag;
     }
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user", cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "member", cascade = CascadeType.ALL)
     @Builder.Default // fetchjoin
     private List<Test> testList = new ArrayList<>();
 

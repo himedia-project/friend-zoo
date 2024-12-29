@@ -1,7 +1,7 @@
 package com.friendzoo.domain.test.entity;
 
 import com.friendzoo.domain.test.enums.TestType;
-import com.friendzoo.domain.user.entity.User;
+import com.friendzoo.domain.member.entity.Member;
 import com.friendzoo.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -27,7 +27,7 @@ public class Test extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY) // jpa
     @JoinColumn(name = "email")  // fk
-    private User user;
+    private Member member;
 
     @Enumerated(EnumType.STRING)
     @ColumnDefault("'N'")

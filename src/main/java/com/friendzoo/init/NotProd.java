@@ -2,8 +2,8 @@ package com.friendzoo.init;
 
 import com.friendzoo.domain.test.entity.Test;
 import com.friendzoo.domain.test.repository.TestRepository;
-import com.friendzoo.domain.user.entity.User;
-import com.friendzoo.domain.user.repository.UserRepository;
+import com.friendzoo.domain.member.entity.Member;
+import com.friendzoo.domain.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
@@ -23,7 +23,7 @@ public class NotProd {
 
 
     @Bean
-    public CommandLineRunner init(UserRepository userRepository) {
+    public CommandLineRunner init(MemberRepository memberRepository) {
         return (args) -> {
             log.info("init data...");
 
@@ -32,22 +32,21 @@ public class NotProd {
 //                return;
 //            }
 
-            User user = userRepository.save(User.builder()
+            Member member = memberRepository.save(Member.builder()
                     .email("test@test.com")
                     .name("테스트")
                     .password("1234")
-                    .address("test test test")
                     .role("USER")
                     .delFlag(false)
                     .build());
 
 
             testRepository.saveAll(List.of(
-                    Test.builder().title("AAA").user(user).build(),
-                    Test.builder().title("BBB").user(user).build(),
-                    Test.builder().title("CCC").user(user).build(),
-                    Test.builder().title("DDD").user(user).build(),
-                    Test.builder().title("EEE").user(user).build()
+                    Test.builder().title("AAA").member(member).build(),
+                    Test.builder().title("BBB").member(member).build(),
+                    Test.builder().title("CCC").member(member).build(),
+                    Test.builder().title("DDD").member(member).build(),
+                    Test.builder().title("EEE").member(member).build()
 
             ));
 

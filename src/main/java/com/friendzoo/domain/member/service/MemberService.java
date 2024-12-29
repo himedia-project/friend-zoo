@@ -1,18 +1,18 @@
-package com.friendzoo.domain.user.service;
+package com.friendzoo.domain.member.service;
 
+import com.friendzoo.domain.member.entity.Member;
 import com.friendzoo.domain.test.dto.TestResDTO;
-import com.friendzoo.domain.user.dto.UserDto;
-import com.friendzoo.domain.user.entity.User;
+import com.friendzoo.domain.member.dto.MemberDTO;
 
-public interface UserService {
-    UserDto findUser(String email);
+public interface MemberService {
+    MemberDTO findUser(String email);
 
     // user -> dto
-    default UserDto entityToDto(User user) {
-        return UserDto.builder()
-                .email(user.getEmail())
-                .name(user.getName())
-                .tests(user.getTestList().stream().map(test ->
+    default MemberDTO entityToDto(Member member) {
+        return MemberDTO.builder()
+                .email(member.getEmail())
+                .name(member.getName())
+                .tests(member.getTestList().stream().map(test ->
                         TestResDTO.builder()
                                 .id(test.getId())
                                 .title(test.getTitle())
