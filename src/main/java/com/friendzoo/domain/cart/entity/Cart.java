@@ -17,7 +17,7 @@ import lombok.experimental.SuperBuilder;
 @ToString(exclude = {"member"})
 @Table(name = "cart",
         indexes = {
-                @Index(name = "idx_cart_email", columnList = "member_id")
+                @Index(name = "idx_cart_email", columnList = "email")
         })
 public class Cart extends BaseEntity {
 
@@ -26,7 +26,7 @@ public class Cart extends BaseEntity {
     private Long id;
 
     @OneToOne
-    @JoinColumn(name = "member_id")
+    @JoinColumn(name = "email")
     private Member member;
 
 

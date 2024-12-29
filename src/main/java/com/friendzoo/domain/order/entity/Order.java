@@ -28,7 +28,7 @@ public class Order extends BaseEntity {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "member_id")
+    @JoinColumn(name = "email")
     private Member member;
 
     // 주문 날짜

@@ -7,7 +7,7 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.Optional;
 
-public interface MemberRepository extends JpaRepository<Member, Long> {
+public interface MemberRepository extends JpaRepository<Member, String> {
 
     @Query("select u from Member u where u.email = :email") // leftjoin + fetch join (한번에 조회 ) Pagination OOM ->
     Optional<Member> findByEmail(@Param("email") String email);

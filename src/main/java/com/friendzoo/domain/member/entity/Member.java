@@ -20,9 +20,6 @@ import java.util.List;
 public class Member extends BaseEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
     private String email;
     private String name;
 
@@ -41,7 +38,7 @@ public class Member extends BaseEntity {
 
     @ElementCollection(fetch = FetchType.LAZY)
     @CollectionTable(name = "member_role_list", joinColumns = @JoinColumn(name = "email"))
-    @Column(name = "member_role_list") // 해당 memberRoleList 를 저장할 컬럼명을 지정
+    @Column(name = "role") // 해당 memberRoleList 를 저장할 컬럼명을 지정
     @Builder.Default
     private List<MemberRole> memberRoleList = new ArrayList<>();
 
