@@ -31,7 +31,7 @@ public interface ProductService {
                 .best(product.getBest().toString())
                 .mdPick(product.getMdPick().toString())
 //                .delFlag(Integer.valueOf(product.getDelFlag().toString()))
-                .imageList(product.getProductImageList().stream().map(ProductImageList::getImageName).toList())
+//                .imageList(product.getProductImageList().stream().map(ProductImageList::getImageName).toList())
                 .discountPrice(product.getDiscountPrice())
                 .build();
     }

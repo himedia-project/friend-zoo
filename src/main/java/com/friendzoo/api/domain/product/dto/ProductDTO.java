@@ -15,7 +15,7 @@ public class ProductDTO {
     private Long category;
     private String name;
     private Integer price;
-    private List<String> imageList;
+//    private List<String> imageList;
     private String best;
     private Integer discountPrice;
 //    private Integer delFlag;

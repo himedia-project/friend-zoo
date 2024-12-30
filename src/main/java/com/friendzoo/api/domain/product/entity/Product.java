@@ -72,10 +72,10 @@ public class Product extends BaseEntity {
     @JoinColumn(name = "category_id")
     private Category category;
 
-    @NotNull
-    @OneToMany(mappedBy = "product")
-//    @OnDelete(action = OnDeleteAction.CASCADE)
-    private List<ProductImageList> productImageList;
+//    @NotNull
+//    @OneToMany(mappedBy = "product")
+////    @OnDelete(action = OnDeleteAction.CASCADE)
+//    private List<ProductImageList> productImageList;
 
     // 재고수량 감소
     public void removeStock(int stockNumber) {

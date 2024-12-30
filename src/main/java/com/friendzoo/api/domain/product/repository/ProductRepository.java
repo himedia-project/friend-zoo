@@ -11,13 +11,13 @@ import java.util.List;
 import java.util.Optional;
 
 public interface ProductRepository extends JpaRepository<Product, Long> {
-    @EntityGraph(attributePaths = "imageList")
+//    @EntityGraph(attributePaths = "imageList")
 //    @Query("select p from Product p where p.id = :pno")
 //    Optional<Product> selectOne(@Param("pno") Long pno);
 
     @Query("select p from Product p where p.name = :name")
     Optional<Product> findByProduct(@Param("name") String name);
 
-    @Query("select p,pi from Product p left join p.productImageList pi where p.best= 'Y' and pi.ord = 0")
+    @Query("select p from Product p where p.best= 'Y'")
     List<Product> findBestProducts();
 }
