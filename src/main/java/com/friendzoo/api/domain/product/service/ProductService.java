@@ -4,8 +4,11 @@ import com.friendzoo.api.domain.member.dto.JoinRequestDTO;
 import com.friendzoo.api.domain.member.dto.MemberTestDTO;
 import com.friendzoo.api.domain.member.entity.Member;
 import com.friendzoo.api.domain.product.dto.ProductDTO;
+import com.friendzoo.api.domain.product.entity.Category;
 import com.friendzoo.api.domain.product.entity.Product;
+import com.friendzoo.api.domain.product.entity.ProductImageList;
 import com.friendzoo.api.domain.test.dto.TestResDTO;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
@@ -13,7 +16,32 @@ import java.util.Map;
 public interface ProductService {
 
 
-    List<Product> getProducts(String best);
+    List<ProductDTO> getProducts(ProductDTO productDTO);
+
+    default ProductDTO entityToDTO(Product product) {
+        if (product == null) {
+            return null;
+        }
+
+        return ProductDTO.builder()
+                .id(product.getId())
+                .name(product.getName())
+                .category(product.getCategory() != null ? product.getCategory().getId() : null)
+                .price(product.getPrice())
+                .best(product.getBest().toString())
+                .mdPick(product.getMdPick().toString())
+//                .delFlag(Integer.valueOf(product.getDelFlag().toString()))
+                .imageList(product.getProductImageList().stream().map(ProductImageList::getImageName).toList())
+                .discountPrice(product.getDiscountPrice())
+                .build();
+    }
+
+    @Transactional(readOnly = true)
+    ProductDTO getDTO(ProductDTO productDTO);
+
+    @Transactional(readOnly = true)
+    ProductDTO getDTO(Product product);
+
 
 //    // product -> dto
 //    default ProductDTO returnProduct(Product product) {

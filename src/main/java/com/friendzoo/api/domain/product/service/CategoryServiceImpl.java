@@ -1,13 +1,15 @@
 package com.friendzoo.api.domain.product.service;
 
+import com.friendzoo.api.domain.product.dto.CategoryDTO;
 import com.friendzoo.api.domain.product.dto.ProductDTO;
+import com.friendzoo.api.domain.product.entity.Category;
 import com.friendzoo.api.domain.product.entity.Product;
+import com.friendzoo.api.domain.product.repository.CategoryRepository;
 import com.friendzoo.api.domain.product.repository.ProductRepository;
 import com.friendzoo.api.props.JwtProps;
 import com.friendzoo.api.util.JWTUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,37 +20,17 @@ import java.util.stream.Collectors;
 @Transactional
 @Service
 @RequiredArgsConstructor
-public class ProductServiceImpl implements ProductService {
+public class CategoryServiceImpl implements CategoryService {
     private final JWTUtil jwtUtil;
     private final JwtProps jwtProps;
-    private final ProductRepository productRepository;
+    private final CategoryRepository categoryRepository;
 
     @Override
-    public List<ProductDTO> getProducts(ProductDTO productDTO) {
-        List<Product> dtoLists = productRepository.findBestProducts();
-        List<ProductDTO> dtoList = dtoLists.stream()
+    public List<CategoryDTO> getCategory() {
+        List<Category> dtoLists = categoryRepository.findCategory();
+        List<CategoryDTO> dtoList = dtoLists.stream()
                 .map(this::entityToDTO) // Product를 ProductDTO로 변환
                 .collect(Collectors.toList()); // 리스트로 수집
         return dtoList;
-
-
-
-//        else{
-//            return productRepository.findAll();
-//        }
-    }
-
-    @Override
-    public ProductDTO getDTO(ProductDTO productDTO) {
-        return null;
-    }
-
-
-    @Transactional(readOnly = true)
-    @Override
-    public ProductDTO getDTO(Product product) {
-
-        return this.entityToDTO(product);
-
     }
 }

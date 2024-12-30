@@ -1,9 +1,11 @@
 package com.friendzoo.api.domain.product.entity;
 
+import com.friendzoo.api.entity.BaseEntity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.ColumnDefault;
 
 import java.time.Instant;
@@ -12,7 +14,7 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
-@Builder
+@SuperBuilder
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
@@ -20,9 +22,10 @@ import java.util.Set;
 @Entity
 //@ToString(exclude = "")
 @Table(name = "category")
-public class Category {
+public class Category extends BaseEntity {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Long id;
 
@@ -34,19 +37,11 @@ public class Category {
     @Size(max = 255)
     @Column(name = "logo")
     private String logo;
-
-    @NotNull
-    @ColumnDefault("CURRENT_TIMESTAMP")
-    @Column(name = "created_at", nullable = false)
-    private Instant createdAt;
-
-    @ColumnDefault("CURRENT_TIMESTAMP")
-    @Column(name = "modified_at")
-    private Instant modifiedAt;
-
-    @ManyToOne
-    @JoinColumn(name="product_id")
-    private Product products;
+//
+//
+//    @ManyToOne
+//    @JoinColumn(name="product_id")
+//    private Product product;
 
 
 }

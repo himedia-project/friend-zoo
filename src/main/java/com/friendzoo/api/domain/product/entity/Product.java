@@ -8,10 +8,8 @@ import com.friendzoo.api.exception.OutOfStockException;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import kotlin.Lazy;
+import lombok.*;
 import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.OnDelete;
@@ -25,6 +23,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
+@ToString(exclude = "imageList")
 @Table(name = "product")
 public class Product extends BaseEntity {
 
@@ -69,11 +68,14 @@ public class Product extends BaseEntity {
     private ProductMdPick mdPick;
 
     @NotNull
-    @OneToMany(mappedBy = "products")
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    private List<Category> category;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "category_id")
+    private Category category;
 
-
+    @NotNull
+    @OneToMany(mappedBy = "product")
+//    @OnDelete(action = OnDeleteAction.CASCADE)
+    private List<ProductImageList> productImageList;
 
     // 재고수량 감소
     public void removeStock(int stockNumber) {
@@ -88,5 +90,17 @@ public class Product extends BaseEntity {
     public void addStock(int stockNumber) {
         this.stockNumber += stockNumber;
     }
-
+//    public void addImage(ProductImageList image) {
+//
+//        image.setOrd(this.productImageList.size());
+//        productImageList.add(image);
+//    }
+//    public void addImageString(String fileName) {
+//
+//        ProductImageList productImage = ProductImageList.builder()
+//                .fileName(fileName)
+//                .build();
+//        addImage(productImage);
+//
+//    }
 }

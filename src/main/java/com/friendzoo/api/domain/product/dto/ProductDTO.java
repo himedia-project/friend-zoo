@@ -1,12 +1,7 @@
 package com.friendzoo.api.domain.product.dto;
 
-import com.friendzoo.api.domain.member.enums.MemberRole;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Pattern;
 import lombok.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @NoArgsConstructor
@@ -20,8 +15,12 @@ public class ProductDTO {
     private Long category;
     private String name;
     private Integer price;
-
+    private List<String> imageList;
     private String best;
+    private Integer discountPrice;
+//    private Integer delFlag;
+//    private List
+    private String mdPick;
 
     public String getBest() {
         return best;
@@ -30,4 +29,7 @@ public class ProductDTO {
     public void setBest(String best) {
         this.best = best;
     }
+
+
+
 }
