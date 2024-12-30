@@ -17,7 +17,14 @@ spring:
         format_sql: true # SQL 포맷팅
         highlight_sql: true # SQL 하이라이트 출력
         use_sql_comments: true # JPQL SQL 주석 사용
-#        default_batch_fetch_size: 100 # 기본 배치 크기 설정
+        default_batch_fetch_size: 100 # 기본 배치 크기 설정
+
+app:
+  props:
+    jwt:
+      secret-key: 1234567890123456789012345678901234567890
+      access-token-expiration-period: 15   # 15분
+      refresh-token-expiration-period: 1440  # 24시간 60 * 24 = 1440분
 
 ---
 
@@ -46,9 +53,9 @@ spring:
 
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/test?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
-    username: root
-    password: 1234
+    url: jdbc:mysql://localhost:3306/friendzoo?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
+    username: friendzoo
+    password: friendzoo
 
 logging:
   level:
