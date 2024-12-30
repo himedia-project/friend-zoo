@@ -2,16 +2,23 @@ package com.friendzoo.api.domain.product.entity;
 
 import com.friendzoo.api.domain.product.enums.ProductBest;
 import com.friendzoo.api.domain.product.enums.ProductMdPick;
+import com.friendzoo.api.domain.test.entity.Test;
 import com.friendzoo.api.entity.BaseEntity;
 import com.friendzoo.api.exception.OutOfStockException;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @SuperBuilder
 @Getter
@@ -23,6 +30,7 @@ public class Product extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    @Column(name = "product_id", nullable = false)
     private Long id;
 
     @Size(max = 255)
@@ -59,6 +67,12 @@ public class Product extends BaseEntity {
     @Enumerated(EnumType.STRING)
     @ColumnDefault("'N'")
     private ProductMdPick mdPick;
+
+    @NotNull
+    @OneToMany(mappedBy = "products")
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    private List<Category> category;
+
 
 
     // 재고수량 감소
