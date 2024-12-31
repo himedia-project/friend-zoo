@@ -42,11 +42,9 @@ public class ProductController {
     @GetMapping("/list")
     public ResponseEntity<List<ProductDTO>> bestSelect(ProductDTO productDTO) {
         List<ProductDTO> dtoLists = productService.getProducts(productDTO);
-//        List<ProductDTO> dtoList = dtoLists.stream()
-//                .map(this::entityToDTO) // Product를 ProductDTO로 변환
-//                .collect(Collectors.toList()); // 리스트로 수집
         return ResponseEntity.ok(dtoLists);
     }
+
 
 
 

@@ -20,4 +20,7 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
     @Query("select p from Product p where p.best= 'Y'")
     List<Product> findBestProducts();
+
+    @Query("select p from Product p where p.mdPick= 'Y'")
+    List<Product> findMdPickProducts();
 }

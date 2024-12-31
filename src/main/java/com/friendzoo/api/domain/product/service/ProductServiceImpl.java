@@ -25,12 +25,23 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public List<ProductDTO> getProducts(ProductDTO productDTO) {
-        List<Product> dtoLists = productRepository.findBestProducts();
-        List<ProductDTO> dtoList = dtoLists.stream()
-                .map(this::entityToDTO) // Product를 ProductDTO로 변환
-                .collect(Collectors.toList()); // 리스트로 수집
-        return dtoList;
-
+        if(productDTO.getBest() != null) {
+            List<Product> dtoLists = productRepository.findBestProducts();
+            List<ProductDTO> dtoList = dtoLists.stream()
+                    .map(this::entityToDTO) // Product를 ProductDTO로 변환
+                    .collect(Collectors.toList()); // 리스트로 수집
+            return dtoList;
+        }
+        else if(productDTO.getMdPick() != null) {
+            List<Product> dtoLists = productRepository.findMdPickProducts();
+            List<ProductDTO> dtoList = dtoLists.stream()
+                    .map(this::entityToDTO) // Product를 ProductDTO로 변환
+                    .collect(Collectors.toList()); // 리스트로 수집
+            return dtoList;
+        }
+        else{
+            return null;
+        }
 
 
 //        else{
