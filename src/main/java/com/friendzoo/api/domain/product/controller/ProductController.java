@@ -54,6 +54,16 @@ public class ProductController {
         List<ProductDTO> dtoLists = productService.getSelectedCategory(name);
         return ResponseEntity.ok(dtoLists);
     }
+    @GetMapping("/detail/{id}")
+    public ResponseEntity<List<ProductDTO>> selectedItem(@PathVariable Long id) {
+        List<ProductDTO> dtoLists = productService.getSelectedItem(id);
+        return ResponseEntity.ok(dtoLists);
+    }
+    @GetMapping("/detail/category/{category_id}")
+    public ResponseEntity<List<ProductDTO>> selectedCategoryItem(@PathVariable Long category_id) {
+        List<ProductDTO> dtoLists = productService.getSelectedCategoryItem(category_id);
+        return ResponseEntity.ok(dtoLists);
+    }
 
 
 

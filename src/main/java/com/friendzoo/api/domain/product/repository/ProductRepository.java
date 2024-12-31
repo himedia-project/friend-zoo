@@ -20,15 +20,27 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     @Query("select p from Product p where p.name = :name")
     Optional<Product> findByProduct(@Param("name") String name);
 
+    //Best 상품 조회
     @Query("select p from Product p where p.best= 'Y'")
     List<Product> findBestProducts();
 
+    //MdPick 상품 조회
     @Query("select p from Product p where p.mdPick= 'Y'")
     List<Product> findMdPickProducts();
 
+    //New 상품 순서 조회
     @Query("select p from Product p")
     List<Product> findNewProducts(Sort createdAt);
 
+    //Search 시 이름으로 검색 조회
     @Query("select p from Product p where p.name LIKE CONCAT('%',:name,'%')")
     List<Product> findSelectedCategory(@Param("name") String name);
+
+    //상품 상세 조회
+    @Query("select p from Product p where p.id = :id")
+    List<Product> findSelectedItem(@Param("id") Long id);
+
+    //상품 상세 관련 상품 조회
+    @Query("select p from Product p where p.category.id = :id")
+    List<Product> findrelatedItem(@Param("id") Long id);
 }

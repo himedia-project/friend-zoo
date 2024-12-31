@@ -23,6 +23,10 @@ public interface ProductService {
 
     List<ProductDTO> getSelectedCategory(String name);
 
+    List<ProductDTO> getSelectedItem(Long id);
+
+    List<ProductDTO> getSelectedCategoryItem(Long id);
+
     default ProductDTO entityToDTO(Product product) {
         if (product == null) {
             return null;

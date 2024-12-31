@@ -74,6 +74,24 @@ public class ProductServiceImpl implements ProductService {
         return dtoList;
     }
 
+    @Override
+    public List<ProductDTO> getSelectedItem(Long id) {
+        List<Product> dtoLists = productRepository.findSelectedItem(id);
+        List<ProductDTO> dtoList = dtoLists.stream()
+                .map(this::entityToDTO) // Product를 ProductDTO로 변환
+                .collect(Collectors.toList()); // 리스트로 수집
+        return dtoList;
+    }
+
+    @Override
+    public List<ProductDTO> getSelectedCategoryItem(Long id) {
+        List<Product> dtoLists = productRepository.findrelatedItem(id);
+        List<ProductDTO> dtoList = dtoLists.stream()
+                .map(this::entityToDTO) // Product를 ProductDTO로 변환
+                .collect(Collectors.toList()); // 리스트로 수집
+        return dtoList;
+    }
+
     @Transactional(readOnly = true)
     @Override
     public ProductDTO getDTO(Product product) {

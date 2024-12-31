@@ -31,11 +31,11 @@ public class CategoryController {
         return ResponseEntity.ok(dtoLists);
     }
 
-    @GetMapping("/list/{name}")
-    public ResponseEntity<List<CategoryDTO>> selectedlist(@PathVariable String name) {
-        List<CategoryDTO> dtoLists = categoryService.getSelectedCategory(name);
-        return ResponseEntity.ok(dtoLists);
-    }
+//    @GetMapping("/list/{id}")
+//    public ResponseEntity<List<CategoryDTO>> selectedlist(@PathVariable Long id) {
+//        List<CategoryDTO> dtoLists = categoryService.getSelectedCategory(id);
+//        return ResponseEntity.ok(dtoLists);
+//    }
 
 
 }
