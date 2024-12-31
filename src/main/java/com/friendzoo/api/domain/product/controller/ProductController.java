@@ -45,7 +45,7 @@ public class ProductController {
         return ResponseEntity.ok(dtoLists);
     }
 
-    @GetMapping("/New")
+    @GetMapping("/new")
     public ResponseEntity<List<ProductDTO>> newSelect(ProductDTO productDTO) {
         List<ProductDTO> dtoLists = productService.getNewProduct(productDTO);
 
