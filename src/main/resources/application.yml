@@ -5,9 +5,17 @@ spring:
   profiles:
     active: local # 로컬 프로파일 활성화
 
+  config:
+    import: optional:file:.env[.properties] # 환경변수 파일 로드
+
   output:
     ansi:
       enabled: always # ANSI 콘솔 색상 활성화 (JUnit 테스트 포함)
+
+  servlet:
+    multipart:
+      max-request-size: 30MB # 최대 요청 크기
+      max-file-size: 10MB    # 최대 파일 크기
 
   jpa:
     hibernate:
@@ -53,6 +61,19 @@ app:
       secret-key: 1234567890123456789012345678901234567890
       access-token-expiration-period: 15   # 15분
       refresh-token-expiration-period: 1440  # 24시간 60 * 24 = 1440분
+
+    aws:
+      key:
+        access-key: ${AWS_ACCESS_KEY}
+        secret-key: ${AWS_SECRET_KEY}
+      s3:
+        bucket-name: ${AWS_S3_BUCKET_NAME}
+        region: ${AWS_REGION}
+
+org:
+  file:
+    upload:
+      path: upload
 
 ---
 
