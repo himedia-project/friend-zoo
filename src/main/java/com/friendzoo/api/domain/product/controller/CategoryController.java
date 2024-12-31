@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -27,6 +28,12 @@ public class CategoryController {
     @GetMapping("/list")
     public ResponseEntity<List<CategoryDTO>> categorylist() {
         List<CategoryDTO> dtoLists = categoryService.getCategory();
+        return ResponseEntity.ok(dtoLists);
+    }
+
+    @GetMapping("/list/{name}")
+    public ResponseEntity<List<CategoryDTO>> selectedlist(@PathVariable String name) {
+        List<CategoryDTO> dtoLists = categoryService.getSelectedCategory(name);
         return ResponseEntity.ok(dtoLists);
     }
 }

@@ -10,6 +10,7 @@ import java.util.List;
 
 public interface CategoryService {
     List<CategoryDTO> getCategory();
+    List<CategoryDTO> getSelectedCategory(String name);
 
     default CategoryDTO entityToDTO(Category category) {
         if (category == null) {

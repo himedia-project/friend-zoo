@@ -55,6 +55,7 @@ public class SecurityConfig {
                         .requestMatchers(new AntPathRequestMatcher("/api/test/**")).permitAll()
                         .requestMatchers(new AntPathRequestMatcher("/api/chat/**")).permitAll()
                         .requestMatchers(new AntPathRequestMatcher("/api/crawl/**")).permitAll()
+                        .requestMatchers(new AntPathRequestMatcher("/api/category/**")).permitAll()
                         .anyRequest().authenticated()
         );
 

@@ -33,4 +33,13 @@ public class CategoryServiceImpl implements CategoryService {
                 .collect(Collectors.toList()); // 리스트로 수집
         return dtoList;
     }
+
+    @Override
+    public List<CategoryDTO> getSelectedCategory(String name) {
+        List<Category> dtoLists = categoryRepository.findSelectedCategory(name);
+        List<CategoryDTO> dtoList = dtoLists.stream()
+                .map(this::entityToDTO) // Product를 ProductDTO로 변환
+                .collect(Collectors.toList()); // 리스트로 수집
+        return dtoList;
+    }
 }
