@@ -18,6 +18,8 @@ public interface ProductService {
 
     List<ProductDTO> getProducts(ProductDTO productDTO);
 
+    List<ProductDTO> getNewProduct(ProductDTO productDTO);
+
     default ProductDTO entityToDTO(Product product) {
         if (product == null) {
             return null;

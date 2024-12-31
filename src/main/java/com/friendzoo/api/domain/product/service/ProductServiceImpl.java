@@ -7,6 +7,7 @@ import com.friendzoo.api.props.JwtProps;
 import com.friendzoo.api.util.JWTUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -48,7 +49,15 @@ public class ProductServiceImpl implements ProductService {
 //            return productRepository.findAll();
 //        }
     }
+    public List<ProductDTO> getNewProduct(ProductDTO productDTO) {
+//Sort.by(""); asc
+        List<Product> dtoLists = productRepository.findNewProducts(Sort.by(Sort.Direction.DESC,"createdAt"));
+        List<ProductDTO> dtoList = dtoLists.stream()
+                .map(this::entityToDTO) // Product를 ProductDTO로 변환
+                .toList(); // 리스트로 수집
+        return dtoList;
 
+    }
     @Override
     public ProductDTO getDTO(ProductDTO productDTO) {
         return null;
