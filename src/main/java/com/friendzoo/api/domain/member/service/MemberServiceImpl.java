@@ -10,6 +10,7 @@ import com.friendzoo.api.security.MemberDTO;
 import com.friendzoo.api.util.JWTUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -76,6 +77,35 @@ public class MemberServiceImpl implements MemberService {
         claims.put("accessToken", accessToken);
         claims.put("refreshToken", refreshToken);
 
+        return claims;
+    }
+
+
+    @Override
+    public String makeTempPassword() {
+        StringBuffer buffer = new StringBuffer();
+
+        for (int i = 0; i < 10; i++) {
+            buffer.append((char) ((int) (Math.random() * 55) + 65));
+        }
+        return buffer.toString();
+    }
+
+    /**
+     * Social Login 성공시 JWT 토큰 발급
+     * @param memberDTO Social Login 성공한 회원 정보
+     * @return JWT 토큰 정보가 같이 있는 유저정보 Map
+     */
+
+    @Override
+    @NotNull
+    public Map<String, Object> getSocialClaims(MemberDTO memberDTO) {
+        Map<String, Object> claims = memberDTO.getClaims();
+        String jwtAccessToken = jwtUtil.generateToken(claims, jwtProps.getAccessTokenExpirationPeriod());      // 15분
+        String jwtRefreshToken = jwtUtil.generateToken(claims, jwtProps.getRefreshTokenExpirationPeriod());     // 1일
+
+        claims.put("accessToken", jwtAccessToken);
+        claims.put("refreshToken", jwtRefreshToken);
         return claims;
     }
 

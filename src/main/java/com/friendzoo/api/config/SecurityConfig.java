@@ -118,7 +118,7 @@ public class SecurityConfig {
 
         // 출처 설정 (모든 출처 허용)
 //        configuration.setAllowedOriginPatterns(Arrays.asList("*"));  // localhost:3000 -> 허용
-        configuration.setAllowedOrigins(Arrays.asList("http://localhost:3000", "http://43.203.42.37", "https://openapi.map.naver.com"));
+        configuration.setAllowedOrigins(Arrays.asList("http://localhost:3000", "http://localhost:3001", "http://43.203.42.37", "https://openapi.map.naver.com"));
         // 허용할 메서드 설정
         configuration.setAllowedMethods(Arrays.asList("HEAD", "GET", "POST", "PUT", "DELETE", "OPTIONS"));
         // 허용할 헤더 설정
