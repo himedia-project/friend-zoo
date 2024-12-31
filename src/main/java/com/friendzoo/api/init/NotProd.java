@@ -1,5 +1,6 @@
 package com.friendzoo.api.init;
 
+import com.friendzoo.api.domain.member.enums.MemberRole;
 import com.friendzoo.api.domain.member.service.MemberService;
 import com.friendzoo.api.domain.test.entity.Test;
 import com.friendzoo.api.domain.test.repository.TestRepository;
@@ -39,20 +40,25 @@ public class NotProd {
                 return;
             }
 
-            Member member = memberRepository.save(Member.builder()
+            Member member = Member.builder()
                     .email("test@test.com")
                     .name("test")
                     .password(passwordEncoder.encode("1234"))
                     .phone("010-1234-5678")
                     .delFlag(false)
-                    .build());
+                    .build();
+
+            member.addRole(MemberRole.ADMIN);
+
+            Member savedMember = memberRepository.save(member);
+
 
             testRepository.saveAll(List.of(
-                    Test.builder().title("AAA").member(member).build(),
-                    Test.builder().title("BBB").member(member).build(),
-                    Test.builder().title("CCC").member(member).build(),
-                    Test.builder().title("DDD").member(member).build(),
-                    Test.builder().title("EEE").member(member).build()
+                    Test.builder().title("AAA").member(savedMember).build(),
+                    Test.builder().title("BBB").member(savedMember).build(),
+                    Test.builder().title("CCC").member(savedMember).build(),
+                    Test.builder().title("DDD").member(savedMember).build(),
+                    Test.builder().title("EEE").member(savedMember).build()
 
             ));
 

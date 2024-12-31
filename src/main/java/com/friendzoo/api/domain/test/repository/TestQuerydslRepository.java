@@ -57,10 +57,11 @@ public class TestQuerydslRepository {
         );
 
         List<Test> list = queryFactory
-                .select(test)
+                .select(test) // username,password
                 .from(test)
                 .where(
                         containsTitle(requestDTO.getSearchTerm())
+
                 )
 //                .orderBy(requestDTO.getSort().getOrderSpecifier())
                 .offset(pageable.getOffset())

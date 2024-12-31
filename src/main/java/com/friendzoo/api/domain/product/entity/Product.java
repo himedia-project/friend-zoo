@@ -2,27 +2,34 @@ package com.friendzoo.api.domain.product.entity;
 
 import com.friendzoo.api.domain.product.enums.ProductBest;
 import com.friendzoo.api.domain.product.enums.ProductMdPick;
+import com.friendzoo.api.domain.test.entity.Test;
 import com.friendzoo.api.entity.BaseEntity;
 import com.friendzoo.api.exception.OutOfStockException;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import kotlin.Lazy;
+import lombok.*;
 import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @SuperBuilder
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
+@ToString(exclude = "imageList")
 @Table(name = "product")
 public class Product extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    @Column(name = "product_id", nullable = false)
     private Long id;
 
     @Size(max = 255)
@@ -60,6 +67,15 @@ public class Product extends BaseEntity {
     @ColumnDefault("'N'")
     private ProductMdPick mdPick;
 
+    @NotNull
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "category_id")
+    private Category category;
+
+//    @NotNull
+//    @OneToMany(mappedBy = "product")
+////    @OnDelete(action = OnDeleteAction.CASCADE)
+//    private List<ProductImageList> productImageList;
 
     // 재고수량 감소
     public void removeStock(int stockNumber) {
@@ -74,5 +90,17 @@ public class Product extends BaseEntity {
     public void addStock(int stockNumber) {
         this.stockNumber += stockNumber;
     }
-
+//    public void addImage(ProductImageList image) {
+//
+//        image.setOrd(this.productImageList.size());
+//        productImageList.add(image);
+//    }
+//    public void addImageString(String fileName) {
+//
+//        ProductImageList productImage = ProductImageList.builder()
+//                .fileName(fileName)
+//                .build();
+//        addImage(productImage);
+//
+//    }
 }

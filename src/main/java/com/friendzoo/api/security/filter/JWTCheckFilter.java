@@ -49,7 +49,12 @@ public class JWTCheckFilter extends OncePerRequestFilter {
 
 
         // /api/product/view로 시작하는 요청은 필터를 타지 않도록 설정
-        if (path.startsWith("/api/products/view")) {
+        if (path.startsWith("/api/product/")) {
+            return true;
+        }
+
+        // /api/product/view로 시작하는 요청은 필터를 타지 않도록 설정
+        if (path.startsWith("/api/product/view")) {
             return true;
         }
 
