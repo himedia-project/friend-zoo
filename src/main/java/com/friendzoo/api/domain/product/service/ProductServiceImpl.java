@@ -1,6 +1,8 @@
 package com.friendzoo.api.domain.product.service;
 
+import com.friendzoo.api.domain.product.dto.CategoryDTO;
 import com.friendzoo.api.domain.product.dto.ProductDTO;
+import com.friendzoo.api.domain.product.entity.Category;
 import com.friendzoo.api.domain.product.entity.Product;
 import com.friendzoo.api.domain.product.repository.ProductRepository;
 import com.friendzoo.api.props.JwtProps;
@@ -63,6 +65,14 @@ public class ProductServiceImpl implements ProductService {
         return null;
     }
 
+    @Override
+    public List<ProductDTO> getSelectedCategory(String name) {
+        List<Product> dtoLists = productRepository.findSelectedCategory(name);
+        List<ProductDTO> dtoList = dtoLists.stream()
+                .map(this::entityToDTO) // Product를 ProductDTO로 변환
+                .collect(Collectors.toList()); // 리스트로 수집
+        return dtoList;
+    }
 
     @Transactional(readOnly = true)
     @Override

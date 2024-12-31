@@ -3,6 +3,7 @@ package com.friendzoo.api.domain.product.service;
 import com.friendzoo.api.domain.member.dto.JoinRequestDTO;
 import com.friendzoo.api.domain.member.dto.MemberTestDTO;
 import com.friendzoo.api.domain.member.entity.Member;
+import com.friendzoo.api.domain.product.dto.CategoryDTO;
 import com.friendzoo.api.domain.product.dto.ProductDTO;
 import com.friendzoo.api.domain.product.entity.Category;
 import com.friendzoo.api.domain.product.entity.Product;
@@ -19,6 +20,8 @@ public interface ProductService {
     List<ProductDTO> getProducts(ProductDTO productDTO);
 
     List<ProductDTO> getNewProduct(ProductDTO productDTO);
+
+    List<ProductDTO> getSelectedCategory(String name);
 
     default ProductDTO entityToDTO(Product product) {
         if (product == null) {

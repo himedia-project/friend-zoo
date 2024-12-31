@@ -1,6 +1,7 @@
 package com.friendzoo.api.domain.product.repository;
 
 import com.friendzoo.api.domain.product.dto.ProductDTO;
+import com.friendzoo.api.domain.product.entity.Category;
 import com.friendzoo.api.domain.product.entity.Product;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.EntityGraph;
@@ -27,4 +28,7 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
     @Query("select p from Product p")
     List<Product> findNewProducts(Sort createdAt);
+
+    @Query("select p from Product p where p.name LIKE CONCAT('%',:name,'%')")
+    List<Product> findSelectedCategory(@Param("name") String name);
 }

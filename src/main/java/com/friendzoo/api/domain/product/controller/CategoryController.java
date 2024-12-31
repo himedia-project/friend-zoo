@@ -36,4 +36,6 @@ public class CategoryController {
         List<CategoryDTO> dtoLists = categoryService.getSelectedCategory(name);
         return ResponseEntity.ok(dtoLists);
     }
+
+
 }
