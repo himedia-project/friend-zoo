@@ -3,6 +3,7 @@ package com.friendzoo.api.domain.product.service;
 import com.friendzoo.api.domain.product.dto.CategoryDTO;
 import com.friendzoo.api.domain.product.dto.ProductDTO;
 import com.friendzoo.api.domain.product.entity.Category;
+import com.friendzoo.api.domain.product.entity.Heart;
 import com.friendzoo.api.domain.product.entity.Product;
 import com.friendzoo.api.domain.product.repository.ProductRepository;
 import com.friendzoo.api.props.JwtProps;
@@ -14,7 +15,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.swing.text.html.Option;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -91,6 +94,8 @@ public class ProductServiceImpl implements ProductService {
                 .collect(Collectors.toList()); // 리스트로 수집
         return dtoList;
     }
+
+
 
     @Transactional(readOnly = true)
     @Override
