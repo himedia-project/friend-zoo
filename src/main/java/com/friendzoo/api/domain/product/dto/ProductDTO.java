@@ -1,10 +1,12 @@
 package com.friendzoo.api.domain.product.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.friendzoo.api.domain.product.enums.ProductBest;
 import com.friendzoo.api.domain.product.enums.ProductMdPick;
 import lombok.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,6 +40,10 @@ public class ProductDTO {
     private List<String> uploadFileNames = new ArrayList<>();
 
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
+    private LocalDateTime createdAt;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
+    private LocalDateTime modifiedAt;
 
 //    public String getBest() {
 //        return best;

@@ -38,6 +38,8 @@ public interface AdminProductService {
                 .description(product.getDescription())
                 .price(product.getPrice())
                 .stockNumber(product.getStockNumber())
+                .createdAt(product.getCreatedAt())
+                .modifiedAt(product.getModifiedAt())
                 .build();
 
         List<ProductImage> imageList = product.getImageList();

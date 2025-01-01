@@ -25,4 +25,6 @@ public class PageRequestDTO {
   private String best;
 
   private Long categoryId;
+
+  private Long divisionId;
 }
