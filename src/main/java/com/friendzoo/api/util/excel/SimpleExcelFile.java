@@ -22,7 +22,7 @@ public class SimpleExcelFile<T> {
         validateMaxRow(data);
         this.wb = new SXSSFWorkbook();
         renderExcel(data, sheetName);
-//        applyCellStyle();
+        applyCellStyle();
     }
 
     private void validateIsEmpty(List<T> data) {

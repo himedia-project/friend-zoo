@@ -39,6 +39,8 @@ public class ProductDTO {
     @Builder.Default
     private List<String> uploadFileNames = new ArrayList<>();
 
+    // excel 등록시 image path list
+    private List<String> imagePathList;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime createdAt;
