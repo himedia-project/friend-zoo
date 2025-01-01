@@ -127,6 +127,8 @@ public class SecurityConfig {
         configuration.setAllowedHeaders(Arrays.asList("Authorization", "Cache-Control", "Content-Type"));
         // 자격 증명 허용 설정 (쿠키 등)
         configuration.setAllowCredentials(true);
+        // content-disposition 허용 설정 -> excel 파일 다운로드시, 제목노출을 위해 필요!
+        configuration.setExposedHeaders(Arrays.asList("Content-Disposition"));
         // CORS 설정을 특정 경로에 적용
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
