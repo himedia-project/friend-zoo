@@ -23,4 +23,6 @@ public class PageRequestDTO {
   private String searchTerm;
 
   private String best;
+
+  private Long categoryId;
 }

@@ -6,7 +6,6 @@ import com.friendzoo.api.domain.member.service.MemberService;
 import com.friendzoo.api.domain.product.dto.CategoryDTO;
 import com.friendzoo.api.domain.product.dto.ProductDTO;
 import com.friendzoo.api.domain.product.entity.Product;
-import com.friendzoo.api.domain.product.entity.ProductImageList;
 import com.friendzoo.api.domain.product.service.ProductService;
 import com.friendzoo.api.props.JwtProps;
 import com.friendzoo.api.util.JWTUtil;

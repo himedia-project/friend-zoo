@@ -4,7 +4,6 @@ import com.friendzoo.api.domain.product.dto.CategoryDTO;
 import com.friendzoo.api.domain.product.dto.ProductDTO;
 import com.friendzoo.api.domain.product.entity.Category;
 import com.friendzoo.api.domain.product.entity.Product;
-import com.friendzoo.api.domain.product.entity.ProductImageList;
 
 import java.util.List;
 

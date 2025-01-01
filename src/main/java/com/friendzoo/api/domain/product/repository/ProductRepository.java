@@ -3,6 +3,7 @@ package com.friendzoo.api.domain.product.repository;
 import com.friendzoo.api.domain.product.dto.ProductDTO;
 import com.friendzoo.api.domain.product.entity.Category;
 import com.friendzoo.api.domain.product.entity.Product;
+import com.friendzoo.api.domain.product.repository.querydsl.ProductRepositoryCustom;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -12,7 +13,8 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 import java.util.Optional;
 
-public interface ProductRepository extends JpaRepository<Product, Long> {
+public interface ProductRepository extends JpaRepository<Product, Long>
+, ProductRepositoryCustom {
 //    @EntityGraph(attributePaths = "imageList")
 //    @Query("select p from Product p where p.id = :pno")
 //    Optional<Product> selectOne(@Param("pno") Long pno);
