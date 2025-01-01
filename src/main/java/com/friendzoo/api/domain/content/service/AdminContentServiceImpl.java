@@ -26,6 +26,8 @@ public class AdminContentServiceImpl implements AdminContentService{
 
     private final CustomFileUtil fileUtil;
 
+    private final TagService tagService;
+
     private final ContentRepository contentRepository;
     private final DivisionRepository divisionRepository;
 
@@ -58,11 +60,20 @@ public class AdminContentServiceImpl implements AdminContentService{
             log.info("uploadFileNames: {}", uploadFileNames);
             dto.setUploadFileNames(uploadFileNames);
         }
+
         // 카테고리
         Division division = this.getDivision(dto.getDivisionId());
 
         // 실제 저장 처리
         Content result = contentRepository.save(this.dtoToEntity(dto, division));
+
+        // 태그 등록
+        if(dto.getTags() != null && !dto.getTags().isEmpty()) {
+            List<String> tags = dto.getTags();
+            tagService.registerTags(tags);
+            // 태그 등록 후 content_tag 테이블에 저장
+            tagService.registerContentTag(result, tags);
+        }
 
         return result.getId();
     }

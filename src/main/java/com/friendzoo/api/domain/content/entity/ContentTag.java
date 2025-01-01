@@ -42,4 +42,11 @@ public class ContentTag {
         }
     }
 
+    public static ContentTag of(Content content, Tag tag) {
+        return ContentTag.builder()
+                .content(content)
+                .tag(tag)
+                .build();
+    }
+
 }

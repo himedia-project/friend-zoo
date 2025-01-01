@@ -49,6 +49,9 @@ public class Content extends BaseEntity {
     private List<ContentImage> imageList = new ArrayList<>();
 
 
+    @OneToMany(mappedBy = "content", cascade = CascadeType.ALL)
+    private List<ContentTag> contentTagList = new ArrayList<>();
+
     /**
      * 콘텐츠 이미지, 콘텐츠에 추가
      *

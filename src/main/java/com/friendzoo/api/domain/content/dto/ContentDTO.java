@@ -22,6 +22,8 @@ public class ContentDTO {
     private Long divisionId;
     private String divisionName;
 
+    // 태그이름 리스트 -> ex. postma 등록시 라이온,행스터 "," 를 구분으로 넣어주면 된다.
+    private List<String> tags;
 
     private String title;
     private String body;
