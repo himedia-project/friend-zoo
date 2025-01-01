@@ -9,6 +9,8 @@ public interface AdminMemberService {
 
     PageResponseDTO<MemberResDTO> getList(PageRequestDTO requestDTO);
 
+    MemberResDTO getOne(String email);
+
     default MemberResDTO entityToDTO(Member member){
 
         return MemberResDTO.builder()

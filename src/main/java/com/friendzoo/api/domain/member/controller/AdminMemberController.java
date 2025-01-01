@@ -91,6 +91,10 @@ public class AdminMemberController {
         return ResponseEntity.ok(dto);
     }
 
-    // 해당 회원 상세정보 TODO
-
+    // 해당 회원 상세정보
+    @GetMapping
+    public ResponseEntity<MemberResDTO> getOne(@RequestParam String email) {
+        MemberResDTO dto = adminMemberService.getOne(email);
+        return ResponseEntity.ok(dto);
+    }
 }
