@@ -58,26 +58,26 @@ public interface AdminProductService {
 
     /**
      * ProductDTO -> Product 변환
-     * @param productDTO ProductDTO
+     * @param dto ProductDTO
      * @param category Category
      * @return Product
      */
-    default Product dtoToEntity(ProductDTO productDTO, Category category) {
+    default Product dtoToEntity(ProductDTO dto, Category category) {
 
         Product product = Product.builder()
-                .id(productDTO.getId())
-                .name(productDTO.getName())
-                .description(productDTO.getDescription())
-                .price(productDTO.getPrice())
-                .discountPrice(productDTO.getDiscountPrice() == null ? 0 : productDTO.getDiscountPrice())
-                .best(productDTO.getBest() == null ? ProductBest.N : productDTO.getBest())
-                .mdPick(productDTO.getMdPick() == null ? ProductMdPick.N : productDTO.getMdPick())
-                .stockNumber(productDTO.getStockNumber())
+                .id(dto.getId())
+                .name(dto.getName())
+                .description(dto.getDescription())
+                .price(dto.getPrice())
+                .discountPrice(dto.getDiscountPrice() == null ? 0 : dto.getDiscountPrice())
+                .best(dto.getBest() == null ? ProductBest.N : dto.getBest())
+                .mdPick(dto.getMdPick() == null ? ProductMdPick.N : dto.getMdPick())
+                .stockNumber(dto.getStockNumber())
                 .delFlag(false)
                 .category(category)
                 .build();
         //업로드 처리가 끝난 파일들의 이름 리스트
-        List<String> uploadFileNames = productDTO.getUploadFileNames();
+        List<String> uploadFileNames = dto.getUploadFileNames();
 
         if (uploadFileNames == null) {
             return product;

@@ -22,4 +22,7 @@ public class ContentImage {
     @Column(name = "ord", nullable = false)
     private Integer ord;
 
+    public void setOrd(int ord) {
+        this.ord = ord;
+    }
 }

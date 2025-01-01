@@ -55,44 +55,44 @@ public class AdminProductServiceImpl implements AdminProductService {
     }
 
     @Override
-    public Long register(ProductDTO productDTO) {
+    public Long register(ProductDTO dto) {
 
         // 파일 업로드 처리
-        if(productDTO.getFiles() != null || !productDTO.getFiles().isEmpty()) {
-            List<MultipartFile> files = productDTO.getFiles();
+        if(dto.getFiles() != null || !dto.getFiles().isEmpty()) {
+            List<MultipartFile> files = dto.getFiles();
             List<String> uploadFileNames = fileUtil.uploadS3File(files);
             log.info("uploadFileNames: {}", uploadFileNames);
-            productDTO.setUploadFileNames(uploadFileNames);
+            dto.setUploadFileNames(uploadFileNames);
         }
 
         // 카테고리
-        Category category = this.getCategory(productDTO.getCategoryId());
+        Category category = this.getCategory(dto.getCategoryId());
 
         // 실제 저장 처리
-        Product result = productRepository.save(this.dtoToEntity(productDTO, category));
+        Product result = productRepository.save(this.dtoToEntity(dto, category));
 
         return result.getId();
     }
 
     @Override
-    public Long modify(Long id, ProductDTO productDTO) {
+    public Long modify(Long id, ProductDTO dto) {
 
         Product product = this.getEntity(id);
 
-        ProductDTO oldProductDTO = this.entityToDTO(product);
+        ProductDTO oldDTO = this.entityToDTO(product);
 
         // 파일 업로드 처리
         //기존의 파일들 (데이터베이스에 존재하는 파일들 - 수정 과정에서 삭제되었을 수 있음)
-        List<String> oldFileNames = oldProductDTO.getUploadFileNames();
+        List<String> oldFileNames = oldDTO.getUploadFileNames();
 
         //새로 업로드 해야 하는 파일들
-        List<MultipartFile> files = productDTO.getFiles();
+        List<MultipartFile> files = dto.getFiles();
 
         //새로 업로드되어서 만들어진 파일 이름들
         List<String> currentUploadFileNames = fileUtil.uploadS3File(files);
 
         //화면에서 변화 없이 계속 유지된 파일들
-        List<String> uploadedFileNames = productDTO.getUploadFileNames();
+        List<String> uploadedFileNames = dto.getUploadFileNames();
 
         //유지되는 파일들  + 새로 업로드된 파일 이름들이 저장해야 하는 파일 목록이 됨
         if (currentUploadFileNames != null && !currentUploadFileNames.isEmpty()) {
@@ -114,19 +114,19 @@ public class AdminProductServiceImpl implements AdminProductService {
         }
 
         // 상품 수정
-        product.changeCategory(this.getCategory(productDTO.getCategoryId()));
-        product.changeName(productDTO.getName());
-        product.changePrice(productDTO.getPrice());
-        product.changeDiscountPrice(productDTO.getDiscountPrice() == null ? 0 : productDTO.getDiscountPrice());
-        product.changeDescription(productDTO.getDescription());
-        product.changeStockNumber(productDTO.getStockNumber());
-        product.changeBest(productDTO.getBest() == null ? ProductBest.N : productDTO.getBest());
-        product.changeMdPick(productDTO.getMdPick() == null ? ProductMdPick.N : productDTO.getMdPick());
+        product.changeCategory(this.getCategory(dto.getCategoryId()));
+        product.changeName(dto.getName());
+        product.changePrice(dto.getPrice());
+        product.changeDiscountPrice(dto.getDiscountPrice() == null ? 0 : dto.getDiscountPrice());
+        product.changeDescription(dto.getDescription());
+        product.changeStockNumber(dto.getStockNumber());
+        product.changeBest(dto.getBest() == null ? ProductBest.N : dto.getBest());
+        product.changeMdPick(dto.getMdPick() == null ? ProductMdPick.N : dto.getMdPick());
 
         product.clearImageList();
 
         // 새로 업로드할 파일들을 새로 추가
-        List<String> uploadFileNames = productDTO.getUploadFileNames();
+        List<String> uploadFileNames = dto.getUploadFileNames();
 
         if (uploadFileNames != null && !uploadFileNames.isEmpty()) {
             uploadFileNames.forEach(product::addImageString);

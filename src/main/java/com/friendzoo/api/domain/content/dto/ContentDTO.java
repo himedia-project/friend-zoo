@@ -26,8 +26,6 @@ public class ContentDTO {
     private String title;
     private String body;
 
-    private Heart heart;
-
     // 파일 입력값
     @Builder.Default
     private List<MultipartFile> files = new ArrayList<>();

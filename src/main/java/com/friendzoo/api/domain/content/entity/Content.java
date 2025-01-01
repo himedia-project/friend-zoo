@@ -49,4 +49,46 @@ public class Content extends BaseEntity {
     private List<ContentImage> imageList = new ArrayList<>();
 
 
+    /**
+     * 콘텐츠 이미지, 콘텐츠에 추가
+     *
+     * @param image 이미지
+     */
+    public void addImage(ContentImage image) {
+
+        image.setOrd(this.imageList.size());
+        imageList.add(image);
+    }
+
+    /**
+     * 콘텐츠 이미지 파일, 콘텐츠이미지에 추가
+     *
+     * @param fileName 이미지 파일명
+     */
+    public void addImageString(String fileName) {
+
+        ContentImage contentImage = ContentImage.builder()
+                .imageName(fileName)
+                .build();
+        this.addImage(contentImage);
+    }
+
+    /**
+     * 콘텐츠 이미지 리스트 초기화
+     */
+    public void clearImageList() {
+        this.imageList.clear();
+    }
+
+    public void changeDivision(Division division) {
+        this.division = division;
+    }
+
+    public void changeTitle(String title) {
+        this.title = title;
+    }
+
+    public void changeBody(String body) {
+        this.body = body;
+    }
 }
