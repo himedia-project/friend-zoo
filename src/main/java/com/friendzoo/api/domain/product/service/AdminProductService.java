@@ -72,7 +72,7 @@ public interface AdminProductService {
                 .discountPrice(dto.getDiscountPrice() == null ? 0 : dto.getDiscountPrice())
                 .best(dto.getBest() == null ? ProductBest.N : dto.getBest())
                 .mdPick(dto.getMdPick() == null ? ProductMdPick.N : dto.getMdPick())
-                .stockNumber(dto.getStockNumber())
+                .stockNumber(dto.getStockNumber() == null ? 99 : dto.getStockNumber())
                 .delFlag(false)
                 .category(category)
                 .build();

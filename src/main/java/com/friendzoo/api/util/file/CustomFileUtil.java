@@ -1,9 +1,7 @@
 package com.friendzoo.api.util.file;
 
-import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import net.coobird.thumbnailator.Thumbnails;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
@@ -15,12 +13,8 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.*;
 import java.net.URL;
 import java.net.URLConnection;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 @Component
 @Log4j2
@@ -56,7 +50,7 @@ public class CustomFileUtil {
      * @return 업로드된 파일명 리스트
      * @throws RuntimeException
      */
-    public List<String> uploadS3File(List<MultipartFile> files) {
+    public List<String> uploadS3Files(List<MultipartFile> files) {
         return s3Util.uploadFiles(files);
     }
 
@@ -194,5 +188,27 @@ public class CustomFileUtil {
 
     }
 
+    /**
+     * 이미지 URL을 MultipartFile로 변환 후 s3에 저장
+     * @param imagePathList 이미지 URL 리스트
+     * @return 저장된 파일명 리스트
+     */
+
+    public List<String> uploadImagePathS3Files(List<String> imagePathList) {
+        // imagePathList -> MultipartFile 변환 -> saveFiles
+        List<MultipartFile> multipartFiles = new ArrayList<>();
+
+        for (String imagePath : imagePathList) {
+            try {
+                MultipartFile multipartFile = convert(imagePath);
+                if (multipartFile != null) {
+                    multipartFiles.add(multipartFile);
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return this.uploadS3Files(multipartFiles);
+    }
 
 }

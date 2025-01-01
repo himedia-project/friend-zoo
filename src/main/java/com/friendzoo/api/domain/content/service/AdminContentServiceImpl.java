@@ -56,7 +56,7 @@ public class AdminContentServiceImpl implements AdminContentService{
         // 파일 업로드 처리
         if(dto.getFiles() != null || !dto.getFiles().isEmpty()) {
             List<MultipartFile> files = dto.getFiles();
-            List<String> uploadFileNames = fileUtil.uploadS3File(files);
+            List<String> uploadFileNames = fileUtil.uploadS3Files(files);
             log.info("uploadFileNames: {}", uploadFileNames);
             dto.setUploadFileNames(uploadFileNames);
         }
@@ -93,7 +93,7 @@ public class AdminContentServiceImpl implements AdminContentService{
         List<MultipartFile> files = dto.getFiles();
 
         //새로 업로드되어서 만들어진 파일 이름들
-        List<String> currentUploadFileNames = fileUtil.uploadS3File(files);
+        List<String> currentUploadFileNames = fileUtil.uploadS3Files(files);
 
         //화면에서 변화 없이 계속 유지된 파일들
         List<String> uploadedFileNames = dto.getUploadFileNames();
