@@ -34,6 +34,14 @@ public class CategoryServiceImpl implements CategoryService {
         return dtoList;
     }
 
+    @Transactional(readOnly = true)
+    @Override
+    public List<CategoryDTO> list() {
+        return categoryRepository.findAll().stream()
+                .map(this::entityToDTO)
+                .collect(Collectors.toList());
+    }
+
 //    @Override
 //    public List<CategoryDTO> getSelectedCategory(Long id) {
 //        List<Category> dtoLists = categoryRepository.findSelectedCategory(id);

@@ -11,6 +11,8 @@ public interface CategoryService {
     List<CategoryDTO> getCategory();
 //    List<CategoryDTO> getSelectedCategory(Long id);
 
+    List<CategoryDTO> list();
+
     default CategoryDTO entityToDTO(Category category) {
         if (category == null) {
             return null;

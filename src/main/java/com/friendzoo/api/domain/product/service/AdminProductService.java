@@ -12,7 +12,7 @@ import com.friendzoo.api.dto.PageResponseDTO;
 import java.util.List;
 
 
-public interface ProductAdminService {
+public interface AdminProductService {
 
     PageResponseDTO<ProductDTO> list(PageRequestDTO requestDTO);
 
@@ -54,6 +54,12 @@ public interface ProductAdminService {
         return productDTO;
     }
 
+    /**
+     * ProductDTO -> Product 변환
+     * @param productDTO ProductDTO
+     * @param category Category
+     * @return Product
+     */
     default Product dtoToEntity(ProductDTO productDTO, Category category) {
 
         Product product = Product.builder()

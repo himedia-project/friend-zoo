@@ -25,7 +25,7 @@ import java.util.stream.Collectors;
 @Transactional
 @Service
 @RequiredArgsConstructor
-public class ProductAdminServiceImpl implements ProductAdminService {
+public class AdminProductServiceImpl implements AdminProductService {
 
     private final CustomFileUtil fileUtil;
 
