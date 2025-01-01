@@ -131,6 +131,16 @@ public class AdminContentServiceImpl implements AdminContentService{
             uploadFileNames.forEach(content::addImageString);
         }
 
+        // 태그 삭제후 새로 등록
+        if(dto.getTags() != null && !dto.getTags().isEmpty()) {
+            List<String> tags = dto.getTags();
+            tagService.removeContentTag(content);
+            tagService.registerTags(tags);
+            // 태그 등록 후 content_tag 테이블에 저장
+            tagService.registerContentTag(content, tags);
+        }
+
+
         return content.getId();
     }
 

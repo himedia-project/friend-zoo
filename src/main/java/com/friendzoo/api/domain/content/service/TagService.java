@@ -58,6 +58,14 @@ public class TagService {
     }
 
     /**
+     * 컨텐츠의 태그를 삭제한다.
+     * @param content 컨텐츠
+     */
+    public void removeContentTag(Content content) {
+        contentTagRepository.deleteByContent(content.getId());
+    }
+
+    /**
      *  태그 이름으로 태그 엔티티를 가져온다.
      * @param tagName 태그 이름
      * @return 태그 엔티티
