@@ -11,7 +11,7 @@ import lombok.*;
 @NoArgsConstructor
 public class ProductImage {
 
-    private String fileName;
+    private String imageName;
 
     private Integer ord;
 

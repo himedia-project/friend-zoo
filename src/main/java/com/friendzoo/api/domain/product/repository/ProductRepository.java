@@ -7,6 +7,7 @@ import com.friendzoo.api.domain.product.repository.querydsl.ProductRepositoryCus
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
@@ -45,4 +46,9 @@ public interface ProductRepository extends JpaRepository<Product, Long>
     //상품 상세 관련 상품 조회
     @Query("select p from Product p where p.category.id = :id")
     List<Product> findrelatedItem(@Param("id") Long id);
+
+    //상품 삭제
+    @Modifying
+    @Query("update Product p set p.delFlag = true where p.id = :id")
+    void modifyDeleteFlag(@Param("id") Long id);
 }

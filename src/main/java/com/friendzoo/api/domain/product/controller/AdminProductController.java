@@ -7,9 +7,7 @@ import com.friendzoo.api.dto.PageResponseDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @Slf4j
 @RestController
@@ -28,13 +26,37 @@ public class AdminProductController {
     }
 
     // 상세조회
+    @GetMapping("/{id}")
+    public ResponseEntity<ProductDTO> read(Long id) {
+        log.info("read: {}", id);
+        ProductDTO dto = productService.getOne(id);
+        return ResponseEntity.ok(dto);
+    }
 
 
-    // 드록
+    // 등록
+    @PostMapping
+    public ResponseEntity<Long> register(ProductDTO productDTO) {
+        log.info("register: {}", productDTO);
+        Long id = productService.register(productDTO);
+        return ResponseEntity.ok(id);
+    }
 
 
     // 수정
+    @PutMapping("/{id}")
+    public ResponseEntity<Long> modify(@PathVariable Long id, ProductDTO productDTO) {
+        log.info("modify: {}, {}", id, productDTO);
+        Long productId = productService.modify(id, productDTO);
+        return ResponseEntity.ok(productId);
+    }
 
 
     // 삭제
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> remove(Long id) {
+        log.info("remove: {}", id);
+        productService.remove(id);
+        return ResponseEntity.ok("success");
+    }
 }

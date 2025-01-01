@@ -79,7 +79,7 @@ public class Product extends BaseEntity {
     // 재고수량 감소
     public void removeStock(int stockNumber) {
         int restStock = this.stockNumber - stockNumber;
-        if(restStock < 0) {
+        if (restStock < 0) {
             throw new OutOfStockException("상품의 재고가 부족합니다. (현재 재고 수량: " + this.stockNumber + ")");
         }
         this.stockNumber = restStock;
@@ -89,17 +89,72 @@ public class Product extends BaseEntity {
     public void addStock(int stockNumber) {
         this.stockNumber += stockNumber;
     }
-//    public void addImage(ProductImageList image) {
-//
-//        image.setOrd(this.productImageList.size());
-//        productImageList.add(image);
-//    }
-//    public void addImageString(String fileName) {
-//
-//        ProductImageList productImage = ProductImageList.builder()
-//                .fileName(fileName)
-//                .build();
-//        addImage(productImage);
-//
-//    }
+
+    /**
+     * 상품 이미지, 상품에 추가
+     *
+     * @param image 이미지
+     */
+    public void addImage(ProductImage image) {
+
+        image.setOrd(this.imageList.size());
+        imageList.add(image);
+    }
+
+
+    /**
+     * 상품 이미지 파일, 상품이미지에 추가
+     *
+     * @param fileName 이미지 파일명
+     */
+    public void addImageString(String fileName) {
+
+        ProductImage productImage = ProductImage.builder()
+                .imageName(fileName)
+                .build();
+        addImage(productImage);
+
+    }
+
+    /**
+     * 상품 이미지 리스트 초기화
+     */
+    public void clearImageList() {
+        this.imageList.clear();
+    }
+
+    /*
+        * 상품 수정 로직
+     */
+    public void changeName(String name) {
+        this.name = name;
+    }
+
+    public void changePrice(Integer price) {
+        this.price = price;
+    }
+
+    public void changeDiscountPrice(Integer discountPrice) {
+        this.discountPrice = discountPrice;
+    }
+
+    public void changeDescription(String description) {
+        this.description = description;
+    }
+
+    public void changeStockNumber(Integer stockNumber) {
+        this.stockNumber = stockNumber;
+    }
+
+    public void changeBest(ProductBest best) {
+        this.best = best;
+    }
+
+    public void changeMdPick(ProductMdPick mdPick) {
+        this.mdPick = mdPick;
+    }
+
+    public void changeCategory(Category category) {
+        this.category = category;
+    }
 }
