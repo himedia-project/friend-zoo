@@ -2,6 +2,7 @@ package com.friendzoo.api.domain.product.excel;
 
 import com.friendzoo.api.domain.product.dto.ProductDTO;
 import com.friendzoo.api.util.excel.ExcelDataExtractor;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
@@ -13,6 +14,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+@Slf4j
 public class ProductExcelDataExtractor {
 
     public static List<ProductDTO> extract(MultipartFile file) {
@@ -54,7 +56,7 @@ public class ProductExcelDataExtractor {
         if(imagePathInfo == null || imagePathInfo.isEmpty()) {
             return imageList;
         }
-        if (!imageList.contains(",")) {
+        if (!imagePathInfo.contains(",")) {
             imageList.add(imagePathInfo);
         } else {
             String[] imagePaths = imagePathInfo.split(",");
