@@ -1,7 +1,6 @@
 package com.friendzoo.api.domain.content.excel;
 
 import com.friendzoo.api.domain.content.dto.ContentDTO;
-import com.friendzoo.api.domain.product.dto.ProductDTO;
 import com.friendzoo.api.util.excel.ExcelDataExtractor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.ss.usermodel.Row;
@@ -35,13 +34,36 @@ public class ContentExcelDataExtractor {
                         .divisionId((long) row.getCell(0).getNumericCellValue())
                         .title(row.getCell(1).getStringCellValue().trim())
                         .body(row.getCell(2).getStringCellValue())
-                        .imagePathList(getExcelImageList(row.getCell(3).getStringCellValue().trim()))
+                        .tags(getExcelTags(row.getCell(3).getStringCellValue().trim()))
+                        .imagePathList(getExcelImageList(row.getCell(4).getStringCellValue().trim()))
                         .build();
 
                 validateValue(dto);
                 return dto;
             }
         };
+    }
+
+    /**
+     * 태그 정보를 ","로 구분하여 List로 반환
+     * @param tagInfo 태그 정보 "쿼카,애완동물"
+     * @return 태그 List
+     */
+    private static List<String> getExcelTags(String tagInfo) {
+        List<String> tagList = new ArrayList<>();
+        // if "," 없을시
+        if(tagInfo == null || tagInfo.isEmpty()) {
+            return tagList;
+        }
+
+        if (!tagInfo.contains(",")) {
+            tagList.add(tagInfo);
+        } else {
+            String[] tags = tagInfo.split(",");
+            tagList.addAll(Arrays.asList(tags));
+        }
+
+        return tagList;
     }
 
     /**
