@@ -1,10 +1,7 @@
-package com.friendzoo.api.domain.product.service;
+package com.friendzoo.api.domain.heart.service;
 
-import com.friendzoo.api.domain.product.dto.HeartDTO;
-import com.friendzoo.api.domain.product.dto.ProductDTO;
-import com.friendzoo.api.domain.product.entity.Heart;
-import com.friendzoo.api.domain.product.entity.Product;
-import org.springframework.stereotype.Service;
+import com.friendzoo.api.domain.heart.dto.HeartDTO;
+import com.friendzoo.api.domain.heart.entity.Heart;
 
 import java.util.List;
 public interface HeartService {

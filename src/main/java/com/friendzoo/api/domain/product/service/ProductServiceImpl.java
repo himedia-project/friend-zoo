@@ -1,9 +1,6 @@
 package com.friendzoo.api.domain.product.service;
 
-import com.friendzoo.api.domain.product.dto.CategoryDTO;
 import com.friendzoo.api.domain.product.dto.ProductDTO;
-import com.friendzoo.api.domain.product.entity.Category;
-import com.friendzoo.api.domain.product.entity.Heart;
 import com.friendzoo.api.domain.product.entity.Product;
 import com.friendzoo.api.domain.product.repository.ProductRepository;
 import com.friendzoo.api.props.JwtProps;
@@ -11,13 +8,10 @@ import com.friendzoo.api.util.JWTUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Sort;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.swing.text.html.Option;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Slf4j

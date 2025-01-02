@@ -1,4 +1,4 @@
-package com.friendzoo.api.domain.product.dto;
+package com.friendzoo.api.domain.heart.dto;
 
 import lombok.*;
 

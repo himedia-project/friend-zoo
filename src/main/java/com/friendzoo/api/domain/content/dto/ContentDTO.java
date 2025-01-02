@@ -1,7 +1,6 @@
 package com.friendzoo.api.domain.content.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.friendzoo.api.domain.product.entity.Heart;
 import lombok.*;
 import org.springframework.web.multipart.MultipartFile;
 

@@ -1,10 +1,8 @@
-package com.friendzoo.api.domain.product.service;
+package com.friendzoo.api.domain.heart.service;
 
-import com.friendzoo.api.domain.product.dto.HeartDTO;
-import com.friendzoo.api.domain.product.dto.ProductDTO;
-import com.friendzoo.api.domain.product.entity.Heart;
-import com.friendzoo.api.domain.product.repository.HeartRepository;
-import com.friendzoo.api.domain.product.repository.ProductRepository;
+import com.friendzoo.api.domain.heart.dto.HeartDTO;
+import com.friendzoo.api.domain.heart.entity.Heart;
+import com.friendzoo.api.domain.heart.repository.HeartRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -12,14 +10,13 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Slf4j
 @Transactional
 @Service
 @RequiredArgsConstructor
-public class HeartServiceImpl implements HeartService{
+public class HeartServiceImpl implements HeartService {
     private final HeartRepository heartRepository;
 
 

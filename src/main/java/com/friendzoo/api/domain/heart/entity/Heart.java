@@ -1,4 +1,4 @@
-package com.friendzoo.api.domain.product.entity;
+package com.friendzoo.api.domain.heart.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;

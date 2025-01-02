@@ -1,8 +1,7 @@
-package com.friendzoo.api.domain.product.controller;
+package com.friendzoo.api.domain.heart.controller;
 
-import com.friendzoo.api.domain.product.dto.HeartDTO;
-import com.friendzoo.api.domain.product.dto.ProductDTO;
-import com.friendzoo.api.domain.product.service.HeartService;
+import com.friendzoo.api.domain.heart.dto.HeartDTO;
+import com.friendzoo.api.domain.heart.service.HeartService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
