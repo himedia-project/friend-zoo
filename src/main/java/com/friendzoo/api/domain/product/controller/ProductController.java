@@ -9,8 +9,10 @@ import com.friendzoo.api.domain.product.entity.Product;
 import com.friendzoo.api.domain.product.service.ProductService;
 import com.friendzoo.api.props.JwtProps;
 import com.friendzoo.api.util.JWTUtil;
+import com.friendzoo.api.util.file.CustomFileUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -26,6 +28,8 @@ import java.util.stream.Collectors;
 @RequestMapping("/api/product")
 @RequiredArgsConstructor
 public class ProductController {
+
+    private final CustomFileUtil fileUtil;
     private final ProductService productService;
     private final JWTUtil jwtUtil;
     private final JwtProps jwtProps;
@@ -65,6 +69,10 @@ public class ProductController {
     }
 
 
+    @GetMapping("/view/{fileName}")
+    public ResponseEntity<Resource> viewFileGET(@PathVariable String fileName) {
+        return fileUtil.getFile(fileName);
+    }
 
 
 

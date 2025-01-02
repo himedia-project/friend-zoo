@@ -4,8 +4,10 @@ import com.friendzoo.api.domain.product.dto.ProductDTO;
 import com.friendzoo.api.domain.product.service.AdminProductService;
 import com.friendzoo.api.dto.PageRequestDTO;
 import com.friendzoo.api.dto.PageResponseDTO;
+import com.friendzoo.api.util.file.CustomFileUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class AdminProductController {
 
+    private final CustomFileUtil fileUtil;
     private final AdminProductService productService;
 
     // 리스트조회
@@ -58,5 +61,13 @@ public class AdminProductController {
         log.info("remove: {}", id);
         productService.remove(id);
         return ResponseEntity.ok("success");
+    }
+
+
+    // 이미지 불러오기
+    @GetMapping("/view/{fileName}")
+    public ResponseEntity<Resource> viewFileGET(@PathVariable String fileName) {
+        return fileUtil.getFile(fileName);
+
     }
 }

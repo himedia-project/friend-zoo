@@ -61,6 +61,11 @@ public class AdminContentServiceImpl implements AdminContentService{
             dto.setUploadFileNames(uploadFileNames);
         }
 
+        // excel 업로드 imagePathList 있을시 s3 업로드
+        if (dto.getImagePathList() != null) {
+            dto.setUploadFileNames(fileUtil.uploadImagePathS3Files(dto.getImagePathList()));
+        }
+
         // 카테고리
         Division division = this.getDivision(dto.getDivisionId());
 

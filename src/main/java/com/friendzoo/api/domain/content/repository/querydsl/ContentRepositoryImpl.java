@@ -72,6 +72,15 @@ public class ContentRepositoryImpl implements ContentRepositoryCustom {
         return PageableExecutionUtils.getPage(list, pageable, countQuery::fetchCount);
     }
 
+    @Override
+    public List<Content> findByIdList(List<Long> idList) {
+        return queryFactory
+                .selectFrom(content)
+                .leftJoin(content.imageList).fetchJoin()
+                .where(content.id.in(idList))
+                .fetch();
+    }
+
 
     /**
      * Sort 정보를 OrderSpecifier 배열로 변환
