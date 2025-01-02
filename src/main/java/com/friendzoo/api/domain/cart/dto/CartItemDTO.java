@@ -17,6 +17,7 @@ public class CartItemDTO {
 
     private String email;
 
+    // --- order request
     @NotNull(message = "상품 번호는 필수입니다.")
     private Long productId;
 
