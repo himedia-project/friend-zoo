@@ -1,4 +1,4 @@
-package com.friendzoo.api.domain.product.excel;
+package com.friendzoo.api.util.excel;
 
 import lombok.Getter;
 
