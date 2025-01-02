@@ -1,35 +1,45 @@
 package com.friendzoo.api.domain.heart.entity;
 
+import com.friendzoo.api.domain.content.entity.Content;
+import com.friendzoo.api.domain.member.entity.Member;
+import com.friendzoo.api.domain.product.entity.Product;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
-import java.time.Instant;
+import java.time.LocalDateTime;
 
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 @Getter
 @Setter
 @Entity
 @Table(name = "heart")
 public class Heart {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "heart_id", nullable = false)
     private Long id;
 
-    @Size(max = 255)
-    @NotNull
-    @Column(name = "email", nullable = false)
-    private String email;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "email", nullable = false)
+    private Member member;
 
-    @Column(name = "product_id")
-    private Long productId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "product_id", nullable = true)
+    private Product product;
 
-    @Column(name = "content_id")
-    private Long contentId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "content_id", nullable = true)
+    private Content content;
 
     @Column(name = "created_at")
-    private Instant createdAt;
+    private LocalDateTime createdAt;
+
+    @PrePersist
+    public void prePersist() {
+        this.createdAt = LocalDateTime.now();
+    }
 
 }

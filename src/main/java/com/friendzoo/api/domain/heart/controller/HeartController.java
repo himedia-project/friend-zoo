@@ -1,14 +1,13 @@
 package com.friendzoo.api.domain.heart.controller;
 
-import com.friendzoo.api.domain.heart.dto.HeartDTO;
 import com.friendzoo.api.domain.heart.service.HeartService;
+import com.friendzoo.api.domain.product.dto.ProductDTO;
+import com.friendzoo.api.security.MemberDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -19,10 +18,32 @@ import java.util.List;
 public class HeartController {
     private final HeartService heartService;
 
-    @PostMapping("/detail/{email}/{id}")
-    public ResponseEntity<List<HeartDTO>> heartItemCheck(@PathVariable String email
-            , @PathVariable Long id) {
-        List<HeartDTO> dtoLists = heartService.getHeartItemCheck(email,id);
-        return null;
+//    @PostMapping("/detail/{email}/{id}")
+//    public ResponseEntity<List<HeartDTO>> heartItemCheck(@PathVariable String email
+//            , @PathVariable Long id) {
+//        List<HeartDTO> dtoLists = heartService.getHeartItemCheck(email,id);
+//        return null;
+//    }
+
+    // 찜하기/찜하기 취소 상품
+    @PostMapping("/product/{productId}")
+    public ResponseEntity<?> heartProduct(@PathVariable Long productId, @AuthenticationPrincipal MemberDTO memberDTO) {
+        heartService.heartProduct(productId, memberDTO.getEmail());
+        return ResponseEntity.ok().build();
     }
+
+    // 찜하기/찜하기 취소 콘텐츠
+    @PostMapping("/content/{contentId}")
+    public ResponseEntity<?> heartContent(@PathVariable Long contentId, @AuthenticationPrincipal MemberDTO memberDTO) {
+        heartService.heartContent(contentId, memberDTO.getEmail());
+        return ResponseEntity.ok().build();
+    }
+
+    // 해당유저의 찜목록(상품)
+    @GetMapping("/product/list/user")
+    public List<ProductDTO> heartProductList(@AuthenticationPrincipal MemberDTO memberDTO) {
+        return heartService.findProductListByMember(memberDTO.getEmail());
+    }
+
+
 }

@@ -5,6 +5,7 @@ import com.friendzoo.api.domain.product.entity.Product;
 import com.friendzoo.api.domain.product.repository.ProductRepository;
 import com.friendzoo.api.props.JwtProps;
 import com.friendzoo.api.util.JWTUtil;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Sort;
@@ -19,8 +20,7 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class ProductServiceImpl implements ProductService {
-    private final JWTUtil jwtUtil;
-    private final JwtProps jwtProps;
+
     private final ProductRepository productRepository;
 
     @Override
@@ -90,12 +90,18 @@ public class ProductServiceImpl implements ProductService {
     }
 
 
-
     @Transactional(readOnly = true)
     @Override
     public ProductDTO getDTO(Product product) {
 
         return this.entityToDTO(product);
 
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public Product getEntity(Long productId) {
+        return productRepository.findById(productId).
+                orElseThrow(() -> new EntityNotFoundException("해당 상품이 존재하지 않습니다. productId: " + productId));
     }
 }

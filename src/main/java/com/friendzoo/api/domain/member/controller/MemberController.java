@@ -5,7 +5,6 @@ import com.friendzoo.api.domain.member.dto.JoinRequestDTO;
 import com.friendzoo.api.domain.member.dto.LoginDTO;
 import com.friendzoo.api.domain.member.dto.MemberTestDTO;
 import com.friendzoo.api.domain.member.service.MemberService;
-import com.friendzoo.api.domain.member.service.TokenService;
 import com.friendzoo.api.props.JwtProps;
 import com.friendzoo.api.util.CookieUtil;
 import com.friendzoo.api.util.JWTUtil;

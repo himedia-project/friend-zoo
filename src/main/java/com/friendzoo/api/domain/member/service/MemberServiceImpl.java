@@ -1,10 +1,12 @@
 package com.friendzoo.api.domain.member.service;
 
 
+import com.friendzoo.api.domain.heart.service.HeartService;
 import com.friendzoo.api.domain.member.dto.JoinRequestDTO;
 import com.friendzoo.api.domain.member.dto.MemberTestDTO;
 import com.friendzoo.api.domain.member.entity.Member;
 import com.friendzoo.api.domain.member.repository.MemberRepository;
+import com.friendzoo.api.domain.product.dto.ProductDTO;
 import com.friendzoo.api.props.JwtProps;
 import com.friendzoo.api.security.MemberDTO;
 import com.friendzoo.api.util.JWTUtil;
@@ -16,6 +18,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Map;
 
 @Slf4j
@@ -32,7 +35,7 @@ public class MemberServiceImpl implements MemberService {
     @Transactional(readOnly = true)
     @Override
     public MemberTestDTO findUser(String email) {
-        Member member = getMember(email);
+        Member member = this.getMember(email);
         return this.entityToDto(member);
     }
 
@@ -115,6 +118,8 @@ public class MemberServiceImpl implements MemberService {
      * @param email 이메일
      * @return 회원
      */
+    @Transactional(readOnly = true)
+    @Override
     public Member getMember(String email) {
         return memberRepository.findByEmail(email)
                 .orElseThrow(() -> new UsernameNotFoundException("해당 사용자를 찾을 수 없습니다."));
