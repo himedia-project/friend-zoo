@@ -12,6 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -24,16 +25,16 @@ import java.util.List;
 public class ContentController {
     private final ContentService contentService;
 
-//    @GetMapping("/list")
-//    public ResponseEntity<List<ContentDTO>> getContent(ContentDTO contentDTO) {
-//        List<ContentDTO> dtoLists = contentService.getContent(contentDTO);
-//        return ResponseEntity.ok(dtoLists);
-//    }
     @GetMapping("/list")
-    public ResponseEntity<PageResponseDTO<ContentDTO>> getList(PageRequestDTO requestDTO, @AuthenticationPrincipal MemberDTO memberDTO) {
+    public ResponseEntity<List<ContentDTO>> getList(@AuthenticationPrincipal MemberDTO memberDTO) {
+        List<ContentDTO> dto = contentService.findListBy(memberDTO.getEmail());
 
-        log.info("list..............." + requestDTO);
-        PageResponseDTO<ContentDTO> dto = contentService.findListBy(requestDTO,memberDTO.getEmail());
+        return ResponseEntity.ok(dto);
+    }
+
+    @GetMapping("/detail/{content_id}")
+    public ResponseEntity<List<ContentDTO>> getDetailList(@AuthenticationPrincipal MemberDTO memberDTO,@PathVariable Long content_id) {
+        List<ContentDTO> dto = contentService.findDetailListBy(memberDTO.getEmail(),content_id);
 
         return ResponseEntity.ok(dto);
     }

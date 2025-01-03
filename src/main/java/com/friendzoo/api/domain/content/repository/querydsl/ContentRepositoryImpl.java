@@ -1,7 +1,10 @@
 package com.friendzoo.api.domain.content.repository.querydsl;
 
+import com.friendzoo.api.domain.content.dto.ContentDTO;
 import com.friendzoo.api.domain.content.entity.Content;
+import com.friendzoo.api.domain.content.entity.ContentTag;
 import com.friendzoo.api.dto.PageRequestDTO;
+import com.querydsl.core.Tuple;
 import com.querydsl.core.types.ExpressionUtils;
 import com.querydsl.core.types.Order;
 import com.querydsl.core.types.OrderSpecifier;
@@ -24,6 +27,8 @@ import java.util.List;
 
 import static com.friendzoo.api.domain.content.entity.QContent.*;
 import static com.friendzoo.api.domain.content.entity.QContentImage.contentImage;
+import static com.friendzoo.api.domain.content.entity.QContentTag.contentTag;
+import static com.friendzoo.api.domain.content.entity.QTag.tag;
 import static com.friendzoo.api.domain.heart.entity.QHeart.heart;
 import static com.friendzoo.api.domain.product.entity.QProduct.product;
 
@@ -36,16 +41,7 @@ public class ContentRepositoryImpl implements ContentRepositoryCustom {
     private final JPAQueryFactory jpaQueryFactory;
 
     @Override
-    public Page<Content> findListBy(PageRequestDTO requestDTO,String email) {
-        Pageable pageable = PageRequest.of(
-                requestDTO.getPage() - 1,  //페이지 시작 번호가 0부터 시작하므로
-                4,
-                "asc".equals(requestDTO.getSort()) ?  // 정렬 조건
-                        Sort.by("id").ascending() : Sort.by("id").descending()
-        );
-
-        // pageable의 sort 정보를 적용
-        OrderSpecifier[] orderSpecifiers = createOrderSpecifier(pageable.getSort());
+    public List<Content> findListByEmail(String email) {
 
         List<Content> list = queryFactory
                 .select(content)
@@ -57,9 +53,6 @@ public class ContentRepositoryImpl implements ContentRepositoryCustom {
                 .where(
                         content.delFlag.eq(false)
                 )
-                .orderBy(orderSpecifiers)
-                .offset(pageable.getOffset())
-                .limit(pageable.getPageSize())
                 .fetch();
 
         JPAQuery<Content> countQuery = queryFactory
@@ -72,7 +65,62 @@ public class ContentRepositoryImpl implements ContentRepositoryCustom {
                 .where(
                         content.delFlag.eq(false)
                 );
-        return PageableExecutionUtils.getPage(list, pageable, countQuery::fetchCount);
+        return list;
+    }
+    @Override
+    public List<Content> findDetailListBy(String email,Long content_id) {
+
+        List<Content> list = queryFactory
+                .select(content)
+
+                .from(content)
+                //콘텐츠 + heart(컨텐트 id + email) + 태그
+                .leftJoin(content.imageList, contentImage).on(contentImage.ord.eq(0))
+                .leftJoin(content.heartList, heart).on(heart.member.email.eq(email))
+                .where(
+                        content.delFlag.eq(false)
+                )
+                .fetch();
+
+        JPAQuery<Content> countQuery = queryFactory
+                .select(content
+                )
+                .from(content)
+                //콘텐츠 + heart(컨텐트 id + email) + 태그
+                .leftJoin(content.imageList, contentImage).on(contentImage.ord.eq(0))
+                .leftJoin(content.heartList, heart).on(heart.member.email.eq(email))
+                .where(
+                        content.delFlag.eq(false)
+                );
+        return list;
+    }
+
+    @Override
+    public List<Content> findDetailTagList(Long content_id) {
+
+        List<Content> list = queryFactory
+                .select(content)
+
+                .from(content)
+                .leftJoin(content.contentTagList, contentTag)
+                .leftJoin(contentTag.tag, tag)
+                //콘텐츠 + heart(컨텐트 id + email) + 태그
+                .where(
+                        content.delFlag.eq(false)
+                )
+                .fetch();
+
+        JPAQuery<Content> countQuery = queryFactory
+                .select(content)
+
+                .from(content)
+                .leftJoin(content.contentTagList, contentTag)
+                .leftJoin(contentTag.tag, tag)
+                //콘텐츠 + heart(컨텐트 id + email) + 태그
+                .where(
+                        content.delFlag.eq(false)
+                );
+        return list;
     }
 
     @Override

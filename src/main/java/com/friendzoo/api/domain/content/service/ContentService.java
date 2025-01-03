@@ -14,25 +14,11 @@ import java.util.List;
 public interface ContentService {
     List<ContentDTO> getContent(ContentDTO contentDTO);
 
-    PageResponseDTO<ContentDTO> findListBy(PageRequestDTO requestDTO,String email);
+    List<ContentDTO> findDetailListBy(String email,Long content_id);
 
-//    default ContentDTO entityToDTO(Content content , boolean isHeart) {
-//        if (content == null) {
-//            return null;
-//        }
-//
-//        return ContentDTO.builder()
-//                .id(content.getId())
-//                .divisionName(content.getDivision().getName())
-//                .title(content.getTitle())
-//                .heartCount((long) content.getHeartList().size())
-//                  .isHeart(isHeart)
-//
-//
-////                .tags(content.getContentTagList().stream().toList())
-////                .best(content.getBest())
-////                .mdPick(content.getMdPick())
-////                .discountPrice(content.getDiscountPrice())
-//                .build();
-//    }
+    List<ContentDTO> findListBy(String email);
+
+//    List<ContentDTO> findDetailListBy(String email);
+
+
 }
