@@ -24,7 +24,7 @@ public interface ProductRepository extends JpaRepository<Product, Long>
     Optional<Product> findByProduct(@Param("name") String name);
 
     //Best 상품 조회
-    @Query("select p from Product p where p.best= 'Y'")
+    @Query("select p,lists from Product p join p.imageList lists where p.best= 'Y' and lists.ord = 0")
     List<Product> findBestProducts();
 
     //MdPick 상품 조회

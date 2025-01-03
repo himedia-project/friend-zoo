@@ -7,6 +7,7 @@ import com.friendzoo.api.domain.product.dto.CategoryDTO;
 import com.friendzoo.api.domain.product.dto.ProductDTO;
 import com.friendzoo.api.domain.product.entity.Category;
 import com.friendzoo.api.domain.product.entity.Product;
+import com.friendzoo.api.domain.product.entity.ProductImage;
 import com.friendzoo.api.domain.test.dto.TestResDTO;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -41,8 +42,12 @@ public interface ProductService {
                 .price(product.getPrice())
                 .best(product.getBest())
                 .mdPick(product.getMdPick())
-//                .delFlag(Integer.valueOf(product.getDelFlag().toString()))
-//                .imageList(product.getProductImageList().stream().map(ProductImageList::getImageName).toList())
+                .uploadFileNames(product.getImageList().stream().map(ProductImage::getImageName).toList())
+                .description(product.getDescription())
+                .stockNumber(product.getStockNumber())
+                .categoryId(product.getCategory().getId())
+                .createdAt(product.getCreatedAt())
+                .modifiedAt(product.getModifiedAt())
                 .discountPrice(product.getDiscountPrice())
                 .build();
     }
