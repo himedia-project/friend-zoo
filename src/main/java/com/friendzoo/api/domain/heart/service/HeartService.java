@@ -1,5 +1,6 @@
 package com.friendzoo.api.domain.heart.service;
 
+import com.friendzoo.api.domain.content.dto.ContentDTO;
 import com.friendzoo.api.domain.heart.dto.HeartDTO;
 import com.friendzoo.api.domain.heart.entity.Heart;
 import com.friendzoo.api.domain.product.dto.ProductDTO;
@@ -28,6 +29,12 @@ public interface HeartService {
      * @return 찜 상품 리스트
      */
     List<ProductDTO> findProductListByMember(String email);
+    /**
+     * 회원의 찜 콘텐츠 리스트 조회
+     * @param email 회원 이메일
+     * @return 찜 콘텐츠 리스트
+     */
+    List<ContentDTO> findContentListByMember(String email);
 
     /**
      * 상품 찜하기/찜 취소

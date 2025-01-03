@@ -94,6 +94,38 @@ public class ContentRepositoryImpl implements ContentRepositoryCustom {
                 );
         return list;
     }
+
+
+
+    @Override
+    public List<Content> findHeartList(String email) {
+
+        List<Content> list = queryFactory
+                .select(content)
+
+                .from(content)
+                //콘텐츠 + heart(컨텐트 id + email) + 태그
+                .leftJoin(content.imageList, contentImage).on(contentImage.ord.eq(0))
+                .leftJoin(content.heartList, heart).on(heart.member.email.eq(email))
+                .where(
+                        content.delFlag.eq(false),
+                        heart.content.id.isNotNull()
+                )
+                .fetch();
+
+        JPAQuery<Content> countQuery = queryFactory
+                .select(content
+                )
+                .from(content)
+                //콘텐츠 + heart(컨텐트 id + email) + 태그
+                .leftJoin(content.imageList, contentImage).on(contentImage.ord.eq(0))
+                .leftJoin(content.heartList, heart).on(heart.member.email.eq(email))
+                .where(
+                        content.delFlag.eq(false)
+                );
+        return list;
+    }
+
     @Override
     public List<Content> findTagsItem(String email,Long tag_id) {
 
