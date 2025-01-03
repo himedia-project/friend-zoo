@@ -17,6 +17,9 @@ public interface HeartRepository extends JpaRepository<Heart, Long>
 
     @Query("select case when count(h) = 1 then true else false end from Heart h where h.member.email = :email and h.content.id = :contentId")
     boolean findHeartContent(@Param("email") String email, @Param("contentId") Long contentId);
+
+//    @Query("select case when count(h) = 1 then true else false end from Heart h where h.member.email = :email and h.content.id = :contentId")
+//    boolean findDetailTagList(@Param("email") String email, @Param("contentId") Long contentId);
 //    @Query("select h from Heart h where h.productId = :id and h.email = :email")
 //    List<Heart> findrelatedItem(@Param("email") String email,
 //                                @Param("id") Long id);

@@ -46,6 +46,8 @@ public class ContentDTO {
     //해당 계정에 어느 게시물에 하트가 되었는가
     private boolean isHeart;
 
+
+
     //하트 개수
     private Long heartCount;
 }

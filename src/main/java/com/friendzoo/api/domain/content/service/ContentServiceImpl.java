@@ -2,13 +2,18 @@ package com.friendzoo.api.domain.content.service;
 
 import com.friendzoo.api.domain.content.dto.ContentDTO;
 import com.friendzoo.api.domain.content.entity.Content;
+import com.friendzoo.api.domain.content.entity.ContentImage;
+import com.friendzoo.api.domain.content.entity.ContentTag;
+import com.friendzoo.api.domain.content.entity.Tag;
 import com.friendzoo.api.domain.content.repository.ContentRepository;
 import com.friendzoo.api.domain.heart.repository.HeartRepository;
 import com.friendzoo.api.domain.product.dto.ProductDTO;
 import com.friendzoo.api.domain.product.entity.Product;
+import com.friendzoo.api.domain.product.entity.ProductImage;
 import com.friendzoo.api.dto.PageRequestDTO;
 import com.friendzoo.api.dto.PageResponseDTO;
 import com.querydsl.core.QueryFactory;
+import com.querydsl.core.Tuple;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -44,8 +49,8 @@ public class ContentServiceImpl implements ContentService {
     }
 
     @Override
-    public PageResponseDTO<ContentDTO> findListBy(PageRequestDTO requestDTO, String email) {
-        Page<Content> result = contentRepository.findListBy(requestDTO);
+    public List<ContentDTO> findListBy(String email) {
+        List<Content> result = contentRepository.findListByEmail(email);
         // heartService email
               List<ContentDTO> dtoResult =  result.stream().map(content -> {
                        // isHeart 여부 <- content, email
@@ -54,28 +59,42 @@ public class ContentServiceImpl implements ContentService {
                             .id(content.getId())
                             .divisionName(content.getDivision().getName())
                             .title(content.getTitle())
+                            .uploadFileNames(content.getImageList().stream().map(ContentImage::getImageName).toList())
                             .heartCount((long) content.getHeartList().size())
                             .isHeart(isHeart)
+                            .createdAt(content.getCreatedAt())
+                            .modifiedAt(content.getModifiedAt())
                             .build();
 
                  return dto;
                 }).toList();
-        return PageResponseDTO.<ContentDTO>withAll()
-                .dtoList(dtoResult)
-                .totalCount(result.getTotalElements())
-                .pageRequestDTO(requestDTO)
-                .build();
-//
-//        return  queryFactory
-//                .select(content)
-//                .from(content)
-//                //콘텐츠 + heart(컨텐트 id + email) + 태그
-//                .leftJoin(content.imageList, contentImage).on(contentImage.ord.eq(0))
-//                .leftJoin(content.heartList, heart).on(heart.member.email.eq(email))
-//                .where(
-//                        content.delFlag.eq(false)
-//                )
-//                .fetch();
+        return dtoResult;
+    }
+    @Override
+    public List<ContentDTO> findDetailListBy(String email,Long content_id) {
+        List<Content> result = contentRepository.findDetailListBy(email,content_id);
+        // heartService email
+        List<ContentDTO> dtoResult =  result.stream().map(content -> {
+            // isHeart 여부 <- content, email
+            boolean isHeart = heartRepository.findHeartContent(email,content.getId());
+            List<Content> getTags = contentRepository.findDetailTagList(content_id);
+            ContentDTO dto = ContentDTO.builder()
+                    .id(content.getId())
+                    .divisionId(content.getDivision().getId())
+                    .divisionName(content.getDivision().getName())
+                    .title(content.getTitle())
+                    .uploadFileNames(content.getImageList().stream().map(ContentImage::getImageName).toList())
+                    .heartCount((long) content.getHeartList().size())
+                    .isHeart(isHeart)
+                    .createdAt(content.getCreatedAt())
+                    .modifiedAt(content.getModifiedAt())
+                    .tags(content.getContentTagList().stream().map(contentTag -> contentTag.getTag().getName()).toList())
+//                    .tags()
+                    .build();
+
+            return dto;
+        }).toList();
+        return dtoResult;
     }
 
 //    @Override
