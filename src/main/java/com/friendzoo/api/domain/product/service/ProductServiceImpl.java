@@ -1,5 +1,8 @@
 package com.friendzoo.api.domain.product.service;
 
+
+import com.friendzoo.api.domain.product.entity.ProductImage;
+import com.friendzoo.api.domain.heart.repository.HeartRepository;
 import com.friendzoo.api.domain.product.dto.ProductDTO;
 import com.friendzoo.api.domain.product.entity.Product;
 import com.friendzoo.api.domain.product.repository.ProductRepository;
@@ -22,6 +25,7 @@ import java.util.stream.Collectors;
 public class ProductServiceImpl implements ProductService {
 
     private final ProductRepository productRepository;
+    private final HeartRepository heartRepository;
 
     @Override
     public List<ProductDTO> getProducts(ProductDTO productDTO) {
@@ -72,12 +76,31 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<ProductDTO> getSelectedItem(Long id) {
-        List<Product> dtoLists = productRepository.findSelectedItem(id);
-        List<ProductDTO> dtoList = dtoLists.stream()
-                .map(this::entityToDTO) // Product를 ProductDTO로 변환
-                .collect(Collectors.toList()); // 리스트로 수집
-        return dtoList;
+    public List<ProductDTO> getSelectedItem(String email,Long productId) {
+        List<Product> dtoLists = productRepository.findDetailProduct(email,productId);
+        List<ProductDTO> dtoResult =  dtoLists.stream().map(product -> {
+            // isHeart 여부 <- product, email
+            boolean isHeart = heartRepository.findProductHeart(email,product.getId());
+            ProductDTO dto = ProductDTO.builder()
+                    .id(product.getId())
+                    .name(product.getName())
+                    .category(product.getCategory() != null ? product.getCategory().getId() : null)
+                    .price(product.getPrice())
+                    .best(product.getBest())
+                    .mdPick(product.getMdPick())
+                    .uploadFileNames(product.getImageList().stream().map(ProductImage::getImageName).toList())
+                    .isHeart(isHeart)
+                    .description(product.getDescription())
+                    .stockNumber(product.getStockNumber())
+                    .categoryId(product.getCategory().getId())
+                    .createdAt(product.getCreatedAt())
+                    .modifiedAt(product.getModifiedAt())
+                    .discountPrice(product.getDiscountPrice())
+                    .build();
+
+            return dto;
+        }).toList();
+        return dtoResult;
     }
 
     @Override

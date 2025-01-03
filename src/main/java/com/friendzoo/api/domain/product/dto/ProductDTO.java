@@ -48,6 +48,9 @@ public class ProductDTO {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime modifiedAt;
 
+    private boolean isHeart;
+
+    private Long heartCount;
 //    public String getBest() {
 //        return best;
 //    }

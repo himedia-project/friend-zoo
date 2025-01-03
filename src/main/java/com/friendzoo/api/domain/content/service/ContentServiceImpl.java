@@ -77,7 +77,7 @@ public class ContentServiceImpl implements ContentService {
         List<ContentDTO> dtoResult =  result.stream().map(content -> {
             // isHeart 여부 <- content, email
             boolean isHeart = heartRepository.findHeartContent(email,content.getId());
-            List<Content> getTags = contentRepository.findDetailTagList(content_id);
+//            List<Content> getTags = contentRepository.findDetailTagList(content_id);
             ContentDTO dto = ContentDTO.builder()
                     .id(content.getId())
                     .divisionId(content.getDivision().getId())
@@ -89,6 +89,32 @@ public class ContentServiceImpl implements ContentService {
                     .createdAt(content.getCreatedAt())
                     .modifiedAt(content.getModifiedAt())
                     .tags(content.getContentTagList().stream().map(contentTag -> contentTag.getTag().getName()).toList())
+//                    .tags()
+                    .build();
+
+            return dto;
+        }).toList();
+        return dtoResult;
+    }
+
+    @Override
+    public List<ContentDTO> findTagsItem(String email,Long tag_id) {
+        List<Content> result = contentRepository.findTagsItem(email,tag_id);
+        // heartService email
+        List<ContentDTO> dtoResult =  result.stream().map(content -> {
+            // isHeart 여부 <- content, email
+            boolean isHeart = heartRepository.findHeartContent(email,content.getId());
+            ContentDTO dto = ContentDTO.builder()
+                    .id(content.getId())
+                    .divisionId(content.getDivision().getId())
+                    .divisionName(content.getDivision().getName())
+                    .title(content.getTitle())
+                    .uploadFileNames(content.getImageList().stream().map(ContentImage::getImageName).toList())
+                    .heartCount((long) content.getHeartList().size())
+                    .isHeart(isHeart)
+                    .createdAt(content.getCreatedAt())
+                    .modifiedAt(content.getModifiedAt())
+                    //.tags(content.getContentTagList().stream().map(contentTag -> contentTag.getTag().getName()).toList())
 //                    .tags()
                     .build();
 

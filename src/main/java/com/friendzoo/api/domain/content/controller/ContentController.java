@@ -39,4 +39,12 @@ public class ContentController {
         return ResponseEntity.ok(dto);
     }
 
+    @GetMapping("/search/tags/{tag_id}")
+    public ResponseEntity<List<ContentDTO>> getTagList(@AuthenticationPrincipal MemberDTO memberDTO,@PathVariable Long tag_id) {
+        List<ContentDTO> dto = contentService.findTagsItem(memberDTO.getEmail(),tag_id);
+
+        return ResponseEntity.ok(dto);
+    }
+
+
 }

@@ -16,6 +16,8 @@ public interface ContentService {
 
     List<ContentDTO> findDetailListBy(String email,Long content_id);
 
+    List<ContentDTO> findTagsItem(String email,Long tag_id);
+
     List<ContentDTO> findListBy(String email);
 
 //    List<ContentDTO> findDetailListBy(String email);
