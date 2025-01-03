@@ -40,7 +40,7 @@ public interface ProductRepository extends JpaRepository<Product, Long>
     List<Product> findSelectedCategory(@Param("name") String name);
 
     //상품 상세 조회
-    @Query("select p from Product p where p.id = :id")
+    @Query("select p,lists from Product p join p.imageList lists where p.id = :id and lists.ord = 0")
     List<Product> findSelectedItem(@Param("id") Long id);
 
     //상품 상세 관련 상품 조회
