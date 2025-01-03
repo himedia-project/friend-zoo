@@ -16,6 +16,8 @@ public interface ContentRepositoryCustom {
 
     List<Content> findDetailListBy(String email, Long content_id);
 
+    List<Content> findHeartList(String email);
+
     List<Content> findTagsItem(String email, Long content_id);
 
     List<Content> findDetailTagList(Long content_id);

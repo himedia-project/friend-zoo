@@ -1,5 +1,11 @@
 package com.friendzoo.api.domain.heart.service;
 
+import com.friendzoo.api.domain.content.dto.ContentDTO;
+import com.friendzoo.api.domain.content.entity.Content;
+import com.friendzoo.api.domain.content.entity.ContentImage;
+import com.friendzoo.api.domain.content.repository.ContentRepository;
+import com.friendzoo.api.domain.content.service.ContentService;
+import com.friendzoo.api.domain.content.service.ContentServiceImpl;
 import com.friendzoo.api.domain.heart.entity.Heart;
 import com.friendzoo.api.domain.heart.repository.HeartRepository;
 import com.friendzoo.api.domain.member.entity.Member;
@@ -24,8 +30,10 @@ public class HeartServiceImpl implements HeartService {
     private final HeartRepository heartRepository;
 
     private final ProductService productService;
+    private final ContentRepository contentRepository;
 
     private final MemberService memberService;
+    private final ContentServiceImpl contentServiceImpl;
 
 //    @Override
 //    public List<HeartDTO> getHeartItemCheck(String email, Long id) {
@@ -91,6 +99,36 @@ public class HeartServiceImpl implements HeartService {
         return heartRepository.findProductListByMember(email).stream()
                 .map(productService::entityToDTO)
                 .collect(Collectors.toList());
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public List<ContentDTO> findContentListByMember(String email) {
+        List<Content> result = contentRepository.findHeartList(email);
+        List<ContentDTO> dtoResult =  result.stream().map(content -> {
+            // isHeart 여부 <- content, email
+            boolean isHeart = heartRepository.findHeartContent(email,content.getId());
+            if(isHeart == false){
+                return null;
+            }
+//            List<Content> getTags = contentRepository.findDetailTagList(content_id);
+            ContentDTO dto = ContentDTO.builder()
+                    .id(content.getId())
+                    .divisionId(content.getDivision().getId())
+                    .divisionName(content.getDivision().getName())
+                    .title(content.getTitle())
+                    .uploadFileNames(content.getImageList().stream().map(ContentImage::getImageName).toList())
+                    .heartCount((long) content.getHeartList().size())
+                    .isHeart(isHeart)
+                    .createdAt(content.getCreatedAt())
+                    .modifiedAt(content.getModifiedAt())
+                    .tags(content.getContentTagList().stream().map(contentTag -> contentTag.getTag().getName()).toList())
+//                    .tags()
+                    .build();
+
+            return dto;
+        }).toList();
+        return dtoResult;
     }
 
 

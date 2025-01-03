@@ -1,5 +1,6 @@
 package com.friendzoo.api.domain.heart.controller;
 
+import com.friendzoo.api.domain.content.dto.ContentDTO;
 import com.friendzoo.api.domain.heart.service.HeartService;
 import com.friendzoo.api.domain.product.dto.ProductDTO;
 import com.friendzoo.api.security.MemberDTO;
@@ -40,9 +41,15 @@ public class HeartController {
     }
 
     // 해당유저의 찜목록(상품)
-    @GetMapping("/product/list/user")
+    @GetMapping("/product/list")
     public List<ProductDTO> heartProductList(@AuthenticationPrincipal MemberDTO memberDTO) {
         return heartService.findProductListByMember(memberDTO.getEmail());
+    }
+
+    // 해당유저의 찜목록(상품)
+    @GetMapping("/content/list")
+    public List<ContentDTO> heartContentList(@AuthenticationPrincipal MemberDTO memberDTO) {
+        return heartService.findContentListByMember(memberDTO.getEmail());
     }
 
 
