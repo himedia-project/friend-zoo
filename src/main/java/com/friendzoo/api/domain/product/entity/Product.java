@@ -76,6 +76,7 @@ public class Product extends BaseEntity {
     @Builder.Default
     private List<ProductImage> imageList = new ArrayList<>();
 
+
     // 재고수량 감소
     public void removeStock(int stockNumber) {
         int restStock = this.stockNumber - stockNumber;
