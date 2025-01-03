@@ -18,6 +18,8 @@ import org.springframework.data.support.PageableExecutionUtils;
 
 import java.util.List;
 
+import static com.friendzoo.api.domain.content.entity.QContent.content;
+import static com.friendzoo.api.domain.heart.entity.QHeart.heart;
 import static com.friendzoo.api.domain.product.entity.QProduct.product;
 import static com.friendzoo.api.domain.product.entity.QProductImage.productImage;
 
@@ -81,6 +83,22 @@ public class ProductRepositoryImpl implements ProductRepositoryCustom {
         return queryFactory.selectFrom(product)
                 .where(product.id.in(idList))
                 .fetch();
+    }
+
+    @Override
+    public List<Product> findDetailProduct(String email,Long productId){
+        List<Product> list = queryFactory
+                .select(product)
+                .from(product)
+                .leftJoin(product.imageList, productImage).on(productImage.ord.eq(0))
+                .leftJoin(product.heartList, heart).on(heart.member.email.eq(email))
+                .where(
+                        product.delFlag.eq(false),
+                        product.id.eq(productId)
+                )
+                .fetch();
+
+        return list;
     }
 
 

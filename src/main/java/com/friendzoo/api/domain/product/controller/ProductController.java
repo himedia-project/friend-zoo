@@ -10,6 +10,7 @@ import com.friendzoo.api.domain.product.entity.Product;
 import com.friendzoo.api.domain.product.enums.ProductBest;
 import com.friendzoo.api.domain.product.service.ProductService;
 import com.friendzoo.api.props.JwtProps;
+import com.friendzoo.api.security.MemberDTO;
 import com.friendzoo.api.util.JWTUtil;
 import com.friendzoo.api.util.file.CustomFileUtil;
 import lombok.RequiredArgsConstructor;
@@ -64,14 +65,14 @@ public class ProductController {
         List<ProductDTO> dtoLists = productService.getSelectedCategory(name);
         return ResponseEntity.ok(dtoLists);
     }
-    @GetMapping("/detail/{id}")
-    public ResponseEntity<List<ProductDTO>> selectedItem(@PathVariable Long id) {
-        List<ProductDTO> dtoLists = productService.getSelectedItem(id);
+    @GetMapping("/detail/{productId}")
+    public ResponseEntity<List<ProductDTO>> selectedItem(@AuthenticationPrincipal MemberDTO memberDTO,@PathVariable Long productId) {
+        List<ProductDTO> dtoLists = productService.getSelectedItem(memberDTO.getEmail(),productId);
         return ResponseEntity.ok(dtoLists);
     }
-    @GetMapping("/detail/category/{category_id}")
-    public ResponseEntity<List<ProductDTO>> selectedCategoryItem(@PathVariable Long category_id) {
-        List<ProductDTO> dtoLists = productService.getSelectedCategoryItem(category_id);
+    @GetMapping("/detail/category/{categoryId}")
+    public ResponseEntity<List<ProductDTO>> selectedCategoryItem(@PathVariable Long categoryId) {
+        List<ProductDTO> dtoLists = productService.getSelectedCategoryItem(categoryId);
         return ResponseEntity.ok(dtoLists);
     }
 

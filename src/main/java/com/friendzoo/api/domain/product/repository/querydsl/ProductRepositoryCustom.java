@@ -12,4 +12,6 @@ public interface ProductRepositoryCustom {
     List<Product> findByIdList(List<Long> idList);
 
     Page<Product> findListBy(PageRequestDTO requestDTO);
+
+    List<Product> findDetailProduct(String email,Long productId);
 }

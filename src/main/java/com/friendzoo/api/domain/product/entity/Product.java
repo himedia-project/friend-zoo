@@ -1,5 +1,6 @@
 package com.friendzoo.api.domain.product.entity;
 
+import com.friendzoo.api.domain.heart.entity.Heart;
 import com.friendzoo.api.domain.product.enums.ProductBest;
 import com.friendzoo.api.domain.product.enums.ProductMdPick;
 import com.friendzoo.api.domain.test.entity.Test;
@@ -71,6 +72,9 @@ public class Product extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id")
     private Category category;
+
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
+    private List<Heart> heartList = new ArrayList<>();
 
     @ElementCollection
     @Builder.Default
