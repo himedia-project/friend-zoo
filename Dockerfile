@@ -19,5 +19,6 @@ RUN mv ${JAR_FILE} app.jar
 
 # 컨테이너가 실행될 때 실행될 명령어 지정
 # 오류남! 왜냐하면, spring.profiles.active=prod를 사용하려면, application.properties에 spring.profiles.active=prod를 추가해야함
-ENTRYPOINT ["java", "-jar", "app.jar"]
+#ENTRYPOINT ["java", "-jar", "app.jar"]
+ENTRYPOINT ["java", "-Dspring.profiles.active=prod", "-jar","app.jar"]
 
