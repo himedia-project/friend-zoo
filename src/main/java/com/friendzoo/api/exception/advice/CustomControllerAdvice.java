@@ -8,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -36,7 +37,7 @@ public class CustomControllerAdvice {
 
         String msg = e.getMessage();
 
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("msg", msg)); // "msg": "No value present"
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(getErrorMessage(msg)); // "msg": "No value present"
     }
 
     @ExceptionHandler(EntityNotFoundException.class)
@@ -44,7 +45,7 @@ public class CustomControllerAdvice {
 
         String msg = e.getMessage();
 
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("msg", msg));
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(getErrorMessage(msg));
     }
 
     // 따라서, NoSuchElementException은 컬렉션이나 옵셔널에서 주로 사용되며,
@@ -63,7 +64,7 @@ public class CustomControllerAdvice {
 
         String msg = e.getMessage();
 
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("error", msg));
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(getErrorMessage(msg));
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
@@ -88,7 +89,7 @@ public class CustomControllerAdvice {
      */
 
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
-    public ResponseEntity<String>
+    public ResponseEntity<?>
     handleMethodArgumentTypeMismatch(MethodArgumentTypeMismatchException
                                              ex) {
         String errorMessage = String.format(
@@ -96,7 +97,7 @@ public class CustomControllerAdvice {
                 ex.getValue(),
                 ex.getRequiredType().getSimpleName()
         );
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorMessage);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(getErrorMessage(errorMessage));
     }
 
     /**
@@ -106,10 +107,10 @@ public class CustomControllerAdvice {
      * @return ResponseEntity
      */
     @ExceptionHandler(HttpMessageNotReadableException.class)
-    public ResponseEntity<String>
+    public ResponseEntity<?>
     handleHttpMessageNotReadableException(HttpMessageNotReadableException ex) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                .body("Invalid request body: " + ex.getMessage());
+                .body(getErrorMessage(ex.getMessage()));
     }
 
     @ExceptionHandler(CustomJWTException.class)
@@ -117,7 +118,7 @@ public class CustomControllerAdvice {
 
         String msg = e.getMessage();
 
-        return ResponseEntity.ok().body(Map.of("error", msg));
+        return ResponseEntity.ok().body(getErrorMessage(msg));
     }
 
     @ExceptionHandler(OutOfStockException.class)
@@ -125,7 +126,30 @@ public class CustomControllerAdvice {
 
         String msg = e.getMessage();
 
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("error", msg));
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(getErrorMessage(msg));
+    }
+
+
+    @ExceptionHandler(UsernameNotFoundException.class)
+    protected ResponseEntity<?> handleUsernameNotFoundException(UsernameNotFoundException e) {
+
+        String msg = e.getMessage();
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(getErrorMessage(msg));
+    }
+
+    // 그외 나머지 exception들은 모두 이곳에서 처리
+    @ExceptionHandler(Exception.class)
+    protected ResponseEntity<?> handleException(Exception e) {
+
+        String msg = e.getMessage();
+
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(getErrorMessage(msg));
+    }
+
+
+    private static Map<String, String> getErrorMessage(String msg) {
+        return Map.of("errMsg", msg);
     }
 
 }
