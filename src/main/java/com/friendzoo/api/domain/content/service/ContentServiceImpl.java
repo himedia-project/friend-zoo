@@ -3,31 +3,16 @@ package com.friendzoo.api.domain.content.service;
 import com.friendzoo.api.domain.content.dto.ContentDTO;
 import com.friendzoo.api.domain.content.entity.Content;
 import com.friendzoo.api.domain.content.entity.ContentImage;
-import com.friendzoo.api.domain.content.entity.ContentTag;
-import com.friendzoo.api.domain.content.entity.Tag;
 import com.friendzoo.api.domain.content.repository.ContentRepository;
 import com.friendzoo.api.domain.heart.repository.HeartRepository;
-import com.friendzoo.api.domain.product.dto.ProductDTO;
-import com.friendzoo.api.domain.product.entity.Product;
-import com.friendzoo.api.domain.product.entity.ProductImage;
-import com.friendzoo.api.dto.PageRequestDTO;
-import com.friendzoo.api.dto.PageResponseDTO;
-import com.querydsl.core.QueryFactory;
-import com.querydsl.core.Tuple;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.stream.Collectors;
-
-import static com.friendzoo.api.domain.content.entity.QContent.content;
-import static com.friendzoo.api.domain.content.entity.QContentImage.contentImage;
-import static com.friendzoo.api.domain.heart.entity.QHeart.heart;
 
 @Slf4j
 @Transactional
@@ -54,7 +39,7 @@ public class ContentServiceImpl implements ContentService {
         // heartService email
               List<ContentDTO> dtoResult =  result.stream().map(content -> {
                        // isHeart 여부 <- content, email
-                    boolean isHeart = heartRepository.findHeartContent(email,content.getId());
+                    boolean isHeart = heartRepository.findExistedHeartContent(email,content.getId());
                     ContentDTO dto = ContentDTO.builder()
                             .id(content.getId())
                             .divisionName(content.getDivision().getName())
@@ -70,13 +55,14 @@ public class ContentServiceImpl implements ContentService {
                 }).toList();
         return dtoResult;
     }
+
     @Override
     public List<ContentDTO> findDetailListBy(String email,Long content_id) {
         List<Content> result = contentRepository.findDetailListBy(email,content_id);
         // heartService email
         List<ContentDTO> dtoResult =  result.stream().map(content -> {
             // isHeart 여부 <- content, email
-            boolean isHeart = heartRepository.findHeartContent(email,content.getId());
+            boolean isHeart = heartRepository.findExistedHeartContent(email,content.getId());
 //            List<Content> getTags = contentRepository.findDetailTagList(content_id);
             ContentDTO dto = ContentDTO.builder()
                     .id(content.getId())
@@ -103,7 +89,7 @@ public class ContentServiceImpl implements ContentService {
         // heartService email
         List<ContentDTO> dtoResult =  result.stream().map(content -> {
             // isHeart 여부 <- content, email
-            boolean isHeart = heartRepository.findHeartContent(email,content.getId());
+            boolean isHeart = heartRepository.findExistedHeartContent(email,content.getId());
             ContentDTO dto = ContentDTO.builder()
                     .id(content.getId())
                     .divisionId(content.getDivision().getId())
@@ -146,5 +132,13 @@ public class ContentServiceImpl implements ContentService {
 //                .pageRequestDTO(requestDTO)
 //                .build();
 //    }
+
+
+    @Transactional(readOnly = true)
+    @Override
+    public Content getEntity(Long contentId) {
+        return contentRepository.findById(contentId)
+                .orElseThrow(() -> new EntityNotFoundException("해당 컨텐츠가 존재하지 않습니다. contentId: " + contentId));
+    }
 
 }

@@ -46,7 +46,7 @@ public class HeartController {
         return heartService.findProductListByMember(memberDTO.getEmail());
     }
 
-    // 해당유저의 찜목록(상품)
+    // 해당유저의 찜목록(콘텐츠)
     @GetMapping("/content/list")
     public List<ContentDTO> heartContentList(@AuthenticationPrincipal MemberDTO memberDTO) {
         return heartService.findContentListByMember(memberDTO.getEmail());
