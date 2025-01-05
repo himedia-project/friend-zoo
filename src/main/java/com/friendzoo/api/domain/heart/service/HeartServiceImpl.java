@@ -5,7 +5,6 @@ import com.friendzoo.api.domain.content.entity.Content;
 import com.friendzoo.api.domain.content.entity.ContentImage;
 import com.friendzoo.api.domain.content.repository.ContentRepository;
 import com.friendzoo.api.domain.content.service.ContentService;
-import com.friendzoo.api.domain.content.service.ContentServiceImpl;
 import com.friendzoo.api.domain.heart.entity.Heart;
 import com.friendzoo.api.domain.heart.repository.HeartRepository;
 import com.friendzoo.api.domain.member.entity.Member;
@@ -33,7 +32,7 @@ public class HeartServiceImpl implements HeartService {
     private final ContentRepository contentRepository;
 
     private final MemberService memberService;
-    private final ContentServiceImpl contentServiceImpl;
+    private final ContentService contentService;
 
 //    @Override
 //    public List<HeartDTO> getHeartItemCheck(String email, Long id) {
@@ -91,6 +90,20 @@ public class HeartServiceImpl implements HeartService {
     @Override
     public void heartContent(Long contentId, String email) {
 
+        Content content = this.contentService.getEntity(contentId);
+        Member member = this.memberService.getMember(email);
+        Optional<Heart> heartContent = heartRepository.findHeartContent(email, contentId);
+        if (heartContent.isPresent()) {
+            // heart o -> heart 삭제
+            heartRepository.delete(heartContent.get());
+        } else {
+            //   heart x -> heart 생성
+            Heart heart = Heart.builder().member(member)
+                    .product(null)
+                    .content(content)
+                    .build();
+            heartRepository.save(heart);
+        }
     }
 
     @Transactional(readOnly = true)
@@ -107,7 +120,7 @@ public class HeartServiceImpl implements HeartService {
         List<Content> result = contentRepository.findHeartList(email);
         List<ContentDTO> dtoResult =  result.stream().map(content -> {
             // isHeart 여부 <- content, email
-            boolean isHeart = heartRepository.findHeartContent(email,content.getId());
+            boolean isHeart = heartRepository.findExistedHeartContent(email,content.getId());
             if(isHeart == false){
                 return null;
             }
