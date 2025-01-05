@@ -27,21 +27,33 @@ public class ContentController {
 
     @GetMapping("/list")
     public ResponseEntity<List<ContentDTO>> getList(@AuthenticationPrincipal MemberDTO memberDTO) {
-        List<ContentDTO> dto = contentService.findListBy(memberDTO.getEmail());
+        String email = "";
+        if(memberDTO != null) {
+            email = memberDTO.getEmail();
+        }
+        List<ContentDTO> dto = contentService.findListBy(email);
 
         return ResponseEntity.ok(dto);
     }
 
     @GetMapping("/detail/{contentId}")
     public ResponseEntity<List<ContentDTO>> getDetailList(@AuthenticationPrincipal MemberDTO memberDTO,@PathVariable Long contentId) {
-        List<ContentDTO> dto = contentService.findDetailListBy(memberDTO.getEmail(),contentId);
+        String email = "";
+        if(memberDTO != null) {
+            email = memberDTO.getEmail();
+        }
+        List<ContentDTO> dto = contentService.findDetailListBy(email,contentId);
 
         return ResponseEntity.ok(dto);
     }
 
     @GetMapping("/search/tags/{tagId}")
     public ResponseEntity<List<ContentDTO>> getTagList(@AuthenticationPrincipal MemberDTO memberDTO,@PathVariable Long tagId) {
-        List<ContentDTO> dto = contentService.findTagsItem(memberDTO.getEmail(),tagId);
+        String email = "";
+        if(memberDTO != null) {
+            email = memberDTO.getEmail();
+        }
+        List<ContentDTO> dto = contentService.findTagsItem(email,tagId);
 
         return ResponseEntity.ok(dto);
     }
