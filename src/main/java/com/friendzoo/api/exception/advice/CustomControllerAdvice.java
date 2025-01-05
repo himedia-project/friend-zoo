@@ -13,6 +13,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
+import org.springframework.web.servlet.NoHandlerFoundException;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -146,6 +147,16 @@ public class CustomControllerAdvice {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(getErrorMessage(msg));
     }
 
+    // url path 가 틀려서 나오는 exception NoHandlerFoundException
+    // 404 에러 처리
+    @ExceptionHandler(NoHandlerFoundException.class)
+    protected ResponseEntity<?> handleNoHandlerFoundException(NoHandlerFoundException e) {
+        String msg = e.getMessage();
+        log.error("NoHandlerFoundException: {}", msg);
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(getErrorMessage(msg));
+    }
+
     // 그외 나머지 exception들은 모두 이곳에서 처리
     @ExceptionHandler(Exception.class)
     protected ResponseEntity<?> handleException(Exception e) {
@@ -155,6 +166,7 @@ public class CustomControllerAdvice {
 
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(getErrorMessage(msg));
     }
+
 
 
     private static Map<String, String> getErrorMessage(String msg) {

@@ -23,6 +23,6 @@ public class JoinRequestDTO {
     private String password;
     @NotBlank(message = "전화번호는 필수 입력 값입니다.")
     private String phone;
-    @NotNull(message = "USER 또는 ADMIN 중 하나를 입력해주세요.")
+
     private MemberRole role;
 }

@@ -4,6 +4,7 @@ package com.friendzoo.api.domain.member.controller;
 import com.friendzoo.api.domain.member.dto.JoinRequestDTO;
 import com.friendzoo.api.domain.member.dto.LoginDTO;
 import com.friendzoo.api.domain.member.dto.MemberTestDTO;
+import com.friendzoo.api.domain.member.enums.MemberRole;
 import com.friendzoo.api.domain.member.service.MemberService;
 import com.friendzoo.api.props.JwtProps;
 import com.friendzoo.api.util.CookieUtil;
@@ -34,6 +35,8 @@ public class MemberController {
     @PostMapping("/join")
     public ResponseEntity<?> join(@Valid @RequestBody JoinRequestDTO request) {
         log.info("join: {}", request);
+        // 회원가입시, USER 권한을 부여
+        request.setRole(MemberRole.USER);
         memberService.join(request);
         return ResponseEntity.ok().build();
     }
