@@ -17,7 +17,9 @@ import java.util.Map;
 public interface ProductService {
 
 
-    List<ProductDTO> getProducts(ProductDTO productDTO);
+    List<ProductDTO> getBestProducts(ProductDTO productDTO);
+
+    List<ProductDTO> getMdPickProducts(ProductDTO productDTO);
 
     List<ProductDTO> getNewProduct(ProductDTO productDTO);
 
