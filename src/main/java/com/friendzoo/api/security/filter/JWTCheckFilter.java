@@ -85,18 +85,18 @@ public class JWTCheckFilter extends OncePerRequestFilter {
 
         String autHeaderStr = request.getHeader("Authorization");
 
-        if (autHeaderStr == null
-                || request.getServletPath().startsWith("/api/product/list")
-                || request.getServletPath().startsWith("/api/product/new")
-                || request.getServletPath().startsWith("/api/product/detail")
-                || request.getServletPath().startsWith("/api/content/list")
-                || request.getServletPath().startsWith("/api/content/detail")
-                || request.getServletPath().startsWith("/api/content/search")
-
-        ) {
-            filterChain.doFilter(request, response);
-            return;
-        }
+//        if (autHeaderStr == null
+//                || request.getServletPath().startsWith("/api/product/list")
+//                || request.getServletPath().startsWith("/api/product/new")
+//                || request.getServletPath().startsWith("/api/product/detail")
+//                || request.getServletPath().startsWith("/api/content/list")
+//                || request.getServletPath().startsWith("/api/content/detail")
+//                || request.getServletPath().startsWith("/api/content/search")
+//
+//        ) {
+//            filterChain.doFilter(request, response);
+//            return;
+//        }
 
         try {
             // Bearer accessToken 형태로 전달되므로 Bearer 제거

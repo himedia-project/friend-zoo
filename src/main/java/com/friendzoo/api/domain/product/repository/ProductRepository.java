@@ -28,12 +28,15 @@ public interface ProductRepository extends JpaRepository<Product, Long>
     List<Product> findBestProducts();
 
     //MdPick 상품 조회
-    @Query("select p from Product p where p.mdPick= 'Y'")
+    @Query("select p from Product p join p.imageList lists where p.mdPick= 'Y' and lists.ord = 0")
     List<Product> findMdPickProducts();
 
     //New 상품 순서 조회
     @Query("select p from Product p")
     List<Product> findNewProducts(Sort createdAt);
+
+    @Query("select p,lists from Product p join p.imageList lists where lists.ord = 0")
+    List<Product> findAllProducts();
 
     //Search 시 이름으로 검색 조회
     @Query("select p from Product p where p.name LIKE CONCAT('%',:name,'%')")
