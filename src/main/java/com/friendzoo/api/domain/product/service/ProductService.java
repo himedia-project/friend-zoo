@@ -47,6 +47,7 @@ public interface ProductService {
                 .uploadFileNames(product.getImageList().stream().map(ProductImage::getImageName).toList())
                 .description(product.getDescription())
                 .stockNumber(product.getStockNumber())
+                .isHeart(product.getIsHeart())
                 .categoryId(product.getCategory().getId())
                 .createdAt(product.getCreatedAt())
                 .modifiedAt(product.getModifiedAt())
