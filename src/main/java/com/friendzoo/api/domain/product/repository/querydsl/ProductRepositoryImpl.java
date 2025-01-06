@@ -86,8 +86,8 @@ public class ProductRepositoryImpl implements ProductRepositoryCustom {
     }
 
     @Override
-    public List<Product> findDetailProduct(String email,Long productId){
-        List<Product> list = queryFactory
+    public Product findDetailProduct(String email,Long productId){
+        return queryFactory
                 .select(product)
                 .from(product)
                 .leftJoin(product.imageList, productImage).on(productImage.ord.eq(0))
@@ -96,9 +96,7 @@ public class ProductRepositoryImpl implements ProductRepositoryCustom {
                         product.delFlag.eq(false),
                         product.id.eq(productId)
                 )
-                .fetch();
-
-        return list;
+                .fetchOne();
     }
 
 

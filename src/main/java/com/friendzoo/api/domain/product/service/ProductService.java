@@ -23,7 +23,7 @@ public interface ProductService {
 
     List<ProductDTO> getSelectedCategory(String name);
 
-    List<ProductDTO> getSelectedItem(String email,Long id);
+    ProductDTO getSelectedItem(String email,Long id);
 
     List<ProductDTO> getSelectedCategoryItem(Long id);
 

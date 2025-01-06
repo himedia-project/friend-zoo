@@ -66,14 +66,14 @@ public class ProductController {
         return ResponseEntity.ok(dtoLists);
     }
     @GetMapping("/detail/{productId}")
-    public ResponseEntity<List<ProductDTO>> selectedItem(@AuthenticationPrincipal MemberDTO memberDTO,@PathVariable Long productId) {
+    public ResponseEntity<ProductDTO> selectedItem(@AuthenticationPrincipal MemberDTO memberDTO,@PathVariable Long productId) {
         String email = "";
         if(memberDTO != null) {
             email = memberDTO.getEmail();
         }
-            List<ProductDTO> dtoLists = productService.getSelectedItem(email, productId);
+        ProductDTO selectedItem = productService.getSelectedItem(email, productId);
 
-        return ResponseEntity.ok(dtoLists);
+        return ResponseEntity.ok(selectedItem);
     }
     @GetMapping("/detail/category/{categoryId}")
     public ResponseEntity<List<ProductDTO>> selectedCategoryItem(@PathVariable Long categoryId) {
