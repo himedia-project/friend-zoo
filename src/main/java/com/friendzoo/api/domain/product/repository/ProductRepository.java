@@ -20,34 +20,34 @@ public interface ProductRepository extends JpaRepository<Product, Long>
 //    @Query("select p from Product p where p.id = :pno")
 //    Optional<Product> selectOne(@Param("pno") Long pno);
 
-    @Query("select p from Product p where p.name = :name")
+    @Query("select p from Product p where p.name = :name and p.delFlag = false")
     Optional<Product> findByProduct(@Param("name") String name);
 
     //Best 상품 조회
-    @Query("select p,lists from Product p join p.imageList lists where p.best= 'Y' and lists.ord = 0")
+    @Query("select p,lists from Product p join p.imageList lists where p.best= 'Y' and lists.ord = 0 and p.delFlag = false")
     List<Product> findBestProducts();
 
     //MdPick 상품 조회
-    @Query("select p from Product p join p.imageList lists where p.mdPick= 'Y' and lists.ord = 0")
+    @Query("select p from Product p join p.imageList lists where p.mdPick= 'Y' and lists.ord = 0 and p.delFlag = false")
     List<Product> findMdPickProducts();
 
     //New 상품 순서 조회
-    @Query("select p from Product p")
+    @Query("select p from Product p where p.delFlag = false")
     List<Product> findNewProducts(Sort createdAt);
 
-    @Query("select p,lists from Product p join p.imageList lists where lists.ord = 0")
+    @Query("select p,lists from Product p join p.imageList lists where lists.ord = 0 and p.delFlag = false")
     List<Product> findAllProducts();
 
     //Search 시 이름으로 검색 조회
-    @Query("select p from Product p where p.name LIKE CONCAT('%',:name,'%')")
+    @Query("select p from Product p where p.name LIKE CONCAT('%',:name,'%') and p.delFlag = false")
     List<Product> findSelectedCategory(@Param("name") String name);
 
     //상품 상세 조회
-    @Query("select p,lists from Product p join p.imageList lists where p.id = :id and lists.ord = 0")
+    @Query("select p,lists from Product p join p.imageList lists where p.id = :id and lists.ord = 0 and p.delFlag = false")
     List<Product> findSelectedItem(@Param("id") Long id);
 
     //상품 상세 관련 상품 조회
-    @Query("select p from Product p where p.category.id = :id")
+    @Query("select p from Product p where p.category.id = :id and p.delFlag = false")
     List<Product> findrelatedItem(@Param("id") Long id);
 
     //상품 삭제
