@@ -76,9 +76,8 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<ProductDTO> getSelectedItem(String email,Long productId) {
-        List<Product> dtoLists = productRepository.findDetailProduct(email,productId);
-        List<ProductDTO> dtoResult =  dtoLists.stream().map(product -> {
+    public ProductDTO getSelectedItem(String email,Long productId) {
+        Product product = productRepository.findDetailProduct(email,productId);
             // isHeart 여부 <- product, email
             boolean isHeart = heartRepository.findProductHeart(email,product.getId());
             ProductDTO dto = ProductDTO.builder()
@@ -98,9 +97,7 @@ public class ProductServiceImpl implements ProductService {
                     .discountPrice(product.getDiscountPrice())
                     .build();
 
-            return dto;
-        }).toList();
-        return dtoResult;
+        return dto;
     }
 
     @Override
