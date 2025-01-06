@@ -162,4 +162,8 @@ public class Product extends BaseEntity {
     public void changeCategory(Category category) {
         this.category = category;
     }
+
+    public boolean getIsHeart() {
+        return !this.heartList.isEmpty();
+    }
 }
