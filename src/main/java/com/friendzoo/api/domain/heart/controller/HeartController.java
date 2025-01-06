@@ -29,27 +29,43 @@ public class HeartController {
     // 찜하기/찜하기 취소 상품
     @PostMapping("/product/{productId}")
     public ResponseEntity<?> heartProduct(@PathVariable Long productId, @AuthenticationPrincipal MemberDTO memberDTO) {
-        heartService.heartProduct(productId, memberDTO.getEmail());
+        String email = "";
+        if(memberDTO != null) {
+            email = memberDTO.getEmail();
+        }
+        heartService.heartProduct(productId, email);
         return ResponseEntity.ok().build();
     }
 
     // 찜하기/찜하기 취소 콘텐츠
     @PostMapping("/content/{contentId}")
     public ResponseEntity<?> heartContent(@PathVariable Long contentId, @AuthenticationPrincipal MemberDTO memberDTO) {
-        heartService.heartContent(contentId, memberDTO.getEmail());
+        String email = "";
+        if(memberDTO != null) {
+            email = memberDTO.getEmail();
+        }
+        heartService.heartContent(contentId, email);
         return ResponseEntity.ok().build();
     }
 
     // 해당유저의 찜목록(상품)
     @GetMapping("/product/list")
     public List<ProductDTO> heartProductList(@AuthenticationPrincipal MemberDTO memberDTO) {
-        return heartService.findProductListByMember(memberDTO.getEmail());
+        String email = "";
+        if(memberDTO != null) {
+            email = memberDTO.getEmail();
+        }
+        return heartService.findProductListByMember(email);
     }
 
     // 해당유저의 찜목록(콘텐츠)
     @GetMapping("/content/list")
     public List<ContentDTO> heartContentList(@AuthenticationPrincipal MemberDTO memberDTO) {
-        return heartService.findContentListByMember(memberDTO.getEmail());
+        String email = "";
+        if(memberDTO != null) {
+            email = memberDTO.getEmail();
+        }
+        return heartService.findContentListByMember(email);
     }
 
 
