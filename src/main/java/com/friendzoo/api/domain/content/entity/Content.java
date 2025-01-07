@@ -49,9 +49,11 @@ public class Content extends BaseEntity {
     @Builder.Default
     private List<ContentImage> imageList = new ArrayList<>();
 
+    @Builder.Default
     @OneToMany(mappedBy = "content", cascade = CascadeType.ALL)
     private List<ContentTag> contentTagList = new ArrayList<>();
 
+    @Builder.Default
     @OneToMany(mappedBy = "content", cascade = CascadeType.ALL)
     private List<Heart> heartList = new ArrayList<>();
 
