@@ -75,6 +75,7 @@ public class AdminProductServiceImpl implements AdminProductService {
 
         // 실제 저장 처리
         Product result = productRepository.save(this.dtoToEntity(dto, category));
+        log.info("result: {}", result);
 
         return result.getId();
     }
