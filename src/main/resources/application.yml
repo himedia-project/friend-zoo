@@ -26,7 +26,7 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: update # 테이블 생성 및 업데이트 전략 (create, create-drop, update, validate, none)
+      ddl-auto: create # 테이블 생성 및 업데이트 전략 (create, create-drop, update, validate, none)
     properties:
       hibernate:
         format_sql: true # SQL 포맷팅
@@ -135,11 +135,6 @@ spring:
       max-lifetime: 600000  # 최대 수명 (밀리초)
       idle-timeout: 300000 # 유휴 시간 (밀리초)
       connection-timeout: 30000 # 연결 시간 초과 (밀리초)
-
-app:
-  aws:
-    ec2:
-      instance-front-url: http://43.203.42.37
 
 logging:
   level:
