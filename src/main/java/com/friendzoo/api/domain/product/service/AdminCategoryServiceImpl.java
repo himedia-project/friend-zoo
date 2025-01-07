@@ -5,6 +5,7 @@ import com.friendzoo.api.domain.product.entity.Category;
 import com.friendzoo.api.domain.product.repository.CategoryRepository;
 import com.friendzoo.api.domain.product.repository.ProductRepository;
 import com.friendzoo.api.util.file.CustomFileUtil;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -44,6 +45,25 @@ public class AdminCategoryServiceImpl implements AdminCategoryService {
     }
 
     @Override
+    public Long modify(Long categoryId, CategoryDTO categoryDTO) {
+        Category category = this.getEntity(categoryId);
+
+        // 파일 s3 업로드 & 기존 파일 삭제
+        if (categoryDTO.getFile() != null || categoryDTO.getFile().isEmpty()) {
+
+            if(category.getLogo() != null) {
+                fileUtil.deleteS3File(category.getLogo());
+            }
+
+            MultipartFile file = categoryDTO.getFile();
+            String uploadFileName = fileUtil.uploadS3File(file);
+            category.setLogo(uploadFileName);
+        }
+
+        return category.getId();
+    }
+
+    @Override
     public void remove(Long categoryId) {
 
         // 연관관계가 있는 카테고리라면 삭제 불가능
@@ -52,5 +72,16 @@ public class AdminCategoryServiceImpl implements AdminCategoryService {
         }
 
         categoryRepository.deleteById(categoryId);
+    }
+
+
+    /**
+     * entity를 찾기
+     * @param categoryId 카테고리 id
+     * @return 카테고리 entity
+     */
+    private Category getEntity(Long categoryId) {
+        return categoryRepository.findById(categoryId)
+                .orElseThrow(() -> new EntityNotFoundException("해당 카테고리가 존재하지 않습니다. id: " + categoryId));
     }
 }

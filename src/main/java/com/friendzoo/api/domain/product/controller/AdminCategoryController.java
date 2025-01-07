@@ -32,6 +32,14 @@ public class AdminCategoryController {
         return ResponseEntity.ok(categoryId);
     }
 
+    // 카테고리 수정
+    @PutMapping("/{id}")
+    public ResponseEntity<Long> modify(@PathVariable Long id, CategoryDTO categoryDTO) {
+        log.info("modify: categoryId {}, categoryDTO {}", id, categoryDTO);
+        Long categoryId = categoryService.modify(id, categoryDTO);
+        return ResponseEntity.ok(categoryId);
+    }
+
     // 카테고리 삭제
     @DeleteMapping("/{id}")
     public ResponseEntity<String> remove(@PathVariable Long id) {

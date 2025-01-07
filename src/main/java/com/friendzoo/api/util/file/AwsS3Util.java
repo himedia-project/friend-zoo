@@ -64,10 +64,12 @@ public class AwsS3Util {
         String thumbnailFileName = "s_" + UUID.randomUUID().toString() + "-" + originalFilename;
         Path thumbnailPath = null;
         try {
+            String extension = originalFilename.substring(originalFilename.lastIndexOf(".") + 1).toLowerCase();
             thumbnailPath = Paths.get(thumbnailFileName);
             // 썸네일 생성
             Thumbnails.of(file.getInputStream())
                     .size(400, 400)
+                    .outputFormat(extension)  // 원본 파일의 확장자를 사용
                     .toFile(thumbnailPath.toFile());
 
             // S3에 썸네일 업로드
@@ -139,6 +141,14 @@ public class AwsS3Util {
         for (String fileName : fileNames) {
             s3Client.deleteObject(bucketName, fileName);
         }
+    }
+
+    /**
+     * S3에 파일 삭제
+     * @param fileName  파일 이름
+     */
+    public void deleteFile(String fileName) {
+        s3Client.deleteObject(bucketName, fileName);
     }
 
     /**

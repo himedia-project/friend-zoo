@@ -11,6 +11,8 @@ public interface AdminCategoryService {
 
     Long register(CategoryDTO categoryDTO);
 
+    Long modify(Long id, CategoryDTO categoryDTO);
+
     void remove(Long contentId);
 
     default Category dtoToEntity(CategoryDTO dto) {
@@ -28,4 +30,5 @@ public interface AdminCategoryService {
                 .logo(category.getLogo())
                 .build();
     }
+
 }
