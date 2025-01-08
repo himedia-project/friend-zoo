@@ -26,7 +26,7 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: update # 테이블 생성 및 업데이트 전략 (create, create-drop, update, validate, none)
+      ddl-auto: create # 테이블 생성 및 업데이트 전략 (create, create-drop, update, validate, none)
     properties:
       hibernate:
         format_sql: true # SQL 포맷팅
