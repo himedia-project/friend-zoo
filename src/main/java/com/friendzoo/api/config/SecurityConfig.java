@@ -134,8 +134,8 @@ public class SecurityConfig {
         configuration.setAllowedOrigins(Arrays.asList("http://localhost:3000", "http://localhost:3001",
                 "http://43.200.239.220","http://43.200.239.220:3000", "http://43.200.239.220:3001", // EC2 퍼블릭 IP 3000, 3001 포트 허용
                 "https://openapi.map.naver.com",
-                "https://friendzoo.shop","https://friendzoo.shop:3000", "https://friendzoo.shop:3001",
-                "https://friendzoo.store", "https://friendzoo.store:3000", "https://friendzoo.store:3001"
+                "http://friendzoo.shop","http://friendzoo.shop:3000", "http://friendzoo.shop:3001",
+                "http://friendzoo.store", "http://friendzoo.store:3000", "http://friendzoo.store:3001"
         ));
         // 허용할 메서드 설정
         configuration.setAllowedMethods(Arrays.asList("HEAD", "GET", "POST", "PUT", "DELETE", "OPTIONS"));
