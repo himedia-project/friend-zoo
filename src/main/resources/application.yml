@@ -26,13 +26,19 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: update # 테이블 생성 및 업데이트 전략 (create, create-drop, update, validate, none)
+      ddl-auto: create # 테이블 생성 및 업데이트 전략 (create, create-drop, update, validate, none)
+    defer-datasource-initialization: true   # DataSource 초기화 지연
     properties:
       hibernate:
+        dialect: org.hibernate.dialect.MySQL8Dialect # Hibernate Dialect 설정
         format_sql: true # SQL 포맷팅
         highlight_sql: true # SQL 하이라이트 출력
         use_sql_comments: true # JPQL SQL 주석 사용
         default_batch_fetch_size: 100 # 기본 배치 크기 설정
+  sql:
+    init:
+      mode: embedded # SQL 초기화 모드 (always, never, embedded, embedded-always)
+
 
 app:
   props:
@@ -100,6 +106,12 @@ spring:
     username: sa
     password:
 
+logging:
+  level:
+    org.hibernate.SQL: debug # Hibernate SQL 로그 레벨
+    org.hibernate.orm.jdbc.bind: trace # Hibernate SQL 바인딩 로그 레벨
+    org.springframework.transaction.interceptor: trace # Spring 트랜잭션 인터셉터 로그 레벨
+
 ---
 
 spring:
@@ -124,7 +136,13 @@ logging:
 spring:
   config:
     activate:
-      on-profile: prod
+      on-profile: prod  # 운영 환경
+  jpa:
+    hibernate:
+      ddl-auto: none
+  sql:
+    init:
+      mode: never
 
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
