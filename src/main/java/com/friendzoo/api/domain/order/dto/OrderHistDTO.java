@@ -24,7 +24,7 @@ public class OrderHistDTO {
 
     private String email;       // 주문자 이메일
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
     private LocalDateTime orderDate;    // 주문 날짜
 
     private OrderStatus orderStatus;    // 주문 상태
