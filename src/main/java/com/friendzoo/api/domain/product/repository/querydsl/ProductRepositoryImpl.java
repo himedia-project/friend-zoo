@@ -77,8 +77,6 @@ public class ProductRepositoryImpl implements ProductRepositoryCustom {
     }
 
 
-
-
     @Override
     public List<Product> findByIdList(List<Long> idList) {
         return queryFactory.selectFrom(product)
@@ -87,7 +85,7 @@ public class ProductRepositoryImpl implements ProductRepositoryCustom {
     }
 
     @Override
-    public Product findDetailProduct(String email,Long productId){
+    public Product findDetailProduct(String email, Long productId) {
 
         return queryFactory
                 .select(product)
@@ -106,10 +104,11 @@ public class ProductRepositoryImpl implements ProductRepositoryCustom {
 
     /**
      * Sort 정보를 OrderSpecifier 배열로 변환
+     *
      * @param sort Sort 정보
      * @return OrderSpecifier 배열
      */
-    private OrderSpecifier [] createOrderSpecifier(Sort sort) {
+    private OrderSpecifier[] createOrderSpecifier(Sort sort) {
         return sort.stream()
                 .map(order -> new OrderSpecifier(
                         order.isAscending() ? Order.ASC : Order.DESC,
@@ -119,22 +118,23 @@ public class ProductRepositoryImpl implements ProductRepositoryCustom {
     }
 
     private BooleanExpression eqCategoryId(Long categoryId) {
-        if(categoryId == null) {
+        if (categoryId == null) {
             return null;
         }
         return product.category.id.eq(categoryId);
     }
 
     private BooleanExpression containsKeyword(String keyword) {
-        if(keyword == null || keyword.isBlank()) {
+        if (keyword == null || keyword.isBlank()) {
             return null;
         }
-        return product.name.like("%" + keyword + "%");
+        return product.name.like("%" + keyword + "%")
+                .or(product.category.name.like("%" + keyword + "%"));
     }
 
 
     private BooleanExpression eqEmail(String email) {
-        if(email == null || email.isBlank()) {
+        if (email == null || email.isBlank()) {
             return null;
         }
         return member.email.eq(email);
