@@ -68,6 +68,7 @@ public class ProductServiceImpl implements ProductService {
         return dtoList;
     }
 
+    @Transactional(readOnly = true)
     @Override
     public ProductDTO getSelectedItem(String email,Long productId) {
         Product product = productRepository.findDetailProduct(email,productId);

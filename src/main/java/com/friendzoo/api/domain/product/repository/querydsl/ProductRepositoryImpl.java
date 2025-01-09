@@ -20,6 +20,7 @@ import java.util.List;
 
 import static com.friendzoo.api.domain.content.entity.QContent.content;
 import static com.friendzoo.api.domain.heart.entity.QHeart.heart;
+import static com.friendzoo.api.domain.member.entity.QMember.*;
 import static com.friendzoo.api.domain.product.entity.QProduct.product;
 import static com.friendzoo.api.domain.product.entity.QProductImage.productImage;
 
@@ -87,15 +88,17 @@ public class ProductRepositoryImpl implements ProductRepositoryCustom {
 
     @Override
     public Product findDetailProduct(String email,Long productId){
+
         return queryFactory
                 .select(product)
                 .from(product)
                 .leftJoin(product.imageList, productImage).on(productImage.ord.eq(0))
                 .leftJoin(product.heartList, heart).fetchJoin()
+                .leftJoin(heart.member, member)
                 .where(
                         product.delFlag.eq(false),
                         product.id.eq(productId),
-                        product.heartList.any().member.email.eq(email)
+                        eqEmail(email)
                 )
                 .fetchOne();
     }
@@ -130,4 +133,10 @@ public class ProductRepositoryImpl implements ProductRepositoryCustom {
     }
 
 
+    private BooleanExpression eqEmail(String email) {
+        if(email == null || email.isBlank()) {
+            return null;
+        }
+        return member.email.eq(email);
+    }
 }
