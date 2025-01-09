@@ -72,25 +72,7 @@ public class ProductServiceImpl implements ProductService {
     public ProductDTO getSelectedItem(String email,Long productId) {
         Product product = productRepository.findDetailProduct(email,productId);
             // isHeart 여부 <- product, email
-            boolean isHeart = heartRepository.findProductHeart(email,product.getId());
-            ProductDTO dto = ProductDTO.builder()
-                    .id(product.getId())
-                    .name(product.getName())
-                    .category(product.getCategory() != null ? product.getCategory().getId() : null)
-                    .price(product.getPrice())
-                    .best(product.getBest())
-                    .mdPick(product.getMdPick())
-                    .uploadFileNames(product.getImageList().stream().map(ProductImage::getImageName).toList())
-                    .isHeart(isHeart)
-                    .description(product.getDescription())
-                    .stockNumber(product.getStockNumber())
-                    .categoryId(product.getCategory().getId())
-                    .createdAt(product.getCreatedAt())
-                    .modifiedAt(product.getModifiedAt())
-                    .discountPrice(product.getDiscountPrice())
-                    .build();
-
-        return dto;
+        return this.entityToDTO(product);
     }
 
     @Override
