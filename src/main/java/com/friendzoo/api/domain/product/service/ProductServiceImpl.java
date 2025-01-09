@@ -1,6 +1,7 @@
 package com.friendzoo.api.domain.product.service;
 
 
+import com.friendzoo.api.domain.heart.entity.Heart;
 import com.friendzoo.api.domain.product.entity.ProductImage;
 import com.friendzoo.api.domain.heart.repository.HeartRepository;
 import com.friendzoo.api.domain.product.dto.ProductDTO;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -73,7 +75,25 @@ public class ProductServiceImpl implements ProductService {
     public ProductDTO getSelectedItem(String email,Long productId) {
         Product product = productRepository.findDetailProduct(email,productId);
             // isHeart 여부 <- product, email
-        return this.entityToDTO(product);
+        Optional<Heart> heartOptional = heartRepository.findHeartProduct(email, productId);
+        ProductDTO dto = ProductDTO.builder()
+                .id(product.getId())
+                .name(product.getName())
+                .category(product.getCategory() != null ? product.getCategory().getId() : null)
+                .price(product.getPrice())
+                .best(product.getBest())
+                .mdPick(product.getMdPick())
+                .uploadFileNames(product.getImageList().stream().map(ProductImage::getImageName).toList())
+                .description(product.getDescription())
+                .stockNumber(product.getStockNumber())
+                .isHeart(heartOptional.isPresent())
+                .categoryId(product.getCategory().getId())
+                .createdAt(product.getCreatedAt())
+                .modifiedAt(product.getModifiedAt())
+                .discountPrice(product.getDiscountPrice())
+                .build();
+
+            return dto;
     }
 
     @Override
