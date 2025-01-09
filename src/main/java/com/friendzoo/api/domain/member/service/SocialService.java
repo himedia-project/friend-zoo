@@ -49,6 +49,9 @@ public class SocialService {
         String clientSecret = socialProps.getKakao().getClientSecret();
         String redirectURI = socialProps.getKakao().getRedirectUri();
 
+        log.info("TokenURL: {}", kakaoTokenURL);
+        log.info("ClientID: {}", clientID);
+        log.info("RedirectURI: {}", redirectURI);
 
         HttpHeaders headers = new HttpHeaders();
 

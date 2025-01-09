@@ -7,9 +7,6 @@ WORKDIR /app
 # 현재 디렉토리의 모든 파일을 컨테이너의 /app 디렉토리로 복사
 COPY . .
 
-# .env 파일 복사
-COPY src/.env /app/.env
-
 # gradlew에 실행 권한 부여
 RUN chmod +x ./gradlew
 # 프로젝트 빌드
