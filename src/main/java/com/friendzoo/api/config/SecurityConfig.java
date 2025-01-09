@@ -135,7 +135,9 @@ public class SecurityConfig {
                 "http://43.200.239.220","http://43.200.239.220:3000", "http://43.200.239.220:3001", // EC2 퍼블릭 IP 3000, 3001 포트 허용
                 "https://openapi.map.naver.com",
                 "http://friendzoo.shop","http://friendzoo.shop:3000", "http://friendzoo.shop:3001",
-                "http://friendzoo.store", "http://friendzoo.store:3000", "http://friendzoo.store:3001"
+                "http://www.friendzoo.shop","http://www.friendzoo.shop:3000", "http://www.friendzoo.shop:3001",
+                "http://friendzoo.store", "http://friendzoo.store:3000", "http://friendzoo.store:3001",
+                "http://www.friendzoo.store", "http://www.friendzoo.store:3000", "http://www.friendzoo.store:3001"
         ));
         // 허용할 메서드 설정
         configuration.setAllowedMethods(Arrays.asList("HEAD", "GET", "POST", "PUT", "DELETE", "OPTIONS"));
