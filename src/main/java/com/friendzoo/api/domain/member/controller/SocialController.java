@@ -35,10 +35,10 @@ public class SocialController {
 
     // 카카오 로그인 -> 유저정보 받기 + JWT 토큰 발급, cookie에 set
     @GetMapping("/api/member/kakao")
-    public ResponseEntity<MemberController.LoginResponseDTO> getMemberFromKakao(String socialAccessToken, HttpServletResponse response) {
-        log.info("getMemberFromKakao socialAccessToken: {}", socialAccessToken);
+    public ResponseEntity<MemberController.LoginResponseDTO> getMemberFromKakao(String accessToken, HttpServletResponse response) {
+        log.info("getMemberFromKakao socialAccessToken: {}", accessToken);
 
-        MemberDTO memberDTO = socialService.getKakaoMember(socialAccessToken);
+        MemberDTO memberDTO = socialService.getKakaoMember(accessToken);
         Map<String, Object> loginClaims = memberService.getSocialClaims(memberDTO);
 
         CookieUtil.setTokenCookie(response, "refreshToken", (String) loginClaims.get("refreshToken"), jwtProps.getRefreshTokenExpirationPeriod());
