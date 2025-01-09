@@ -91,10 +91,11 @@ public class ProductRepositoryImpl implements ProductRepositoryCustom {
                 .select(product)
                 .from(product)
                 .leftJoin(product.imageList, productImage).on(productImage.ord.eq(0))
-                .leftJoin(product.heartList, heart).on(heart.member.email.eq(email))
+                .leftJoin(product.heartList, heart).fetchJoin()
                 .where(
                         product.delFlag.eq(false),
-                        product.id.eq(productId)
+                        product.id.eq(productId),
+                        product.heartList.any().member.email.eq(email)
                 )
                 .fetchOne();
     }
