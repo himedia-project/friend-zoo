@@ -142,7 +142,7 @@ spring:
       ddl-auto: create # 테이블 생성 및 업데이트 전략 (create, create-drop, update, validate, none)
   sql:
     init:
-      mode: never
+      mode: always # SQL 초기화 모드 (always, never, embedded, embedded-always)
 
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
