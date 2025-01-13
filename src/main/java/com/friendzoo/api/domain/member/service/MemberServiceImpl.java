@@ -1,13 +1,12 @@
 package com.friendzoo.api.domain.member.service;
 
 
-import com.friendzoo.api.domain.heart.service.HeartService;
 import com.friendzoo.api.domain.member.dto.JoinRequestDTO;
 import com.friendzoo.api.domain.member.dto.MemberTestDTO;
 import com.friendzoo.api.domain.member.entity.Member;
 import com.friendzoo.api.domain.member.repository.MemberRepository;
-import com.friendzoo.api.domain.product.dto.ProductDTO;
 import com.friendzoo.api.props.JwtProps;
+import com.friendzoo.api.security.CustomUserDetailService;
 import com.friendzoo.api.security.MemberDTO;
 import com.friendzoo.api.util.JWTUtil;
 import lombok.RequiredArgsConstructor;
@@ -18,7 +17,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.Map;
 
 @Slf4j
@@ -29,6 +27,9 @@ public class MemberServiceImpl implements MemberService {
 
     private final JWTUtil jwtUtil;
     private final JwtProps jwtProps;
+
+    private final CustomUserDetailService userDetailService;
+
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
 
@@ -61,16 +62,13 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public Map<String, Object> login(String email, String password) {
-        Member member = getMember(email);
-
-        if (!passwordEncoder.matches(password, member.getPassword())) {
-            throw new IllegalArgumentException("password not found");
-        }
-
-        MemberDTO memberDTO = new MemberDTO(member.getEmail(), member.getPassword(), member.getName(),
-                member.getMemberRoleList().stream().map(Enum::name).toList());
-
+//        Member member = getMember(email);
+        MemberDTO memberDTO = (MemberDTO) userDetailService.loadUserByUsername(email);
         log.info("memberService login memberDTO: {}", memberDTO);
+
+        if (!passwordEncoder.matches(password, memberDTO.getPassword())) {
+            throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
+        }
 
         Map<String, Object> claims = memberDTO.getClaims();
 
@@ -96,6 +94,7 @@ public class MemberServiceImpl implements MemberService {
 
     /**
      * Social Login 성공시 JWT 토큰 발급
+     *
      * @param memberDTO Social Login 성공한 회원 정보
      * @return JWT 토큰 정보가 같이 있는 유저정보 Map
      */
@@ -115,6 +114,7 @@ public class MemberServiceImpl implements MemberService {
 
     /**
      * email로 회원을 찾는다.
+     *
      * @param email 이메일
      * @return 회원
      */

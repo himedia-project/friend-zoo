@@ -3,7 +3,7 @@ package com.friendzoo.api.security;
 import com.friendzoo.api.domain.member.entity.Member;
 import com.friendzoo.api.domain.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 
 
 @Service
-@Log4j2
+@Slf4j
 @RequiredArgsConstructor
 public class CustomUserDetailService implements UserDetailsService {
 
@@ -25,14 +25,13 @@ public class CustomUserDetailService implements UserDetailsService {
         Member member = memberRepository.findByEmail(username)
                 .orElseThrow(() -> new UsernameNotFoundException("Check Email or Social"));
 
-
         MemberDTO memberDTO = new MemberDTO(
                 member.getEmail(),
                 member.getPassword(),
                 member.getName(),
                 member.getMemberRoleList().stream().map(Enum::name).toList());
 
-        log.info("memberDTO: {}", memberDTO);
+        log.info("loadUserByUsername result memberDTO: {}", memberDTO);
 
         return memberDTO;
     }
