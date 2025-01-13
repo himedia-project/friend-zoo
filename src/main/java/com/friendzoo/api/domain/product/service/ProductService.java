@@ -27,9 +27,13 @@ public interface ProductService {
 
     ProductDTO getSelectedItem(String email,Long id);
 
-    List<ProductDTO> getSelectedCategoryItem(Long id);
+    List<ProductDTO> getSelectedCategoryItem(String email, Long id);
 
     Product getEntity(Long productId);
+
+
+    // 상품 리스트 조회
+    List<ProductDTO> getAllList(String email, ProductDTO productDTO);
 
 
     default ProductDTO entityToDTO(Product product) {
@@ -60,6 +64,7 @@ public interface ProductService {
 
     @Transactional(readOnly = true)
     ProductDTO getDTO(Product product);
+
 
 
 //    // product -> dto

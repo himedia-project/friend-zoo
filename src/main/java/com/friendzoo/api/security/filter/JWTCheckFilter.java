@@ -49,10 +49,7 @@ public class JWTCheckFilter extends OncePerRequestFilter {
         ) {
             return true;
         }
-
-        if (path.startsWith("/api/product/list")) {
-            return true;
-        }
+        // "/api/product/list" api는 추가하지 말것!
 
         if (path.startsWith("/api/admin/product/excel/download")) {
             return true;

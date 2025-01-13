@@ -1,6 +1,7 @@
 package com.friendzoo.api.domain.product.repository.querydsl;
 
 
+import com.friendzoo.api.domain.product.dto.ProductDTO;
 import com.friendzoo.api.domain.product.entity.Product;
 import com.friendzoo.api.dto.PageRequestDTO;
 import org.springframework.data.domain.Page;
@@ -14,4 +15,6 @@ public interface ProductRepositoryCustom {
     Page<Product> findListBy(PageRequestDTO requestDTO);
 
     Product findDetailProduct(String email,Long productId);
+
+    List<Product> findAllByDTO(ProductDTO productDTO);
 }

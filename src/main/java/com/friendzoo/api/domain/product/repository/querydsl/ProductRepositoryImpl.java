@@ -1,6 +1,9 @@
 package com.friendzoo.api.domain.product.repository.querydsl;
 
+import com.friendzoo.api.domain.product.dto.ProductDTO;
 import com.friendzoo.api.domain.product.entity.Product;
+import com.friendzoo.api.domain.product.enums.ProductBest;
+import com.friendzoo.api.domain.product.enums.ProductMdPick;
 import com.friendzoo.api.dto.PageRequestDTO;
 import com.querydsl.core.types.Order;
 import com.querydsl.core.types.OrderSpecifier;
@@ -101,6 +104,26 @@ public class ProductRepositoryImpl implements ProductRepositoryCustom {
                 .fetchOne();
     }
 
+    @Override
+    public List<Product> findAllByDTO(ProductDTO productDTO) {
+
+        return queryFactory
+                .select(product)
+                .from(product)
+                .leftJoin(product.imageList, productImage).on(productImage.ord.eq(0))
+                .leftJoin(product.heartList, heart).fetchJoin()
+                .leftJoin(heart.member, member)
+                .where(
+                        product.delFlag.eq(false),
+                        eqCategoryId(productDTO.getCategoryId()),
+                        containsKeyword(productDTO.getSearchKeyword()),
+                        eqBest(productDTO.getBest()),
+                        eqMdPick(productDTO.getMdPick())
+                )
+                .orderBy(product.id.desc()) // 최신순
+                .fetch();
+    }
+
 
     /**
      * Sort 정보를 OrderSpecifier 배열로 변환
@@ -138,5 +161,20 @@ public class ProductRepositoryImpl implements ProductRepositoryCustom {
             return null;
         }
         return member.email.eq(email);
+    }
+
+    private BooleanExpression eqMdPick(ProductMdPick mdPick) {
+        if (mdPick == null) {
+            return null;
+        }
+        return product.mdPick.eq(mdPick);
+    }
+
+
+    private BooleanExpression eqBest(ProductBest best) {
+        if (best == null) {
+            return null;
+        }
+        return product.best.eq(best);
     }
 }

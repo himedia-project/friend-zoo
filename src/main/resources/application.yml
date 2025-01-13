@@ -15,19 +15,18 @@ spring:
   web:
     resources:
       add-mappings: false # 정적 리소스 매핑 추가 여부 false
-#  mvc:
-#    throw-exception-if-no-handler-found: true # 요청 처리 핸들러 없을 때 예외 처리
-
+  #  mvc:
+  #    throw-exception-if-no-handler-found: true # 요청 처리 핸들러 없을 때 예외 처리
 
   servlet:
     multipart:
       max-request-size: 30MB # 최대 요청 크기
-      max-file-size: 10MB    # 최대 파일 크기
+      max-file-size: 10MB # 최대 파일 크기
 
   jpa:
     hibernate:
       ddl-auto: update # 테이블 생성 및 업데이트 전략 (create, create-drop, update, validate, none)
-    defer-datasource-initialization: true   # DataSource 초기화 지연
+    defer-datasource-initialization: true # DataSource 초기화 지연
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQL8Dialect # Hibernate Dialect 설정
@@ -39,14 +38,12 @@ spring:
     init:
       mode: embedded # SQL 초기화 모드 (always, never, embedded, embedded-always)
 
-
 app:
   props:
     social:
       kakao:
         client-id: ${KAKAO_CLIENT_ID}
         client-secret: ${KAKAO_CLIENT_SECRET}
-        redirect-uri: ${KAKAO_REDIRECT_URI}
         authorization-uri: https://kauth.kakao.com/oauth/authorize
         token-uri: https://kauth.kakao.com/oauth/token
         user-info-uri: https://kapi.kakao.com/v2/user/me
@@ -72,8 +69,8 @@ app:
         client-name: Google
     jwt:
       secret-key: 1234567890123456789012345678901234567890
-      access-token-expiration-period: 150   # 운영시, 15분, 테스트를 위해 150분
-      refresh-token-expiration-period: 1440  # 24시간 60 * 24 = 1440분
+      access-token-expiration-period: 150 # 운영시, 15분, 테스트를 위해 150분
+      refresh-token-expiration-period: 1440 # 24시간 60 * 24 = 1440분
 
     aws:
       key:
@@ -89,7 +86,6 @@ org:
       path: upload
 
 ---
-
 spring:
   config:
     activate:
@@ -97,8 +93,8 @@ spring:
 
   h2:
     console:
-      enabled: true  # H2 콘솔 활성화
-      path: /h2-console  # H2 콘솔 경로 설정
+      enabled: true # H2 콘솔 활성화
+      path: /h2-console # H2 콘솔 경로 설정
 
   datasource:
     driver-class-name: org.h2.Driver
@@ -113,7 +109,6 @@ logging:
     org.springframework.transaction.interceptor: trace # Spring 트랜잭션 인터셉터 로그 레벨
 
 ---
-
 spring:
   config:
     activate:
@@ -125,6 +120,12 @@ spring:
     username: friendzoo
     password: friendzoo
 
+app:
+  props:
+    social:
+      kakao:
+        redirect-uri: ${KAKAO_LOCAL_REDIRECT_URI}
+
 logging:
   level:
     org.hibernate.SQL: debug # Hibernate SQL 로그 레벨
@@ -132,11 +133,10 @@ logging:
     org.springframework.transaction.interceptor: trace # Spring 트랜잭션 인터셉터 로그 레벨
 
 ---
-
 spring:
   config:
     activate:
-      on-profile: prod  # 운영 환경
+      on-profile: prod # 운영 환경
   jpa:
     hibernate:
       ddl-auto: none # 테이블 생성 및 업데이트 전략 (create, create-drop, update, validate, none)
@@ -150,9 +150,15 @@ spring:
     username: root
     password: 1234
     hikari:
-      max-lifetime: 600000  # 최대 수명 (밀리초)
+      max-lifetime: 600000 # 최대 수명 (밀리초)
       idle-timeout: 300000 # 유휴 시간 (밀리초)
       connection-timeout: 30000 # 연결 시간 초과 (밀리초)
+
+app:
+  props:
+    social:
+      kakao:
+        redirect-uri: ${KAKAO_PROD_REDIRECT_URI}
 
 logging:
   level:
