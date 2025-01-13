@@ -50,7 +50,7 @@ public class ProductServiceImpl implements ProductService {
 
     public List<ProductDTO> getNewProduct(ProductDTO productDTO) {
 //Sort.by(""); asc
-        List<Product> dtoLists = productRepository.findNewProducts();
+        List<Product> dtoLists = productRepository.findNewProducts(Sort.by(Sort.Order.desc("createdAt")));
         List<ProductDTO> dtoList = dtoLists.stream()
                 .map(this::entityToDTO) // Product를 ProductDTO로 변환
                 .toList(); // 리스트로 수집

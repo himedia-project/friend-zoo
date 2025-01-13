@@ -31,6 +31,7 @@ public interface ProductService {
 
     Product getEntity(Long productId);
 
+    ProductDTO getDTO(Product product);
 
     // 상품 리스트 조회
     List<ProductDTO> getAllList(String email, ProductDTO productDTO);
@@ -58,23 +59,6 @@ public interface ProductService {
                 .discountPrice(product.getDiscountPrice())
                 .build();
     }
-
-    @Transactional(readOnly = true)
-    ProductDTO getDTO(ProductDTO productDTO);
-
-    @Transactional(readOnly = true)
-    ProductDTO getDTO(Product product);
-
-
-
-//    // product -> dto
-//    default ProductDTO returnProduct(Product product) {
-//        return ProductDTO.builder()
-//                .id(product.getId())
-//                .name(product.getName())
-//                .category(product.getCategory().getId())
-//                .build();
-//    }
 
 
 }
