@@ -95,7 +95,6 @@ public class SecurityConfig {
 
                 });
 
-
         // JWT Check Filter 추가
         http.addFilterBefore(jwtCheckFilter,
                 UsernamePasswordAuthenticationFilter.class);

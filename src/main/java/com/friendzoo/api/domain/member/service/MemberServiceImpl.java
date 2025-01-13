@@ -60,9 +60,10 @@ public class MemberServiceImpl implements MemberService {
     }
 
 
+    @Transactional(readOnly = true)
     @Override
     public Map<String, Object> login(String email, String password) {
-//        Member member = getMember(email);
+
         MemberDTO memberDTO = (MemberDTO) userDetailService.loadUserByUsername(email);
         log.info("memberService login memberDTO: {}", memberDTO);
 
