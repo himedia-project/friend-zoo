@@ -22,7 +22,7 @@ public class CustomUserDetailService implements UserDetailsService {
 
         log.info("loadUserByUsername: username: {}", username);
 
-        Member member = memberRepository.findByEmail(username)
+        Member member = memberRepository.getWithRoles(username)
                 .orElseThrow(() -> new UsernameNotFoundException("Check Email or Social"));
 
         MemberDTO memberDTO = new MemberDTO(
