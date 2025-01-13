@@ -93,6 +93,7 @@ public class ProductController {
 
     @GetMapping("/detail/{productId}")
     public ResponseEntity<ProductDTO> selectedItem(@AuthenticationPrincipal MemberDTO memberDTO, @PathVariable Long productId) {
+        log.info("detail selectedItem memberDTO: {}, productId: {}", memberDTO, productId);
         String email = "";
         if (memberDTO != null) {
             email = memberDTO.getEmail();

@@ -85,16 +85,16 @@ public class JWTCheckFilter extends OncePerRequestFilter {
         log.info("..................................................");
 
         String autHeaderStr = request.getHeader("Authorization");
+        log.info("autHeaderStr Authorization: {}", autHeaderStr);
 
-        if (autHeaderStr == null
-                || request.getServletPath().startsWith("/api/product/list")
-                || request.getServletPath().startsWith("/api/product/new")
-                || request.getServletPath().startsWith("/api/product/detail")
-                || request.getServletPath().startsWith("/api/content/list")
-                || request.getServletPath().startsWith("/api/content/detail")
-                || request.getServletPath().startsWith("/api/content/search")
-
-        ) {
+        if (autHeaderStr == null && (
+                request.getServletPath().startsWith("/api/product/list")
+                        || request.getServletPath().startsWith("/api/product/new")
+                        || request.getServletPath().startsWith("/api/product/detail")
+                        || request.getServletPath().startsWith("/api/content/list")
+                        || request.getServletPath().startsWith("/api/content/detail")
+                        || request.getServletPath().startsWith("/api/content/search")
+        )) {
             filterChain.doFilter(request, response);
             return;
         }
