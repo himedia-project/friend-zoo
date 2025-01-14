@@ -36,8 +36,6 @@ public class ProductController {
 
     private final CustomFileUtil fileUtil;
     private final ProductService productService;
-    private final JWTUtil jwtUtil;
-    private final JwtProps jwtProps;
 
 //    @GetMapping("api/product/list")
 //    public ProductDTO best(ProductDTO productDTO) {
@@ -49,30 +47,30 @@ public class ProductController {
 //        binder.registerCustomEditor(ProductBest.class, new StringToProductBestConverter());
 //    }
 
-    @GetMapping("/list/best")
-    public ResponseEntity<List<ProductDTO>> bestSelect(ProductDTO productDTO) {
-        List<ProductDTO> dtoLists = productService.getBestProducts(productDTO);
-        return ResponseEntity.ok(dtoLists);
-    }
-
-    @GetMapping("/list/mdPick")
-    public ResponseEntity<List<ProductDTO>> mdPickSelect(ProductDTO productDTO) {
-        List<ProductDTO> dtoLists = productService.getMdPickProducts(productDTO);
-        return ResponseEntity.ok(dtoLists);
-    }
-
-    @GetMapping("/new")
-    public ResponseEntity<List<ProductDTO>> newSelect(ProductDTO productDTO) {
-        List<ProductDTO> dtoLists = productService.getNewProduct(productDTO);
-
-        return ResponseEntity.ok(dtoLists);
-    }
-
-    @GetMapping("/list/{name}")
-    public ResponseEntity<List<ProductDTO>> selectedlist(@PathVariable String name) {
-        List<ProductDTO> dtoLists = productService.getSelectedCategory(name);
-        return ResponseEntity.ok(dtoLists);
-    }
+//    @GetMapping("/list/best")
+//    public ResponseEntity<List<ProductDTO>> bestSelect(ProductDTO productDTO) {
+//        List<ProductDTO> dtoLists = productService.getBestProducts(productDTO);
+//        return ResponseEntity.ok(dtoLists);
+//    }
+//
+//    @GetMapping("/list/mdPick")
+//    public ResponseEntity<List<ProductDTO>> mdPickSelect(ProductDTO productDTO) {
+//        List<ProductDTO> dtoLists = productService.getMdPickProducts(productDTO);
+//        return ResponseEntity.ok(dtoLists);
+//    }
+//
+//    @GetMapping("/new")
+//    public ResponseEntity<List<ProductDTO>> newSelect(ProductDTO productDTO) {
+//        List<ProductDTO> dtoLists = productService.getNewProduct(productDTO);
+//
+//        return ResponseEntity.ok(dtoLists);
+//    }
+//
+//    @GetMapping("/list/{name}")
+//    public ResponseEntity<List<ProductDTO>> selectedlist(@PathVariable String name) {
+//        List<ProductDTO> dtoLists = productService.getSelectedCategory(name);
+//        return ResponseEntity.ok(dtoLists);
+//    }
 
     // 리스트 조회
     @GetMapping("/list/all")
