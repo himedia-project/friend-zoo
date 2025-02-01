@@ -25,7 +25,7 @@ public class SocialController {
     private final JwtProps jwtProps;
 
 
-    // 카카오 access token 받기
+    // 카카오 access token 받기, code를 이용
     @GetMapping("/api/member/kakao/token")
     public String getKakaoAccessToken(String code) {
         log.info("getKakaoAccessToken code: {}", code);
