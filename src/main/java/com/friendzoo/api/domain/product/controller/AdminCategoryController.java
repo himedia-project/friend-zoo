@@ -20,8 +20,8 @@ public class AdminCategoryController {
     // 리스트조회, 상품 등록시, select option용
     @GetMapping("/list")
     public ResponseEntity<List<CategoryDTO>> list() {
-        List<CategoryDTO> dto = categoryService.list();
-        return ResponseEntity.ok(dto);
+        log.info("category list");
+        return ResponseEntity.ok(categoryService.list());
     }
 
     // 카테고리 등록
