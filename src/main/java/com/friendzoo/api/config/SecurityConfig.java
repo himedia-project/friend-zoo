@@ -2,6 +2,7 @@ package com.friendzoo.api.config;
 
 import com.friendzoo.api.security.filter.JWTCheckFilter;
 import com.friendzoo.api.security.handler.CustomAccessDeniedHandler;
+import com.friendzoo.api.security.handler.CustomAuthenticationEntryPoint;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.context.annotation.Bean;
@@ -32,6 +33,8 @@ import java.util.Arrays;
 public class SecurityConfig {
 
     private final JWTCheckFilter jwtCheckFilter;
+    private final CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
+    private final CustomAccessDeniedHandler customAccessDeniedHandler;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -97,9 +100,13 @@ public class SecurityConfig {
         // JWT Check Filter 추가
         http.addFilterBefore(jwtCheckFilter,
                 UsernamePasswordAuthenticationFilter.class);
+        // exception authenticationEntryPoint 추가 401 에러 처리
+        http.exceptionHandling(exception -> {
+            exception.authenticationEntryPoint(customAuthenticationEntryPoint);
+        });
         // exceptionHandler, 접근 거부 핸들러 추가
         http.exceptionHandling(config -> {
-            config.accessDeniedHandler(new CustomAccessDeniedHandler());
+            config.accessDeniedHandler(customAccessDeniedHandler);
         });
 
         return http.build();
