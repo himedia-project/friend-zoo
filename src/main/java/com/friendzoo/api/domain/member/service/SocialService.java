@@ -49,6 +49,9 @@ public class SocialService {
         String clientSecret = socialProps.getKakao().getClientSecret();
         String redirectURI = socialProps.getKakao().getRedirectUri();
 
+        log.info("TokenURL: {}", kakaoTokenURL);
+        log.info("ClientID: {}", clientID);
+        log.info("RedirectURI: {}", redirectURI);
 
         HttpHeaders headers = new HttpHeaders();
 
@@ -87,8 +90,7 @@ public class SocialService {
 
         // 기존의 회원
         if (result.isPresent()) {
-            MemberDTO memberDTO = memberService.entityToDTO(result.get());
-            return memberDTO;
+            return memberService.entityToDTO(result.get());
         }
 
         // 회원이 아니었다면 닉네임은 '소셜 회원'으로 패스워드는 임의로 생성

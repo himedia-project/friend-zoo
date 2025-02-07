@@ -21,7 +21,10 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.Objects;
+import java.util.Set;
 import java.util.UUID;
+
 
 @Slf4j
 @Component
@@ -60,11 +63,14 @@ public class AwsS3Util {
             throw new IllegalArgumentException("File is empty");
         }
 
+        String extension = Objects.requireNonNull(file.getOriginalFilename()).substring(file.getOriginalFilename().lastIndexOf(".") + 1).toLowerCase();
+
+        checkImageExtension(extension);
+
         String originalFilename = file.getOriginalFilename();
         String thumbnailFileName = "s_" + UUID.randomUUID().toString() + "-" + originalFilename;
         Path thumbnailPath = null;
         try {
-            String extension = originalFilename.substring(originalFilename.lastIndexOf(".") + 1).toLowerCase();
             thumbnailPath = Paths.get(thumbnailFileName);
             // 썸네일 생성
             Thumbnails.of(file.getInputStream())
@@ -90,6 +96,19 @@ public class AwsS3Util {
             }
         }
         return thumbnailFileName;
+    }
+
+    /**
+     * 이미지 확장자 검증
+     *
+     * @param extension 이미지 확장자
+     */
+    private void checkImageExtension(String extension) {
+        // 허용된 이미지 확장자 검증 -> TODO webp 추가
+        Set<String> allowedExtensions = Set.of("jpg", "jpeg", "png", "gif");
+        if (!allowedExtensions.contains(extension)) {
+            throw new IllegalArgumentException("이미지 확장자는 jpg, jpeg, png, gif만 허용됩니다.");
+        }
     }
 
 

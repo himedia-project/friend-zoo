@@ -23,14 +23,16 @@ public class ProductDTO {
     private String name;
     private Integer price;
 //    private List<String> imageList;
-    private ProductBest best;
     private String description;
     private Integer discountPrice;
     private Integer stockNumber;
     private Long categoryId;
 //    private Integer delFlag;
 //    private List
+    private ProductBest best;
     private ProductMdPick mdPick;
+
+    private String searchKeyword;
 
     // 파일 입력값
     @Builder.Default

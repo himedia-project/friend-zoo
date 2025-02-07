@@ -25,7 +25,7 @@ public class SocialController {
     private final JwtProps jwtProps;
 
 
-    // 카카오 access token 받기
+    // 카카오 access token 받기, code를 이용
     @GetMapping("/api/member/kakao/token")
     public String getKakaoAccessToken(String code) {
         log.info("getKakaoAccessToken code: {}", code);
@@ -36,7 +36,7 @@ public class SocialController {
     // 카카오 로그인 -> 유저정보 받기 + JWT 토큰 발급, cookie에 set
     @GetMapping("/api/member/kakao")
     public ResponseEntity<MemberController.LoginResponseDTO> getMemberFromKakao(String accessToken, HttpServletResponse response) {
-        log.info("getMemberFromKakao accessToken: {}", accessToken);
+        log.info("getMemberFromKakao socialAccessToken: {}", accessToken);
 
         MemberDTO memberDTO = socialService.getKakaoMember(accessToken);
         Map<String, Object> loginClaims = memberService.getSocialClaims(memberDTO);
@@ -47,11 +47,11 @@ public class SocialController {
                 .email(loginClaims.get("email").toString())
                 .name(loginClaims.get("name").toString())
                 .roles((List<String>) loginClaims.get("roleNames"))
-                .accessToken(accessToken)
+                .accessToken((String) loginClaims.get("accessToken"))
                 .build();
 
         log.info("loginResponseDTO: {}", loginResponseDTO);
-        // 로그인 성공시, accessToken, email, name, roles 반환
+        // 로그인 성공시, socialAccessToken, email, name, roles 반환
         return ResponseEntity.ok(loginResponseDTO);
 
     }
@@ -79,7 +79,7 @@ public class SocialController {
                 .email(loginClaims.get("email").toString())
                 .name(loginClaims.get("name").toString())
                 .roles((List<String>) loginClaims.get("roleNames"))
-                .accessToken(accessToken)
+                .accessToken((String) loginClaims.get("accessToken"))
                 .build();
 
         log.info("loginResponseDTO: {}", loginResponseDTO);
@@ -114,7 +114,7 @@ public class SocialController {
                 .email(loginClaims.get("email").toString())
                 .name(loginClaims.get("name").toString())
                 .roles((List<String>) loginClaims.get("roleNames"))
-                .accessToken(accessToken)
+                .accessToken((String) loginClaims.get("accessToken"))
                 .build();
 
         log.info("loginResponseDTO: {}", loginResponseDTO);

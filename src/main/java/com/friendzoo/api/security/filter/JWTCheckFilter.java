@@ -1,8 +1,8 @@
 package com.friendzoo.api.security.filter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.friendzoo.api.security.CustomUserDetailService;
 import com.friendzoo.api.security.MemberDTO;
-import com.friendzoo.api.util.CookieUtil;
 import com.friendzoo.api.util.JWTUtil;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -17,7 +17,6 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.List;
 import java.util.Map;
 
 @Log4j2
@@ -26,6 +25,7 @@ import java.util.Map;
 public class JWTCheckFilter extends OncePerRequestFilter {
 
     private final JWTUtil jwtUtil;
+    private final CustomUserDetailService userDetailService;
 
     // 해당 필터로직(doFilterInternal)을 수행할지 여부를 결정하는 메서드
     @Override
@@ -49,8 +49,9 @@ public class JWTCheckFilter extends OncePerRequestFilter {
         ) {
             return true;
         }
+        // "/api/product/list" api는 추가하지 말것!
 
-        if (path.startsWith("/api/product/list")) {
+        if (path.startsWith("/api/admin/product/excel/download")) {
             return true;
         }
 
@@ -84,16 +85,16 @@ public class JWTCheckFilter extends OncePerRequestFilter {
         log.info("..................................................");
 
         String autHeaderStr = request.getHeader("Authorization");
+        log.info("autHeaderStr Authorization: {}", autHeaderStr);
 
-        if (autHeaderStr == null
-                || request.getServletPath().startsWith("/api/product/list")
-                || request.getServletPath().startsWith("/api/product/new")
-                || request.getServletPath().startsWith("/api/product/detail")
-                || request.getServletPath().startsWith("/api/content/list")
-                || request.getServletPath().startsWith("/api/content/detail")
-                || request.getServletPath().startsWith("/api/content/search")
-
-        ) {
+        if (autHeaderStr == null && (
+                request.getServletPath().startsWith("/api/product/list")
+                        || request.getServletPath().startsWith("/api/product/new")
+                        || request.getServletPath().startsWith("/api/product/detail")
+                        || request.getServletPath().startsWith("/api/content/list")
+                        || request.getServletPath().startsWith("/api/content/detail")
+                        || request.getServletPath().startsWith("/api/content/search")
+        )) {
             filterChain.doFilter(request, response);
             return;
         }
@@ -109,18 +110,13 @@ public class JWTCheckFilter extends OncePerRequestFilter {
 
             log.info("JWT claims: {}", claims);
 
-            String email = (String) claims.get("email");
-            String password = (String) claims.get("password");
-            String name = (String) claims.get("name");
-            List<String> roleNames = (List<String>) claims.get("roleNames");
-
-            MemberDTO memberDTO = new MemberDTO(email, password, name, roleNames);
+            MemberDTO memberDTO = (MemberDTO) userDetailService.loadUserByUsername((String) claims.get("email"));
 
             log.info("memberDTO: {}", memberDTO);
             log.info("memberDto.getAuthorities(): {}", memberDTO.getAuthorities());
 
             UsernamePasswordAuthenticationToken authenticationToken =
-                    new UsernamePasswordAuthenticationToken(memberDTO, password, memberDTO.getAuthorities());
+                    new UsernamePasswordAuthenticationToken(memberDTO, memberDTO.getPassword(), memberDTO.getAuthorities());
 
             // SecurityContextHolder에 인증 객체 저장
             SecurityContextHolder.getContext().setAuthentication(authenticationToken);

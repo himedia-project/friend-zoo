@@ -3,6 +3,7 @@ package com.friendzoo.api.domain.product.service;
 import com.friendzoo.api.domain.product.dto.ProductDTO;
 import com.friendzoo.api.domain.product.entity.Category;
 import com.friendzoo.api.domain.product.entity.Product;
+import com.friendzoo.api.domain.product.entity.ProductImage;
 import com.friendzoo.api.domain.product.enums.ProductBest;
 import com.friendzoo.api.domain.product.enums.ProductMdPick;
 import com.friendzoo.api.domain.product.repository.CategoryRepository;
@@ -31,6 +32,7 @@ public class AdminProductServiceImpl implements AdminProductService {
 
     private final ProductRepository productRepository;
     private final CategoryRepository categoryRepository;
+    private final CustomFileUtil customFileUtil;
 
     @Transactional(readOnly = true)
     @Override
@@ -146,6 +148,15 @@ public class AdminProductServiceImpl implements AdminProductService {
     @Override
     public void remove(Long id) {
         Product product = this.getEntity(id);
+
+        // 파일 삭제
+        customFileUtil.deleteS3Files(product.getImageList().stream()
+                .map(ProductImage::getImageName)
+                .collect(Collectors.toList()));
+
+        // 파일 삭제
+        product.clearImageList();
+
         productRepository.modifyDeleteFlag(product.getId());
     }
 

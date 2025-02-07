@@ -1,6 +1,9 @@
 package com.friendzoo.api.domain.product.repository.querydsl;
 
+import com.friendzoo.api.domain.product.dto.ProductDTO;
 import com.friendzoo.api.domain.product.entity.Product;
+import com.friendzoo.api.domain.product.enums.ProductBest;
+import com.friendzoo.api.domain.product.enums.ProductMdPick;
 import com.friendzoo.api.dto.PageRequestDTO;
 import com.querydsl.core.types.Order;
 import com.querydsl.core.types.OrderSpecifier;
@@ -20,6 +23,7 @@ import java.util.List;
 
 import static com.friendzoo.api.domain.content.entity.QContent.content;
 import static com.friendzoo.api.domain.heart.entity.QHeart.heart;
+import static com.friendzoo.api.domain.member.entity.QMember.*;
 import static com.friendzoo.api.domain.product.entity.QProduct.product;
 import static com.friendzoo.api.domain.product.entity.QProductImage.productImage;
 
@@ -76,8 +80,6 @@ public class ProductRepositoryImpl implements ProductRepositoryCustom {
     }
 
 
-
-
     @Override
     public List<Product> findByIdList(List<Long> idList) {
         return queryFactory.selectFrom(product)
@@ -86,26 +88,50 @@ public class ProductRepositoryImpl implements ProductRepositoryCustom {
     }
 
     @Override
-    public Product findDetailProduct(String email,Long productId){
+    public Product findDetailProduct(String email, Long productId) {
+
         return queryFactory
                 .select(product)
                 .from(product)
                 .leftJoin(product.imageList, productImage).on(productImage.ord.eq(0))
-                .leftJoin(product.heartList, heart).on(heart.member.email.eq(email))
+                .leftJoin(product.heartList, heart).fetchJoin()
+                .leftJoin(heart.member, member)
                 .where(
                         product.delFlag.eq(false),
-                        product.id.eq(productId)
+                        product.id.eq(productId),
+                        eqEmail(email)
                 )
                 .fetchOne();
+    }
+
+    @Override
+    public List<Product> findAllByDTO(ProductDTO productDTO) {
+
+        return queryFactory
+                .select(product)
+                .from(product)
+                .leftJoin(product.imageList, productImage).on(productImage.ord.eq(0))
+                .leftJoin(product.heartList, heart).fetchJoin()
+                .leftJoin(heart.member, member)
+                .where(
+                        product.delFlag.eq(false),
+                        eqCategoryId(productDTO.getCategoryId()),
+                        containsKeyword(productDTO.getSearchKeyword()),
+                        eqBest(productDTO.getBest()),
+                        eqMdPick(productDTO.getMdPick())
+                )
+                .orderBy(product.id.desc()) // 최신순
+                .fetch();
     }
 
 
     /**
      * Sort 정보를 OrderSpecifier 배열로 변환
+     *
      * @param sort Sort 정보
      * @return OrderSpecifier 배열
      */
-    private OrderSpecifier [] createOrderSpecifier(Sort sort) {
+    private OrderSpecifier[] createOrderSpecifier(Sort sort) {
         return sort.stream()
                 .map(order -> new OrderSpecifier(
                         order.isAscending() ? Order.ASC : Order.DESC,
@@ -115,18 +141,40 @@ public class ProductRepositoryImpl implements ProductRepositoryCustom {
     }
 
     private BooleanExpression eqCategoryId(Long categoryId) {
-        if(categoryId == null) {
+        if (categoryId == null) {
             return null;
         }
         return product.category.id.eq(categoryId);
     }
 
     private BooleanExpression containsKeyword(String keyword) {
-        if(keyword == null || keyword.isBlank()) {
+        if (keyword == null || keyword.isBlank()) {
             return null;
         }
-        return product.name.like("%" + keyword + "%");
+        return product.name.like("%" + keyword + "%")
+                .or(product.category.name.like("%" + keyword + "%"));
     }
 
 
+    private BooleanExpression eqEmail(String email) {
+        if (email == null || email.isBlank()) {
+            return null;
+        }
+        return member.email.eq(email);
+    }
+
+    private BooleanExpression eqMdPick(ProductMdPick mdPick) {
+        if (mdPick == null) {
+            return null;
+        }
+        return product.mdPick.eq(mdPick);
+    }
+
+
+    private BooleanExpression eqBest(ProductBest best) {
+        if (best == null) {
+            return null;
+        }
+        return product.best.eq(best);
+    }
 }

@@ -36,7 +36,8 @@ public class ExcelGenerator {
 
     private static HttpHeaders createHttpHeaders(String fileName) {
         HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
+        // headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
+        headers.setContentType(MediaType.parseMediaType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"));
         headers.setContentDisposition(ContentDisposition.builder("attachment")
                 .filename(URLEncoder.encode(fileName, StandardCharsets.UTF_8))
                 .build());

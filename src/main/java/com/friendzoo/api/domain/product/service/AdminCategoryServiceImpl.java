@@ -72,6 +72,9 @@ public class AdminCategoryServiceImpl implements AdminCategoryService {
         }
 
         categoryRepository.deleteById(categoryId);
+
+        // 파일 삭제
+        fileUtil.deleteS3File(this.getEntity(categoryId).getLogo());
     }
 
 
