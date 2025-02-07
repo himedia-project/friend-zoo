@@ -7,6 +7,8 @@ import lombok.*;
 import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.ColumnDefault;
 
+import java.time.LocalDateTime;
+
 @Entity
 @Getter
 @Setter
@@ -28,6 +30,14 @@ public class Payment extends BaseEntity {
     @Enumerated(EnumType.STRING)
     @ColumnDefault("'READY'")
     private PaymentStatus status;         // 결제 상태 (READY, DONE, CANCELED)
+
+    private String method;         // 결제 수단 (카드, 현금, 휴대폰, 계좌이체 등)
+
+    // 결제 요청 시각
+    private LocalDateTime requestedAt;
+
+    // 결제 승인 시각
+    private LocalDateTime approvedAt;
 
 
 }

@@ -97,6 +97,9 @@ public class PaymentServiceImpl implements PaymentService {
                 Payment payment = getPayment(orderId);
                 payment.setPaymentKey(paymentKey);
                 payment.setStatus(PaymentStatus.DONE);
+                payment.setMethod(Objects.requireNonNull(response.getBody()).getMethod());
+                payment.setRequestedAt(Objects.requireNonNull(response.getBody()).getRequestedAt().toLocalDateTime());
+                payment.setApprovedAt(Objects.requireNonNull(response.getBody()).getApprovedAt().toLocalDateTime());
                 paymentRepository.save(payment);
                 log.info("Payment confirmation successful: {}", response.getBody());
             }
