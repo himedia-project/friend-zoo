@@ -26,8 +26,8 @@ public class CartController {
     // 장바구니 목록
 //    @PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')")
     @GetMapping("/item/list")
-    public List<CartItemListDTO> getCartItems(Principal principal) {
-        String email = principal.getName();
+    public List<CartItemListDTO> getCartItems(@AuthenticationPrincipal MemberDTO memberDTO) {
+        String email = memberDTO.getEmail();
         log.info("--------------------------------------------");
         log.info("email: " + email );
         return cartService.getCartItemList(email);

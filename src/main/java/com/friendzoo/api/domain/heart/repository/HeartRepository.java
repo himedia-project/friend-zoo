@@ -6,7 +6,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-import java.util.List;
 import java.util.Optional;
 
 public interface HeartRepository extends JpaRepository<Heart, Long>
@@ -18,8 +17,11 @@ public interface HeartRepository extends JpaRepository<Heart, Long>
     @Query("select case when count(h) = 1 then true else false end from Heart h where h.member.email = :email and h.product.id = :productId")
     boolean findProductHeart(@Param("email") String email, @Param("productId") Long productId);
 
+    @Query("select h from Heart h where h.member.email = :email and h.content.id = :contentId")
+    Optional<Heart> findHeartContent(@Param("email") String email, @Param("contentId") Long contentId);
+
     @Query("select case when count(h) = 1 then true else false end from Heart h where h.member.email = :email and h.content.id = :contentId")
-    boolean findHeartContent(@Param("email") String email, @Param("contentId") Long contentId);
+    boolean findExistedHeartContent(@Param("email") String email, @Param("contentId") Long contentId);
 
 //    @Query("select case when count(h) = 1 then true else false end from Heart h where h.member.email = :email and h.content.id = :contentId")
 //    boolean findDetailTagList(@Param("email") String email, @Param("contentId") Long contentId);

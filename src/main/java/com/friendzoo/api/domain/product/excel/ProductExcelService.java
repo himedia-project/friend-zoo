@@ -25,7 +25,7 @@ public class ProductExcelService {
 
     public List<RegistrationFailResponseDTO> register(List<ProductDTO> dtoList, String email) {
         List<RegistrationFailResponseDTO> failRowList = new ArrayList<>();
-
+        log.info("register dtoList: {}", dtoList);
         for (int i = 0; i < dtoList.size(); i++) {
             try {
                 productCreator.create(dtoList.get(i));

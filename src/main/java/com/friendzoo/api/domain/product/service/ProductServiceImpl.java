@@ -28,30 +28,23 @@ public class ProductServiceImpl implements ProductService {
     private final HeartRepository heartRepository;
 
     @Override
-    public List<ProductDTO> getProducts(ProductDTO productDTO) {
-        if(productDTO.getBest().toString() != null) {
-            List<Product> dtoLists = productRepository.findBestProducts();
-            List<ProductDTO> dtoList = dtoLists.stream()
-                    .map(this::entityToDTO) // Product를 ProductDTO로 변환
-                    .collect(Collectors.toList()); // 리스트로 수집
-            return dtoList;
-        }
-        else if(productDTO.getMdPick().toString() != null) {
-            List<Product> dtoLists = productRepository.findMdPickProducts();
-            List<ProductDTO> dtoList = dtoLists.stream()
-                    .map(this::entityToDTO) // Product를 ProductDTO로 변환
-                    .collect(Collectors.toList()); // 리스트로 수집
-            return dtoList;
-        }
-        else{
-            return null;
-        }
+    public List<ProductDTO> getBestProducts(ProductDTO productDTO) {
+                List<Product> dtoLists = productRepository.findBestProducts();
+                List<ProductDTO> dtoList = dtoLists.stream()
+                        .map(this::entityToDTO) // Product를 ProductDTO로 변환
+                        .collect(Collectors.toList()); // 리스트로 수집
+                return dtoList;
 
-
-//        else{
-//            return productRepository.findAll();
-//        }
     }
+    @Override
+    public List<ProductDTO> getMdPickProducts(ProductDTO productDTO) {
+                List<Product> dtoLists = productRepository.findMdPickProducts();
+                List<ProductDTO> dtoList = dtoLists.stream()
+                        .map(this::entityToDTO) // Product를 ProductDTO로 변환
+                        .collect(Collectors.toList()); // 리스트로 수집
+                return dtoList;
+            }
+
     public List<ProductDTO> getNewProduct(ProductDTO productDTO) {
 //Sort.by(""); asc
         List<Product> dtoLists = productRepository.findNewProducts(Sort.by(Sort.Direction.DESC,"createdAt"));
@@ -76,9 +69,8 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<ProductDTO> getSelectedItem(String email,Long productId) {
-        List<Product> dtoLists = productRepository.findDetailProduct(email,productId);
-        List<ProductDTO> dtoResult =  dtoLists.stream().map(product -> {
+    public ProductDTO getSelectedItem(String email,Long productId) {
+        Product product = productRepository.findDetailProduct(email,productId);
             // isHeart 여부 <- product, email
             boolean isHeart = heartRepository.findProductHeart(email,product.getId());
             ProductDTO dto = ProductDTO.builder()
@@ -98,9 +90,7 @@ public class ProductServiceImpl implements ProductService {
                     .discountPrice(product.getDiscountPrice())
                     .build();
 
-            return dto;
-        }).toList();
-        return dtoResult;
+        return dto;
     }
 
     @Override

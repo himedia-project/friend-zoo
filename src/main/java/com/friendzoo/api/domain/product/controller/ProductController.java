@@ -48,9 +48,15 @@ public class ProductController {
 //        binder.registerCustomEditor(ProductBest.class, new StringToProductBestConverter());
 //    }
 
-    @GetMapping("/list")
+    @GetMapping("/list/best")
     public ResponseEntity<List<ProductDTO>> bestSelect(ProductDTO productDTO) {
-        List<ProductDTO> dtoLists = productService.getProducts(productDTO);
+        List<ProductDTO> dtoLists = productService.getBestProducts(productDTO);
+        return ResponseEntity.ok(dtoLists);
+    }
+
+    @GetMapping("/list/mdPick")
+    public ResponseEntity<List<ProductDTO>> mdPickSelect(ProductDTO productDTO) {
+        List<ProductDTO> dtoLists = productService.getMdPickProducts(productDTO);
         return ResponseEntity.ok(dtoLists);
     }
 
@@ -66,9 +72,14 @@ public class ProductController {
         return ResponseEntity.ok(dtoLists);
     }
     @GetMapping("/detail/{productId}")
-    public ResponseEntity<List<ProductDTO>> selectedItem(@AuthenticationPrincipal MemberDTO memberDTO,@PathVariable Long productId) {
-        List<ProductDTO> dtoLists = productService.getSelectedItem(memberDTO.getEmail(),productId);
-        return ResponseEntity.ok(dtoLists);
+    public ResponseEntity<ProductDTO> selectedItem(@AuthenticationPrincipal MemberDTO memberDTO,@PathVariable Long productId) {
+        String email = "";
+        if(memberDTO != null) {
+            email = memberDTO.getEmail();
+        }
+        ProductDTO selectedItem = productService.getSelectedItem(email, productId);
+
+        return ResponseEntity.ok(selectedItem);
     }
     @GetMapping("/detail/category/{categoryId}")
     public ResponseEntity<List<ProductDTO>> selectedCategoryItem(@PathVariable Long categoryId) {

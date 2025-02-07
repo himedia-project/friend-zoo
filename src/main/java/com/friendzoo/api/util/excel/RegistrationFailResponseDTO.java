@@ -1,8 +1,10 @@
 package com.friendzoo.api.util.excel;
 
 import lombok.Getter;
+import lombok.ToString;
 
 @Getter
+@ToString
 public class RegistrationFailResponseDTO {
     private final int row;
     private final String errorMessage;

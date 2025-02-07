@@ -17,13 +17,15 @@ import java.util.Map;
 public interface ProductService {
 
 
-    List<ProductDTO> getProducts(ProductDTO productDTO);
+    List<ProductDTO> getBestProducts(ProductDTO productDTO);
+
+    List<ProductDTO> getMdPickProducts(ProductDTO productDTO);
 
     List<ProductDTO> getNewProduct(ProductDTO productDTO);
 
     List<ProductDTO> getSelectedCategory(String name);
 
-    List<ProductDTO> getSelectedItem(String email,Long id);
+    ProductDTO getSelectedItem(String email,Long id);
 
     List<ProductDTO> getSelectedCategoryItem(Long id);
 
@@ -45,6 +47,7 @@ public interface ProductService {
                 .uploadFileNames(product.getImageList().stream().map(ProductImage::getImageName).toList())
                 .description(product.getDescription())
                 .stockNumber(product.getStockNumber())
+                .isHeart(product.getIsHeart())
                 .categoryId(product.getCategory().getId())
                 .createdAt(product.getCreatedAt())
                 .modifiedAt(product.getModifiedAt())

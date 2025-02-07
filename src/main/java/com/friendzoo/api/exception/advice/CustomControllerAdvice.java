@@ -8,10 +8,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
+import org.springframework.web.servlet.NoHandlerFoundException;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -33,18 +35,18 @@ public class CustomControllerAdvice {
      */
     @ExceptionHandler(NoSuchElementException.class)
     protected ResponseEntity<?> notExist(NoSuchElementException e) {
-
         String msg = e.getMessage();
+        log.error("NoSuchElementException: {}", msg);
 
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("msg", msg)); // "msg": "No value present"
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(getErrorMessage(msg)); // "msg": "No value present"
     }
 
     @ExceptionHandler(EntityNotFoundException.class)
     protected ResponseEntity<?> notExist(EntityNotFoundException e) {
-
         String msg = e.getMessage();
+        log.error("EntityNotFoundException: {}", msg);
 
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("msg", msg));
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(getErrorMessage(msg));
     }
 
     // 따라서, NoSuchElementException은 컬렉션이나 옵셔널에서 주로 사용되며,
@@ -62,8 +64,9 @@ public class CustomControllerAdvice {
     protected ResponseEntity<?> handleIllegalArgumentException(IllegalArgumentException e) {
 
         String msg = e.getMessage();
+        log.error("IllegalArgumentException: {}", msg);
 
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("error", msg));
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(getErrorMessage(msg));
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
@@ -88,7 +91,7 @@ public class CustomControllerAdvice {
      */
 
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
-    public ResponseEntity<String>
+    public ResponseEntity<?>
     handleMethodArgumentTypeMismatch(MethodArgumentTypeMismatchException
                                              ex) {
         String errorMessage = String.format(
@@ -96,36 +99,78 @@ public class CustomControllerAdvice {
                 ex.getValue(),
                 ex.getRequiredType().getSimpleName()
         );
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorMessage);
+        log.error("MethodArgumentTypeMismatchException: {}", errorMessage);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(getErrorMessage(errorMessage));
     }
 
     /**
      * 요청 바디가 JSON 형식이 아닐 때 발생
      *
-     * @param ex HttpMessageNotReadableException
+     * @param e HttpMessageNotReadableException
      * @return ResponseEntity
      */
     @ExceptionHandler(HttpMessageNotReadableException.class)
-    public ResponseEntity<String>
-    handleHttpMessageNotReadableException(HttpMessageNotReadableException ex) {
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                .body("Invalid request body: " + ex.getMessage());
+    public ResponseEntity<?>
+    handleHttpMessageNotReadableException(HttpMessageNotReadableException e) {
+
+        String msg = e.getMessage();
+        log.error("HttpMessageNotReadableException: {}", msg);
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(getErrorMessage(msg));
     }
 
     @ExceptionHandler(CustomJWTException.class)
     protected ResponseEntity<?> handleJWTException(CustomJWTException e) {
 
         String msg = e.getMessage();
+        log.error("CustomJWTException: {}", msg);
 
-        return ResponseEntity.ok().body(Map.of("error", msg));
+        return ResponseEntity.ok().body(getErrorMessage(msg));
     }
 
     @ExceptionHandler(OutOfStockException.class)
     protected ResponseEntity<?> handleOutOfStockException(OutOfStockException e) {
 
         String msg = e.getMessage();
+        log.error("OutOfStockException: {}", msg);
 
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("error", msg));
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(getErrorMessage(msg));
+    }
+
+
+    @ExceptionHandler(UsernameNotFoundException.class)
+    protected ResponseEntity<?> handleUsernameNotFoundException(UsernameNotFoundException e) {
+
+        String msg = e.getMessage();
+        log.error("UsernameNotFoundException: {}", msg);
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(getErrorMessage(msg));
+    }
+
+    // url path 가 틀려서 나오는 exception NoHandlerFoundException
+    // 404 에러 처리
+    @ExceptionHandler(NoHandlerFoundException.class)
+    protected ResponseEntity<?> handleNoHandlerFoundException(NoHandlerFoundException e) {
+        String msg = e.getMessage();
+        log.error("NoHandlerFoundException: {}", msg);
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(getErrorMessage(msg));
+    }
+
+    // 그외 나머지 exception들은 모두 이곳에서 처리
+    @ExceptionHandler(Exception.class)
+    protected ResponseEntity<?> handleException(Exception e) {
+
+        String msg = e.getMessage();
+        log.error("Exception: {}", msg);
+
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(getErrorMessage(msg));
+    }
+
+
+
+    private static Map<String, String> getErrorMessage(String msg) {
+        return Map.of("errMsg", msg);
     }
 
 }

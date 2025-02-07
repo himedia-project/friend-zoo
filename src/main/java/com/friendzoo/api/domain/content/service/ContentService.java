@@ -20,6 +20,8 @@ public interface ContentService {
 
     List<ContentDTO> findListBy(String email);
 
+    Content getEntity(Long contentId);
+
 //    List<ContentDTO> findDetailListBy(String email);
 
 

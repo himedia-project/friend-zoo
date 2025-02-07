@@ -90,6 +90,16 @@ public class CustomFileUtil {
         s3Util.deleteFiles(fileNames);
     }
 
+    /**
+     * s3 파일 삭제
+     * @param fileName 삭제할 파일명
+     */
+    public void deleteS3File(String fileName) {
+        if (fileName == null) {
+            return;
+        }
+        s3Util.deleteFile(fileName);
+    }
 
     /**
      * 이미지 URL을 MultipartFile로 변환
